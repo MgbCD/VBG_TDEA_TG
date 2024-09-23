@@ -1,0 +1,13 @@
+# Ignorar node_modules y build
+**/node_modules
+**/build
+
+# Ignorar archivos de entorno
+**/.env
+
+# Ignorar lockfiles si no necesitas versionarlos
+**/package-lock.json
+
+# Ignorar archivos de sistema generales
+.DS_Store
+Thumbs.db

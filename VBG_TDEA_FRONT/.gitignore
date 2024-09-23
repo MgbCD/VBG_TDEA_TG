@@ -1,0 +1,12 @@
+# Build outputs
+/build/
+
+# Node dependencies
+/node_modules/
+
+# Archivos de entorno
+.env
+
+# Archivos de sistema específicos
+.DS_Store
+Thumbs.db

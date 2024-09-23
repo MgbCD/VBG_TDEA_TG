@@ -1,0 +1,11 @@
+# Config y Logs
+/config/
+logs/
+
+# Build outputs
+/dist/
+build/
+
+# Archivos de sistema y temporales específicos
+.DS_Store
+Thumbs.db

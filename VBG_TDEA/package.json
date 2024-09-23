@@ -1,0 +1,35 @@
+{
+  "name": "vbg_project",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@azure/msal-browser": "^3.23.0",
+    "@azure/msal-node": "^2.13.1",
+    "@azure/msal-react": "^2.0.22",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.6",
+    "@types/mongoose": "^5.11.97",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "express-session": "^1.18.0",
+    "jsonwebtoken": "^9.0.2",
+    "jwks-rsa": "^3.1.0",
+    "kafka-node": "^5.0.0",
+    "mongoose": "^8.5.2",
+    "morgan": "^1.10.0",
+    "passport-azure-ad": "^4.3.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
