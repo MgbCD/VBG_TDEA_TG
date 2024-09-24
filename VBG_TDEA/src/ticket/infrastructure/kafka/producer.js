@@ -1,8 +1,9 @@
 const { Kafka } = require('kafkajs');
+require('dotenv').config();
 
 const kafka = new Kafka({
   clientId: 'ticket-service',
-  brokers: ['localhost:9092'],
+  brokers: [process.env.KAFKA_BROKER],
 });
 
 const producer = kafka.producer();
