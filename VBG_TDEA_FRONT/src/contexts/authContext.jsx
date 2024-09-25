@@ -1,20 +1,17 @@
-import { useState, useEffect, createContext, useContext } from 'react';
-import { PublicClientApplication } from '@azure/msal-browser';
-import msalInstance from '../services/authConfig';
+import { createContext, useState } from 'react';
+import { useMsal } from '@azure/msal-react';
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [accessToken, setAccessToken] = useState(null);
+  const { instance } = useMsal();
   const [user, setUser] = useState(null);
 
   const login = async () => {
     try {
-      const loginResponse = await msalInstance.loginRedirect();
-      const tokenResponse = await msalInstance.acquireTokenSilent({
+      const loginResponse = await instance.loginPopup({
         scopes: ['openid', 'profile', 'User.Read'],
       });
-      setAccessToken(tokenResponse.accessToken);
       setUser(loginResponse.account);
     } catch (error) {
       console.error('Login Error:', error);
@@ -22,16 +19,15 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    await msalInstance.logout();
-    setAccessToken(null);
+    await instance.logout();
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, accessToken, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export default AuthContext;

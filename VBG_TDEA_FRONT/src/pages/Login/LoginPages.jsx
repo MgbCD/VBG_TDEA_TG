@@ -1,22 +1,27 @@
-import React, { useEffect } from 'react';
-import { useAuth } from '../../contexts/authContext';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LoginStyle.css';
-import logoLogin from '../../utils/img/logoLogin.png';
+import logoLogin from '../../assets/img/logoLogin.png';
+import { useMsal } from '@azure/msal-react';
 
-const Login = () => {
-  const { user, login } = useAuth();
+const LoginPage = () => {
+  const { instance } = useMsal();
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    login();
-  };
+    const loginRequest = {
+      scopes: ["openid", "profile"]
+    };
 
-  useEffect(() => {
-    if (user) {
-      navigate('/home');
-    }
-  }, [user, navigate]);
+    instance.loginPopup(loginRequest)
+      .then(response => {
+        console.log("Login response:", response); 
+        navigate('/home'); 
+      })
+      .catch(error => {
+        console.error("Error en el login:", error);  
+      });
+  };
 
   return (
     <div className='login-background'>
@@ -24,7 +29,6 @@ const Login = () => {
         <div className="transparent-box top-box"></div>
         <div className="container">
           <div className="inner-box">
-            { }
             <img className="logo" src={logoLogin} alt="presentation" />
             <div className="content-box">
               <p>Continuar a Outlook</p>
@@ -40,4 +44,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;
