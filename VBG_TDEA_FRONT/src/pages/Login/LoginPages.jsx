@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useAuth } from '../../contexts/authContext';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
+import './LoginStyle.css';
 import logoLogin from '../../utils/img/logoLogin.png';
-import LoginButton from '../../components/Login/LoginButton';
-import '../../../src/pages/Login/LoginStyle.css';
+
 const Login = () => {
   const { user, login } = useAuth();
   const navigate = useNavigate();
@@ -19,15 +19,22 @@ const Login = () => {
   }, [user, navigate]);
 
   return (
-    <div className='container'>
-      <div className="header">
-        <div className="logo-login">
-          <img src={logoLogin} alt="Logo" style={{ height: 80 }} />
+    <div className='login-background'>
+      <div className="outer-container">
+        <div className="transparent-box top-box"></div>
+        <div className="container">
+          <div className="inner-box">
+            { }
+            <img className="logo" src={logoLogin} alt="presentation" />
+            <div className="content-box">
+              <p>Continuar a Outlook</p>
+              <button className="LoginButton" onClick={handleLogin}>
+                Iniciar sesión
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="modal-body">
-        <h2 className="Welcome-message">Bienvenid@ al sistema de gestión de casos de violencia basada en género</h2>
-        <LoginButton onLogin={handleLogin} /> {}
+        <div className="transparent-box bottom-box"></div>
       </div>
     </div>
   );
