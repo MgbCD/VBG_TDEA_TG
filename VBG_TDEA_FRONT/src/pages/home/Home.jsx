@@ -1,52 +1,71 @@
-// src/pages/Home.jsx
 import React, { useEffect, useState } from 'react';
 import useAuth from '../../hooks/useAuth'; 
 import ProgramSelectionModal from '../../components/Modals/ProgramSelectionModal'; 
+import RoleSelectionModal from '../../components/Modals/RoleSelectionModal'; 
 import axios from 'axios';
 
 const Home = () => {
   const { user } = useAuth(); 
-  const [showModal, setShowModal] = useState(false);
+  const [showProgramModal, setShowProgramModal] = useState(false);
+  const [showRoleModal, setShowRoleModal] = useState(false);
   
   useEffect(() => {
     const checkFirstLogin = async () => {
-      if (user && user.roleId === 'student') {
-        try {
-          const response = await axios.get(`http://localhost:3000/api/user/checkFirstLogin?email=${user.email}`);
-          if (response.data.firstLogin) {
-            setShowModal(true);
+      console.log("Usuario actual:", user);
+  
+      if (user ) { 
+        const email = user.email || user.username; 
+      
+           if (user.roleId === 'student' && !user.program) {
+            setShowProgramModal(true); 
+          } else if (user.roleId === 'other' && !user.roleId) {
+            setShowRoleModal(true); 
           }
-        } catch (error) {
-          console.error("Error al verificar el primer inicio de sesión:", error);
         }
-      }
-    };
-
-    checkFirstLogin();
-  }, [user]);
+      };
+  
+      checkFirstLogin();
+    }, [user]);
 
   const handleProgramSave = async (program) => {
     try {
-      await axios.post('http://localhost:3000/api/user/saveUser', { 
-        email: user.email, 
+      await axios.post('http://localhost:3000/api/user/updateProgram', { 
+        email: user.email || user.username, 
         program 
       });
-      setShowModal(false);
+      setShowProgramModal(false);
     } catch (error) {
       console.error("Error al guardar el programa:", error);
+    }
+  };
+
+  const handleRoleSave = async (role) => {
+    try {
+      await axios.post('http://localhost:3000/api/user/saveUser', { 
+        email: user.email || user.username, 
+        roleId: role 
+      });
+      setShowRoleModal(false);
+    } catch (error) {
+      console.error("Error al guardar el rol:", error);
     }
   };
 
   return (
     <div>
       <h1>Bienvenido {user ? user.username : 'invitado'}</h1>
-      {showModal && (
+      {showProgramModal && (
         <ProgramSelectionModal
-          onClose={() => setShowModal(false)}
+          onClose={() => setShowProgramModal(false)}
           onSave={handleProgramSave}
         />
       )}
-      {/* Resto del contenido de Home */}
+      {showRoleModal && (
+        <RoleSelectionModal
+          onClose={() => setShowRoleModal(false)}
+          onSave={handleRoleSave}
+        />
+      )}
     </div>
   );
 };
