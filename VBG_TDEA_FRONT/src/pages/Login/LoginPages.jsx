@@ -1,26 +1,87 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LoginStyle.css';
 import logoLogin from '../../assets/img/logoLogin.png';
 import { useMsal } from '@azure/msal-react';
+import axios from 'axios';
+import ProgramSelectionModal from '../../components/Modals/ProgramSelectionModal';
+import RoleSelectionModal from '../../components/Modals/RoleSelectionModal'; // Importa el nuevo modal
 
 const LoginPage = () => {
   const { instance } = useMsal();
   const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [showRoleModal, setShowRoleModal] = useState(false);
+  const [userData, setUserData] = useState(null);
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     const loginRequest = {
       scopes: ["openid", "profile"]
     };
 
-    instance.loginPopup(loginRequest)
-      .then(response => {
-        console.log("Login response:", response); 
-        navigate('/home'); 
-      })
-      .catch(error => {
-        console.error("Error en el login:", error);  
+    try {
+      const response = await instance.loginPopup(loginRequest);
+      const email = response.account.username;
+      const username = response.account.name;
+      const roleId = email.endsWith('@correo.tdea.edu.co') ? 'student' : 'other';
+
+      const userData = {
+        email: email,
+        username: username,
+        roleId: roleId,
+        program: null,
+      };
+
+      console.log('Datos del usuario antes de guardar:', userData);
+      setUserData(userData);
+
+      await axios.post('http://localhost:3000/api/user/saveUser', userData);
+
+      const checkFirstLoginResponse = await axios.get(`http://localhost:3000/api/user/checkFirstLogin?email=${email}`);
+      if (checkFirstLoginResponse.data.firstLogin) {
+        if (roleId === 'student') {
+          setShowModal(true);
+        } else {
+          setShowRoleModal(true);
+        }
+      } else {
+        setIsAuthenticated(true);
+        navigate('/home');
+      }
+    } catch (error) {
+      console.error("Error en el login:", error.response?.data || error.message);
+    }
+  };
+
+  const handleProgramSave = async (program) => {
+    try {
+      const email = userData?.email;
+      if (!email) {
+        console.error("Email no encontrado en userData.");
+        return;
+      }
+      await axios.post('http://localhost:3000/api/user/updateProgram', {
+        email: email,
+        program: program,
       });
+      setIsAuthenticated(true);
+      setShowModal(false);
+      navigate('/home');
+    } catch (error) {
+      console.error("Error al guardar el programa:", error);
+    }
+  };
+
+
+  const handleRoleSave = async (role) => {
+    if (!userData) return;
+    const userDataWithRole = { ...userData, roleId: role }; // Añadir el rol al userData
+    await axios.post('http://localhost:3000/api/user/saveUser', userDataWithRole);
+
+    setShowRoleModal(false);
+    setIsAuthenticated(true);
+    navigate('/home');
   };
 
   return (
@@ -40,6 +101,19 @@ const LoginPage = () => {
         </div>
         <div className="transparent-box bottom-box"></div>
       </div>
+
+      {showModal && (
+        <ProgramSelectionModal
+          onClose={() => setShowModal(false)}
+          onSave={handleProgramSave}
+        />
+      )}
+      {showRoleModal && (
+        <RoleSelectionModal
+          onClose={() => setShowRoleModal(false)}
+          onSave={handleRoleSave}
+        />
+      )}
     </div>
   );
 };

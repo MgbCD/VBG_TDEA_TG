@@ -5,8 +5,8 @@ const LoginButton = ({ onLogin }) => {
   const { login } = useAuth();
 
   const handleClick = async () => {
-    if (onLogin) onLogin(); // Call the passed onLogin function if provided
-    await login(); // Perform login logic from the context
+    if (onLogin) onLogin(); 
+    await login(); 
   };
 
 
