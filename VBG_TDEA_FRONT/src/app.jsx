@@ -4,10 +4,8 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import msalInstance from './services/authConfig';
 import { AuthProvider } from './contexts/authContext';
 import Home from './pages/home/Home';
-import ProtectedRoute from './components/Security/ProtectedRoute';
-import { useNavigate } from 'react-router-dom';
 import LoginPage from './pages/Login/LoginPages';
-
+import ProtectedRoute from './components/Security/ProtectedRoute';
 
 const App = () => {
   return (
@@ -16,7 +14,7 @@ const App = () => {
         <Router>
         <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="/home" element={<Home />} />
+        <Route path="/home"  element={<ProtectedRoute element={<Home />} />}  />
           <Route path="/login" element={<LoginPage />} />
         </Routes>
         </Router>
