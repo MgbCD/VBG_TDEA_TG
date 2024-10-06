@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './LoginStyle.css'; 
-import logoLogin from '../../assets/img/logoLogin.png';  
+import './LoginStyle.css';
+import logoLogin from '../../assets/img/logoLogin.png';
 import { useMsal } from '@azure/msal-react';
-import axios from 'axios'; 
-import ProgramSelectionModal from '../../components/Modals/ProgramSelectionModal'; 
+import axios from 'axios';
+import ProgramSelectionModal from '../../components/Modals/ProgramSelectionModal';
 import RoleSelectionModal from '../../components/Modals/RoleSelectionModal'; // Importa el nuevo modal
 
 const LoginPage = () => {
   const { instance } = useMsal();
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [showModal, setShowModal] = useState(false); 
-  const [showRoleModal, setShowRoleModal] = useState(false); 
-  const [userData, setUserData] = useState(null); 
+  const [showModal, setShowModal] = useState(false);
+  const [showRoleModal, setShowRoleModal] = useState(false);
+  const [userData, setUserData] = useState(null);
 
   const handleLogin = async () => {
     const loginRequest = {
@@ -22,19 +22,18 @@ const LoginPage = () => {
 
     try {
       const response = await instance.loginPopup(loginRequest);
-
-      const email = response.account.username; 
-      const username = response.account.name;   
-      const roleId = email.endsWith('@correo.tdea.edu.co') ? 'student' : 'other'; 
+      const email = response.account.username;
+      const username = response.account.name;
+      const roleId = email.endsWith('@correo.tdea.edu.co') ? 'student' : 'other';
 
       const userData = {
         email: email,
         username: username,
         roleId: roleId,
-        program: null, 
-      }; 
+        program: null,
+      };
 
-      console.log('Datos del usuario antes de guardar:', userData);  
+      console.log('Datos del usuario antes de guardar:', userData);
       setUserData(userData);
 
       await axios.post('http://localhost:3000/api/user/saveUser', userData);
@@ -42,11 +41,12 @@ const LoginPage = () => {
       const checkFirstLoginResponse = await axios.get(`http://localhost:3000/api/user/checkFirstLogin?email=${email}`);
       if (checkFirstLoginResponse.data.firstLogin) {
         if (roleId === 'student') {
-          setShowModal(true); 
+          setShowModal(true);
         } else {
-          setShowRoleModal(true); 
+          setShowRoleModal(true);
         }
-      }else{
+      } else {
+        setIsAuthenticated(true);
         navigate('/home');
       }
     } catch (error) {
@@ -55,23 +55,31 @@ const LoginPage = () => {
   };
 
   const handleProgramSave = async (program) => {
-    setUserData((prevData) => ({
-      ...prevData,
-      program: program,
-    }));
-
-    await axios.post('http://localhost:3000/api/user/updateProgram', {
-      email: userData.email,
-      program: program,
-    });
-
-    setIsAuthenticated(true);
-    navigate('/home'); 
+    try {
+      const email = userData?.email;
+      if (!email) {
+        console.error("Email no encontrado en userData.");
+        return;
+      }
+      await axios.post('http://localhost:3000/api/user/updateProgram', {
+        email: email,
+        program: program,
+      });
+      setIsAuthenticated(true);
+      setShowModal(false);
+      navigate('/home');
+    } catch (error) {
+      console.error("Error al guardar el programa:", error);
+    }
   };
 
+
   const handleRoleSave = async (role) => {
+    if (!userData) return;
     const userDataWithRole = { ...userData, roleId: role }; // Añadir el rol al userData
     await axios.post('http://localhost:3000/api/user/saveUser', userDataWithRole);
+
+    setShowRoleModal(false);
     setIsAuthenticated(true);
     navigate('/home');
   };
@@ -97,7 +105,7 @@ const LoginPage = () => {
       {showModal && (
         <ProgramSelectionModal
           onClose={() => setShowModal(false)}
-          onSave={handleProgramSave} 
+          onSave={handleProgramSave}
         />
       )}
       {showRoleModal && (

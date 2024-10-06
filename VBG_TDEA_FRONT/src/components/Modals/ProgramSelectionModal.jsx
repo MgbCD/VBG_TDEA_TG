@@ -9,8 +9,9 @@ const ProgramSelectionModal = ({ onClose, onSave }) => {
   };
 
   const handleSave = () => {
-    onSave(selectedProgram);
-    onClose();
+    if (selectedProgram) {
+      onSave(selectedProgram);
+    }
   };
 
   return (
