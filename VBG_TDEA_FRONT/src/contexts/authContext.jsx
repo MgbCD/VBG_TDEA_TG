@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 import { useMsal } from '@azure/msal-react';
-import axios from 'axios';  
+import axios from 'axios';
 
 const AuthContext = createContext();
 
@@ -27,6 +27,7 @@ export const AuthProvider = ({ children }) => {
         roleId: loginResponse.account.username.endsWith('@correo.tdea.edu.co') ? 'student' : 'other',
         program: null,
       };
+      localStorage.setItem('user', JSON.stringify(userData));
 
       await axios.post('http://localhost:3000/api/user/saveUser', userData);
 
