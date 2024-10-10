@@ -69,7 +69,23 @@ async function updateTicketStatusRepository(ticketId, statusId, adminId) {
     }
 }
 
+async function getAllTicketsRepository() {
+    try {
+        const tickets = await ticketModel.find();
+        return tickets;
+    } catch (error) {
+        throw new Error(`Error al obtener los tickets: ${error.message}`);
+    }
+}
+
+async function getTicketsByUserRepository(userId) {
+    try {
+        const tickets = await ticketModel.find({ createdBy: userId });
+        return tickets;
+    } catch (error) {
+        throw new Error(`Error al obtener los tickets: ${error.message}`);
+    }
+}
 
 
-
-module.exports = { createTicketRepository, getTicketRepositoryById, updateTicketRepository, updateTicketStatusRepository };
+module.exports = { createTicketRepository, getTicketRepositoryById, updateTicketRepository, updateTicketStatusRepository, getAllTicketsRepository, getTicketsByUserRepository };

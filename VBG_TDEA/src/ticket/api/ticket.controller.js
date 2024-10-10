@@ -1,6 +1,7 @@
 const { createTicketUseCase } = require('../application/create-ticket');
 const { updateTicketUseCase } = require('../application/update-ticket');
 const { updateTicketStatusUseCase } = require('../application/update-ticketStatus');
+const { getTicketsByUserUseCase } = require('../application/get-ticket')
 const { findUserByIdentityId } = require('../../user/infrastructure/repositories/userRepository');
 
 async function saveTicket(req, res) {
@@ -57,4 +58,20 @@ async function updateTicketStatus(req, res) {
     }
 }
 
-module.exports = { saveTicket, updateTicket, updateTicketStatus };
+async function getTicketsByUser(req, res) {
+    try {
+        const user = await findUserByIdentityId(req.user.oid);
+
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado.' });
+        }
+
+        const tickets = await getTicketsByUserUseCase(user);
+
+        return res.status(200).json({ tickets });
+    } catch (error) {
+        return res.status(500).json({ message: error.message || 'Error interno del servidor' });
+    }
+}
+
+module.exports = { saveTicket, updateTicket, updateTicketStatus, getTicketsByUser };
