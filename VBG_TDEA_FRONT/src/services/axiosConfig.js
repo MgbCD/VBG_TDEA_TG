@@ -11,13 +11,13 @@ const useAxios = () => {
       const account = accounts[0];
 
       const tokenResponse = await instance.acquireTokenSilent({
-        scopes: ["User.Read"],
+        scopes: ["openid", "profile"],
         account: account
       });
 
-      const accessToken = tokenResponse.accessToken;
+      const idToken = tokenResponse.idToken;
 
-      config.headers.Authorization = `Bearer ${accessToken}`;
+      config.headers.Authorization = `Bearer ${idToken}`;
     }
     return config;
   }, (error) => {

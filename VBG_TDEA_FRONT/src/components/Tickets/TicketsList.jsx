@@ -1,20 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import './TicketsList.css'; 
+import './TicketsList.css';
+import useAxios from '../../services/axiosConfig';
 
 const TicketsList = () => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
+  const axiosInstance = useAxios();
 
   useEffect(() => {
     const fetchTickets = async () => {
       try {
-        const token = localStorage.getItem('token'); 
-        const response = await axios.get('http://localhost:3000/api/ticket/my-tickets', {
-          headers: {
-            Authorization: `Bearer ${token}`, 
-          },
-        });
+        const response = await axiosInstance.get('http://localhost:3000/api/ticket/my-tickets');
         setTickets(response.data.tickets);
       } catch (error) {
         console.error("Error al obtener los tickets:", error);
@@ -22,9 +18,10 @@ const TicketsList = () => {
         setLoading(false);
       }
     };
-  
+
     fetchTickets();
-  }, []);
+  }, [axiosInstance]);
+
   const calculateDaysCreated = (createdAt) => {
     const createdDate = new Date(createdAt);
     const today = new Date();
@@ -32,17 +29,18 @@ const TicketsList = () => {
     const differenceInDays = Math.floor(differenceInTime / (1000 * 3600 * 24));
     return differenceInDays;
   };
+
   const handleCreateNewTicket = () => {
     console.log('Crear nuevo ticket');
   };
+
   return (
     <div className="tickets-container">
       <div className="tickets-header">
-      <button className="create-ticket-button" onClick={handleCreateNewTicket}>
+        <button className="create-ticket-button" onClick={handleCreateNewTicket}>
           Crear ticket nuevo    <i className="fa-solid fa-plus"></i>
         </button>
         <h2>TICKETS ACTIVOS</h2>
-      
       </div>
 
       {loading ? (

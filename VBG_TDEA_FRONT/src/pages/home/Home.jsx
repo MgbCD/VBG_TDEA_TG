@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import useAuth from '../../hooks/useAuth';
+import useAxios from '../../services/axiosConfig';
 import ProgramSelectionModal from '../../components/Modals/ProgramSelectionModal';
 import RoleSelectionModal from '../../components/Modals/RoleSelectionModal';
-import axios from 'axios';
-import TicketsList from '../../components/Tickets/TicketsList'; 
+import TicketsList from '../../components/Tickets/TicketsList';
 
 const Home = () => {
   const { user } = useAuth();
   const [showProgramModal, setShowProgramModal] = useState(false);
   const [showRoleModal, setShowRoleModal] = useState(false);
+  const axiosInstance = useAxios();
 
   useEffect(() => {
     const checkFirstLogin = async () => {
@@ -29,7 +30,7 @@ const Home = () => {
 
   const handleProgramSave = async (program) => {
     try {
-      await axios.post('http://localhost:3000/api/user/updateProgram', {
+      await axiosInstance.post('http://localhost:3000/api/user/updateProgram', {
         email: user.email || user.username,
         program
       });
@@ -41,7 +42,7 @@ const Home = () => {
 
   const handleRoleSave = async (role) => {
     try {
-      await axios.post('http://localhost:3000/api/user/saveUser', {
+      await axiosInstance.post('http://localhost:3000/api/user/saveUser', {
         email: user.email || user.username,
         roleId: role
       });
@@ -66,8 +67,8 @@ const Home = () => {
         />
       )}
 
-      
-        <TicketsList /> 
+
+      <TicketsList />
     </div>
   );
 };
