@@ -1,8 +1,10 @@
 const express = require('express');
-const { saveTicket, updateTicketStatus } = require('../api/ticket.controller');
+const { saveTicket, updateTicket, updateTicketStatus } = require('../api/ticket.controller');
+const authenticateToken = require('../../middleware/authMiddleware');
 
 const taskRouter = express.Router();
-taskRouter.post('/saveTicket', saveTicket);
-taskRouter.put('/updateTicket', updateTicketStatus);
+taskRouter.post('/saveTicket', authenticateToken, saveTicket);
+taskRouter.put('/updateTicket', authenticateToken, updateTicket);
+taskRouter.put('/updateTicketStatus', authenticateToken, updateTicketStatus);
 
 module.exports = taskRouter;

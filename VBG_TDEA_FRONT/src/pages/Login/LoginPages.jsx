@@ -17,28 +17,46 @@ const LoginPage = () => {
 
   const handleLogin = async () => {
     const loginRequest = {
-      scopes: ["openid", "profile"]
+      scopes: ["openid", "profile", "User.Read"]
     };
 
     try {
       const response = await instance.loginPopup(loginRequest);
+
       const email = response.account.username;
       const username = response.account.name;
       const roleId = email.endsWith('@correo.tdea.edu.co') ? 'student' : 'other';
+      const identityId = response.account.localAccountId;
+
+      const tokenResponse = await instance.acquireTokenSilent({
+        scopes: ["User.Read"],
+        account: response.account
+      });
+      const accessToken = tokenResponse.accessToken;
 
       const userData = {
         email: email,
         username: username,
+        token: accessToken,
         roleId: roleId,
         program: null,
+        identityId: identityId,
       };
 
-      console.log('Datos del usuario antes de guardar:', userData);
+      console.log('Datos del usuario y token:', userData);
       setUserData(userData);
 
-      await axios.post('http://localhost:3000/api/user/saveUser', userData);
+      await axios.post('http://localhost:3000/api/user/saveUser', userData, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      });
 
-      const checkFirstLoginResponse = await axios.get(`http://localhost:3000/api/user/checkFirstLogin?email=${email}`);
+      const checkFirstLoginResponse = await axios.get(`http://localhost:3000/api/user/checkFirstLogin?email=${email}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`
+        }
+      });
       if (checkFirstLoginResponse.data.firstLogin) {
         if (roleId === 'student') {
           setShowModal(true);
@@ -76,7 +94,7 @@ const LoginPage = () => {
 
   const handleRoleSave = async (role) => {
     if (!userData) return;
-    const userDataWithRole = { ...userData, roleId: role }; // Añadir el rol al userData
+    const userDataWithRole = { ...userData, roleId: role };
     await axios.post('http://localhost:3000/api/user/saveUser', userDataWithRole);
 
     setShowRoleModal(false);

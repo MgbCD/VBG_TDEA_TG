@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema({
+  identityId: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   email: {
     type: String,
     required: true,
@@ -15,12 +20,10 @@ const userSchema = new mongoose.Schema({
     ref: 'UserRole',
     required: true,
   },
-
   program: {
-    type: String, 
+    type: String,
     default: null,
   },
-
 }, {
   timestamps: true
 });

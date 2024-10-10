@@ -1,16 +1,37 @@
 const { createTicketUseCase } = require('../application/create-ticket');
 const { updateTicketUseCase } = require('../application/update-ticket');
-const { ExceptionMissingField } = require('../exceptions/ExceptionMissingField');
+const { updateTicketStatusUseCase } = require('../application/update-ticketStatus');
+const { findUserByIdentityId } = require('../../user/infrastructure/repositories/userRepository');
 
 async function saveTicket(req, res) {
     try {
+        const user = await findUserByIdentityId(req.user.oid);
 
-        const { title, description } = req.body;
-        if (!title || !description) {
-            throw new ExceptionMissingField();
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado.' });
         }
-        const newTicket = await createTicketUseCase(req.body);
+        const ticketRequest = {
+            title: req.body.title,
+            description: req.body.description,
+            createdBy: user._id,
+            adminId: null,
+        };
+        const newTicket = await createTicketUseCase(ticketRequest);
         return res.status(201).json({ ticket: newTicket });
+    } catch (error) {
+        return res.status(500).json({ message: error.message || 'Error interno del servidor' });
+    }
+}
+
+async function updateTicket(req, res) {
+    try {
+        const user = await findUserByIdentityId(req.user.oid);
+        const { ticketId, title, description } = req.body;
+
+        const updateData = { title, description };
+        const updatedTicket = await updateTicketUseCase(ticketId, updateData, user);
+
+        return res.status(200).json({ ticket: updatedTicket });
     } catch (error) {
         return res.status(500).json({ message: error.message || 'Error interno del servidor' });
     }
@@ -18,27 +39,22 @@ async function saveTicket(req, res) {
 
 async function updateTicketStatus(req, res) {
     try {
-        const { ticketId, title, description } = req.body;
+        const user = await findUserByIdentityId(req.user.oid);
+        const { ticketId, statusId } = req.body;
 
-        // Validar si los campos requeridos están presentes
-        if (!ticketId) {
-            throw new ExceptionMissingField('El ID del ticket es requerido.');
+        if (!ticketId || !statusId) {
+            return res.status(400).json({ message: 'Todos los campos son requeridos.' });
         }
 
-        // Ejecutar el caso de uso de actualización
-        const updateData = { title, description }; // Incluye otros campos si es necesario
-        const updatedTicket = await updateTicketUseCase(ticketId, updateData);
-
-        // Comprobar si el ticket fue actualizado
-        if (updatedTicket instanceof Error) {
-            return res.status(403).json({ message: updatedTicket.message });
+        if (!user || user.roleId !== 'admin') {
+            return res.status(403).json({ message: 'Solo los administradores pueden cambiar el estado del ticket.' });
         }
 
-        // Retornar el ticket actualizado
+        const updatedTicket = await updateTicketStatusUseCase(ticketId, statusId, user._id);
         return res.status(200).json({ ticket: updatedTicket });
     } catch (error) {
         return res.status(500).json({ message: error.message || 'Error interno del servidor' });
     }
 }
 
-module.exports = { saveTicket, updateTicketStatus };
+module.exports = { saveTicket, updateTicket, updateTicketStatus };

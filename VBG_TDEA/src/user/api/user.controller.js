@@ -1,16 +1,16 @@
 const { createUserUseCase } = require('../application/create-user');
 const { ExceptionMissingField } = require('../exceptions/ExceptionMissingField');
-const { userModel } = require('../infrastructure/models/user.model'); 
+const { userModel } = require('../infrastructure/models/user.model');
 
 
 async function saveUser(req, res) {
     try {
-        const { email, username, roleId, program } = req.body;
+        const { identityId, email, username, roleId, program } = req.body;
 
         console.log('Datos recibidos:', req.body);
 
-        if (!email || !username || !roleId) {
-            throw new ExceptionMissingField('email, username, roleId');
+        if (!identityId || !email || !username || !roleId) {
+            throw new ExceptionMissingField('identityId, email, username, roleId');
         }
 
         const existingUser = await userModel.findOne({ email });
@@ -23,14 +23,14 @@ async function saveUser(req, res) {
                 existingUser.program = program;
             }
 
-            existingUser.lastLogin = new Date(); 
+            existingUser.lastLogin = new Date();
 
             await existingUser.save();
 
             return res.status(200).json({ message: 'Usuario actualizado correctamente', user: existingUser });
         }
 
-        const newUser = await createUserUseCase({ email, username, roleId, program: roleId === 'student' ? program : null });
+        const newUser = await createUserUseCase({ identityId, email, username, roleId, program: roleId === 'student' ? program : null });
 
         return res.status(201).json({ user: newUser });
 

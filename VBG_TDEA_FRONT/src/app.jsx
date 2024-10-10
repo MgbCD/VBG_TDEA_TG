@@ -12,7 +12,7 @@ const MainApp = () => {
   const location = useLocation(); 
 
   // Lista de rutas válidas
-  const validRoutes = ['/home', '/login'];
+  const validRoutes = ['/home'];
 
   return (
     <>
