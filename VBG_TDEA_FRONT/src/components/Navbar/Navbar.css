@@ -81,6 +81,7 @@
         justify-content: flex-start;
         border-color: rgba(255, 255, 255, .25);
         box-shadow: 0 8px 32px 0 rgba(31, 38, 135, .37);
+        background: white;
         backdrop-filter: blur(4px);
         border-radius: 13px;
         width: 100%;
@@ -126,5 +127,14 @@
        width: 80%;
        margin: auto;
     }
+
+    .fa-bars {
+        color: rgb(255, 255, 255);
+    }
+
+.fa-times
+{
+    color: rgb(0, 0, 0);
+}
     
 }

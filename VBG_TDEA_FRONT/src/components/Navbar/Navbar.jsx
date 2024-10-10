@@ -1,6 +1,5 @@
 import { Component } from "react";
 import logo from "../../assets/img/logoLogin.png";
-import { Link } from 'react-router-dom'; // Importa Link de react-router-dom
 import './Navbar.css'
 import { MenuData } from "./MenuData";
 
@@ -14,7 +13,9 @@ class Navbar extends Component {
     render() {
         return (
             <nav className="NavbarItems">
-                <img src={logo} alt="Logo" style={{ height: '50px' }} />
+             <a href="/home">
+             <img src={logo} alt="Logo" style={{ height: '50px' }} />
+                </a>  
                 <div className="menu-icons"
                 onClick={this.handleClick}>
                     <i className= {this.state.clicked ? 
