@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const ticketSchema = new mongoose.Schema({
-    title:{
+    title: {
         type: String,
         required: true,
     },
@@ -11,25 +11,28 @@ const ticketSchema = new mongoose.Schema({
         required: true,
     },
 
-    createdBy:{
+    createdBy: {
         type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
     },
 
-    statusId:{
-        type: Object,
+    statusId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'TicketStatus',
     },
 
-    createdAt:{
+    createdAt: {
         type: Date,
     },
 
-    updateAt:{
+    updatedAt: {
         type: Date,
     },
 
-    adminId:{
-        type: Object,
+    adminId: {
+        type: mongoose.Schema.Types.ObjectId,
     },
 });
 
-module.exports = {ticketSchema};
+module.exports = { ticketSchema };
