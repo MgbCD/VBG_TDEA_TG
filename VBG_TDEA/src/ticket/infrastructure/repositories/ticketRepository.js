@@ -3,7 +3,6 @@ const { getTicketStatusByName } = require('../../../ticketStatus/infrastructure/
 
 async function createTicketRepository(ticketRequest) {
     try {
-        
         const createdStatus = await getTicketStatusByName('creado');
 
         if (!createdStatus) {
@@ -36,53 +35,40 @@ async function getTicketRepositoryById(ticketId) {
     }
 }
 
-async function updateTicketRepository(ticketId, updateRequest) {
+async function updateTicketRepository(ticketId, updateData) {
     try {
-        const ticket = await ticketModel.findById(ticketId).populate('statusId');
+        const ticket = await ticketModel.findById(ticketId);
 
         if (!ticket) {
             throw new Error('Ticket no encontrado.');
         }
 
-        if (ticket.statusId.status === 'creado') {
-            // Actualiza los campos del ticket
-            ticket.title = updateRequest.title || ticket.title;
-            ticket.description = updateRequest.description || ticket.description;
-            ticket.updatedAt = new Date();
+        ticket.title = updateData.title || ticket.title;
+        ticket.description = updateData.description || ticket.description;
+        ticket.updatedAt = new Date();
 
-            // Si necesitas cambiar el estado del ticket, descomentar la siguiente sección
-            /*
-            if (updateRequest.statusId && updateRequest.statusId !== ticket.statusId) {
-                if (!updateRequest.adminId) {
-                    throw new Error('Solo los administradores pueden actualizar el estado del ticket.');
-                }
-                ticket.statusId = updateRequest.statusId;
-                ticket.adminId = updateRequest.adminId;
-            }
-            */
-
-            const updatedTicket = await ticket.save();
-            return updatedTicket;
-        } else {
-            throw new Error('El ticket no se puede actualizar porque ya no está en estado creado.');
-        }
+        const updatedTicket = await ticket.save();
+        return updatedTicket;
     } catch (error) {
         throw new Error(`Error al actualizar el ticket: ${error.message}`);
     }
 }
 
-async function updateTicketStatusRepository(ticketId, statusId) {
+
+async function updateTicketStatusRepository(ticketId, statusId, adminId) {
     try {
         const ticket = await ticketModel.findByIdAndUpdate(ticketId, {
             statusId: statusId,
-            updatedAt: new Date()
+            adminId: adminId,
+            updatedAt: new Date(),
         }, { new: true });
 
         return ticket;
     } catch (error) {
-        return error;
+        throw new Error(`Error al actualizar el ticket: ${error.message}`);
     }
 }
+
 
 
 
