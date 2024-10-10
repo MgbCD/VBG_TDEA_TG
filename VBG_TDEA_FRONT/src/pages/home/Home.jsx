@@ -3,6 +3,7 @@ import useAuth from '../../hooks/useAuth';
 import ProgramSelectionModal from '../../components/Modals/ProgramSelectionModal';
 import RoleSelectionModal from '../../components/Modals/RoleSelectionModal';
 import axios from 'axios';
+import TicketsList from '../../components/Tickets/TicketsList'; 
 
 const Home = () => {
   const { user } = useAuth();
@@ -64,6 +65,9 @@ const Home = () => {
           onSave={handleRoleSave}
         />
       )}
+
+      
+        <TicketsList /> 
     </div>
   );
 };
