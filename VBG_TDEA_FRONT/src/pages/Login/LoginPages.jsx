@@ -29,15 +29,17 @@ const LoginPage = () => {
       const identityId = response.account.localAccountId;
 
       const tokenResponse = await instance.acquireTokenSilent({
-        scopes: ["User.Read"],
+        scopes: ["openid", "profile"],
         account: response.account
       });
-      const accessToken = tokenResponse.accessToken;
+      const idToken = tokenResponse.idToken;
+      localStorage.removeItem('token');
+      localStorage.setItem('token', idToken);
 
       const userData = {
         email: email,
         username: username,
-        token: accessToken,
+        token: idToken,
         roleId: roleId,
         program: null,
         identityId: identityId,
@@ -48,13 +50,13 @@ const LoginPage = () => {
 
       await axios.post('http://localhost:3000/api/user/saveUser', userData, {
         headers: {
-          Authorization: `Bearer ${accessToken}`
+          Authorization: `Bearer ${idToken}`
         }
       });
 
       const checkFirstLoginResponse = await axios.get(`http://localhost:3000/api/user/checkFirstLogin?email=${email}`, {
         headers: {
-          Authorization: `Bearer ${accessToken}`
+          Authorization: `Bearer ${idToken}`
         }
       });
       if (checkFirstLoginResponse.data.firstLogin) {
