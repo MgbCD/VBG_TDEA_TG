@@ -3,7 +3,7 @@ const { getTicketStatusByName } = require('../../../ticketStatus/infrastructure/
 
 async function createTicketRepository(ticketRequest) {
     try {
-        const createdStatus = await getTicketStatusByName('creado');
+        const createdStatus = await getTicketStatusByName('Creado');
 
         if (!createdStatus) {
             throw new Error('Estado "creado" no encontrado.');
@@ -71,7 +71,7 @@ async function updateTicketStatusRepository(ticketId, statusId, adminId) {
 
 async function getAllTicketsRepository() {
     try {
-        const tickets = await ticketModel.find();
+        const tickets = await ticketModel.find().populate('createdBy', 'username').populate('statusId', 'status');
         return tickets;
     } catch (error) {
         throw new Error(`Error al obtener los tickets: ${error.message}`);
@@ -80,7 +80,9 @@ async function getAllTicketsRepository() {
 
 async function getTicketsByUserRepository(userId) {
     try {
-        const tickets = await ticketModel.find({ createdBy: userId });
+        const tickets = await ticketModel.find({ createdBy: userId })
+            .populate('createdBy', 'username')
+            .populate('statusId', 'status');
         return tickets;
     } catch (error) {
         throw new Error(`Error al obtener los tickets: ${error.message}`);

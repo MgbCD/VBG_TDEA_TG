@@ -8,7 +8,7 @@ async function updateTicketUseCase(ticketId, updateData, user) {
         throw new Error("Ticket no encontrado.");
     }
 
-    if (ticket.statusId.status !== 'creado') {
+    if (ticket.statusId.status !== 'Creado') {
         throw new Error('No puedes modificar este ticket porque ya no está en estado creado.');
     }
 
