@@ -59,8 +59,8 @@ const TicketsList = () => {
             {tickets.map((ticket) => (
               <tr key={ticket._id}>
                 <td>{ticket.title}</td>
-                <td>{ticket.statusId ? ticket.statusId.name : 'Sin estado'}</td>
-                <td>{ticket.createdBy ? ticket.createdBy.name : 'Desconocido'}</td>
+                <td>{ticket.statusId ? ticket.statusId.status : 'Sin estado'}</td>
+                <td>{ticket.createdBy ? ticket.createdBy.username : 'Desconocido'}</td>
                 <td>{calculateDaysCreated(ticket.createdAt)}</td>
               </tr>
             ))}
