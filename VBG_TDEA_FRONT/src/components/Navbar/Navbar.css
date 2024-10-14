@@ -23,9 +23,9 @@
     transform: translate(-50%);
 }
 
-.nav-menu{
+.nav-menu {
     display: grid;
-    grid-template-columns: repeat(6,auto);
+    grid-template-columns: repeat(6, auto);
     grid-gap: 10px;
     list-style: none;
     align-items: center;
@@ -33,34 +33,33 @@
     justify-content: end;
 }
 
-.nav-links{
+.nav-links {
     text-decoration: none;
     color: white;
     padding: 0.7rem 1rem;
-    white-space:nowrap;
+    white-space: nowrap;
 }
 
-.nav-links i{
+.nav-links i {
     padding-right: 10px;
 }
 
-.nav-links:hover{
-    background:#0b3d1b ;
+.nav-links:hover {
+    background: #0b3d1b;
     border-radius: 4px;
     transition: all 0.2s ease-in-out;
 }
 
 .fa-bars,
-.fa-times
-{
+.fa-times {
     color: white;
 }
 
-.menu-icons{
+.menu-icons {
     display: none;
 }
 
-.nav-links-mobile{
+.nav-links-mobile {
     padding: 0.5rem 1rem;
     white-space: nowrap;
     background-color: #fafafa;
@@ -72,10 +71,11 @@
 }
 
 @media screen and (max-width:850px) {
-    .NavbarItems{
+    .NavbarItems {
         z-index: 99;
     }
-    .nav-menu{
+
+    .nav-menu {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
@@ -96,45 +96,45 @@
         transition: all 0.3s ease-in-out;
 
     }
-    .nav-menu.active{
+
+    .nav-menu.active {
         left: 0%;
     }
 
-    
 
-    .nav-links{
+
+    .nav-links {
         display: block;
         widows: 100%;
         padding: 2rem 0;
         color: #222;
     }
 
-    .nav-links:hover{
+    .nav-links:hover {
         background: rgba(255, 255, 255, .25);
         backdrop-filter: blur(20px);
     }
 
-    .menu-icons{
+    .menu-icons {
         display: block;
     }
 
-    .nav-links-mobile{
+    .nav-links-mobile {
         padding: 1.5rem;
-       display: block;
-       text-align: center;
-       font-size: 1.3rem;
-       font-weight: bold;
-       width: 80%;
-       margin: auto;
+        display: block;
+        text-align: center;
+        font-size: 1.3rem;
+        font-weight: bold;
+        width: 80%;
+        margin: auto;
     }
 
     .fa-bars {
         color: rgb(255, 255, 255);
     }
 
-.fa-times
-{
-    color: rgb(0, 0, 0);
-}
-    
+    .fa-times {
+        color: rgb(0, 0, 0);
+    }
+
 }

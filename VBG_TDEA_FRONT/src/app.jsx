@@ -6,22 +6,25 @@ import { AuthProvider } from './contexts/authContext';
 import Home from './pages/home/Home';
 import LoginPage from './pages/Login/LoginPages';
 import ProtectedRoute from './components/Security/ProtectedRoute';
-import Navbar from './components/Navbar/Navbar';
+import NavbarWithMsal from './components/Navbar/Navbar'; 
+import Dashboard from './pages/Dashboard/dashboard'; 
+
 
 const MainApp = () => {
   const location = useLocation(); 
 
   // Lista de rutas válidas
-  const validRoutes = ['/home'];
+  const validRoutes = ['/home', '/dashboard'];
 
   return (
     <>
       {/* Renderizar la Navbar solo si la ruta es válida */}
-      {validRoutes.includes(location.pathname) && <Navbar />}
+      {validRoutes.includes(location.pathname) && <NavbarWithMsal />}
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/dashboard" element={<Dashboard />} />
         {/* Puedes agregar más rutas válidas aquí si es necesario */}
       </Routes>
     </>

@@ -14,8 +14,14 @@
     width: 100%; 
     border-collapse: collapse; 
   }
-  
-  .tickets-table th,
+
+  .tickets-table thead th {
+    background-color: #d6d6d6 !important; 
+    color: white !important; 
+    font-weight: bold;
+    text-align: left; 
+  }  
+
   .tickets-table td {
     padding: 12px; 
     text-align: left; 
@@ -57,5 +63,64 @@
   }
 
   .tickets-header h2 {
-    margin-top: 10px; /* Espacio entre el botón y el encabezado */
+    margin-top: 10px; 
+}
+
+
+.status-indicator {
+  display: inline-block;
+  padding: 5px 10px; 
+  border-radius: 20px; 
+  color: white; 
+  font-weight: bold; 
+}
+
+.status-in-progress {
+  background-color: #3a98fd; 
+}
+
+.status-created {
+  background-color: #e0f93b; 
+}
+
+.status-archived {
+  background-color: #dc3545; 
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.pagination-button, .page-button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.pagination-button:disabled, .page-button.active {
+  background-color: #0056b3;
+  cursor: not-allowed;
+}
+
+.pagination-button:hover:not(:disabled), .page-button:hover:not(.active) {
+  background-color: #0056b3;
+}
+
+.filter-container {
+  margin-bottom: 20px;
+}
+
+.filter-container label {
+  margin-right: 10px;
+}
+
+.filter-container select {
+  padding: 5px;
 }
