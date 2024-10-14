@@ -54,7 +54,7 @@ async function checkFirstLogin(req, res) {
         }
 
         // Si el usuario no tiene un programa, es su primer inicio
-        const firstLogin = !user.program || user.roleId === 'other';
+        const firstLogin = (!user.program && user.roleId=== 'student') || user.roleId === 'other';
         return res.json({ firstLogin });
     } catch (error) {
         console.error("Error al verificar el primer inicio de sesión:", error); // Log para error

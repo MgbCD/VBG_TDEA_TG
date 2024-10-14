@@ -9,7 +9,7 @@ export const MenuData =[
 
     {
         title: "Dashboard",
-        url: "#",
+        url: "/dashboard",
         cName: "nav-links",
         icon:"fa-solid fa-chart-simple"
     },
