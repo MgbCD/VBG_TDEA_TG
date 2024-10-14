@@ -14,9 +14,9 @@ const TicketForm = ({ onClose, onSubmit }) => {
   };
 
   return (
-    <div className="modal">
-      <div className="modal-content">
-        <span className="close" onClick={onClose}>&times;</span>
+    <div className="ticket-modal">
+      <div className="ticket-modal-content">
+        <span className="ticket-close" onClick={onClose}>&times;</span>
         <h2>Crear Nuevo Ticket</h2>
         <form onSubmit={handleSubmit}>
           <div>

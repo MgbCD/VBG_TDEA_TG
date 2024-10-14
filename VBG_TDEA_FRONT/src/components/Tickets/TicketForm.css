@@ -1,4 +1,4 @@
-.modal {
+.ticket-modal {
   display: flex;
   justify-content: center; 
   align-items: center; 
@@ -11,7 +11,7 @@
   z-index: 1000; 
 }
 
-.modal-content {
+.ticket-modal-content {
   background-color: white;
   padding: 20px; 
   border-radius: 10px;
@@ -19,7 +19,7 @@
   width: 100%; 
 }
 
-.close {
+.ticket-close {
   cursor: pointer; 
   float: right; 
   font-size: 24px; 
