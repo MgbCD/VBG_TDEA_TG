@@ -3,6 +3,8 @@ const { updateTicketUseCase } = require('../application/update-ticket');
 const { updateTicketStatusUseCase } = require('../application/update-ticketStatus');
 const { getTicketsByUserUseCase } = require('../application/get-ticket')
 const { findUserByIdentityId } = require('../../user/infrastructure/repositories/userRepository');
+const upload = require('../../middleware/uploadMiddleware'); 
+
 
 async function saveTicket(req, res) {
     try {
@@ -16,6 +18,7 @@ async function saveTicket(req, res) {
             description: req.body.description,
             createdBy: user._id,
             adminId: null,
+            filePath: req.file ? req.file.path : null 
         };
         const newTicket = await createTicketUseCase(ticketRequest);
         return res.status(201).json({ ticket: newTicket });

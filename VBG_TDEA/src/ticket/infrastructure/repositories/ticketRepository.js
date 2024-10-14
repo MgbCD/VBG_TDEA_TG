@@ -17,6 +17,8 @@ async function createTicketRepository(ticketRequest) {
             createdAt: new Date(),
             updatedAt: new Date(),
             adminId: ticketRequest.adminId,
+            filePath: ticketRequest.filePath || null, 
+
         });
 
         const savedTicket = await ticket.save();

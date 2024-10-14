@@ -28,7 +28,7 @@ const TicketsList = () => {
   }, []);
 
   const handleCreateTicket = async (newTicket) => {
-    console.log('Nuevo ticket:', newTicket); // Verifica el ticket que se crea
+    console.log('Nuevo ticket:', newTicket); 
     try {
       const response = await axiosInstance.post('http://localhost:3000/api/ticket/saveTicket', newTicket);
       setTickets((prevTickets) => [...prevTickets, response.data.ticket]);
@@ -36,7 +36,7 @@ const TicketsList = () => {
       console.error("Error creating ticket:", error);
     } finally {
       setShowModal(false);
-      console.log('Modal cerrado'); // Verifica que se cierre
+      console.log('Modal cerrado'); 
     }
   };
 
