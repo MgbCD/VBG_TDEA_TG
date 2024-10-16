@@ -27,4 +27,12 @@ async function findUserByIdentityId(identityId) {
   }
 }
 
-module.exports = { createUserRepository, findUserByIdentityId };
+async function findUserByEmailRepository(email) {
+  try {
+    return await userModel.findOne({ email });
+  } catch (error) {
+    throw new Error(`Error al buscar usuario: ${error.message}`);
+  }
+}
+
+module.exports = { createUserRepository, findUserByIdentityId, findUserByEmailRepository };

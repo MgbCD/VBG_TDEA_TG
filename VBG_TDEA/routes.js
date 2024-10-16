@@ -4,6 +4,8 @@ const denouncedRegisterRouter = require('./src/denouncedRegister/routes/denounce
 const historicoRouter = require('./src/historico/routes/historico.routing');
 const userRouter  = require('./src/user/routes/user.routing');
 const ticketActionRouter = require('./src/ticketAction/routes/ticketAction.routing');
+const statsRouter = require('./src/dashboard/routes/stats.routing');
+
 
 
 function setRoutes(app) {
@@ -19,6 +21,8 @@ function setRoutes(app) {
     app.use('/api/user', userRouter);
 
     app.use('/api/ticket-action', ticketActionRouter);
+
+    app.use('/api/dashboard', statsRouter);
 }
 
 module.exports = setRoutes;

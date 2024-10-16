@@ -6,12 +6,12 @@ import { AuthProvider } from './contexts/authContext';
 import Home from './pages/home/Home';
 import LoginPage from './pages/Login/LoginPages';
 import ProtectedRoute from './components/Security/ProtectedRoute';
-import NavbarWithMsal from './components/Navbar/Navbar'; 
-import Dashboard from './pages/Dashboard/dashboard'; 
+import NavbarWithMsal from './components/Navbar/Navbar';
+import Dashboard from './pages/Dashboard/dashboard';
 
 
 const MainApp = () => {
-  const location = useLocation(); 
+  const location = useLocation();
 
   // Lista de rutas válidas
   const validRoutes = ['/home', '/dashboard'];
@@ -24,7 +24,7 @@ const MainApp = () => {
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
         {/* Puedes agregar más rutas válidas aquí si es necesario */}
       </Routes>
     </>
@@ -36,7 +36,7 @@ const App = () => {
     <MsalProvider instance={msalInstance}>
       <AuthProvider>
         <Router>
-          <MainApp /> 
+          <MainApp />
         </Router>
       </AuthProvider>
     </MsalProvider>

@@ -1,30 +1,32 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const dashboardSchema = new mongoose.Schema({
-    month: {
-        type: Number, 
-        required: true,
-    },
     year: {
-        type: Number,  
+        type: Number,
         required: true,
     },
-    usersLoggedIn: {
-        type: Number,  
-        default: 0,
+    month: {
+        type: Number,
+        required: true,
+        min: 1,
+        max: 12,
     },
-    ticketsCreated: {
-        type: Number,  
-        default: 0,
-    },
-    ticketsArchived: {
-        type: Number,  
-        default: 0,
-    },
-    ticketsFinalized: {
-        type: Number, 
-        default: 0,
-    },
+    ticketStats: [
+        {
+            status: {
+                type: String,
+                required: true,
+            },
+            count: {
+                type: Number,
+                required: true,
+            }
+        }
+    ],
+    userStats: {
+        type: Number,
+        required: true,
+    }
 });
 
-module.exports = mongoose.model('Dashboard', dashboardSchema);
+module.exports = { dashboardSchema };
