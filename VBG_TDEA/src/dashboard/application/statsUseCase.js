@@ -45,7 +45,6 @@ async function getUserStats(startDate, endDate) {
     };
 
     const count = await userModel.countDocuments(query);
-    console.log('Usuarios registrados:', count);
     return count;
 }
 

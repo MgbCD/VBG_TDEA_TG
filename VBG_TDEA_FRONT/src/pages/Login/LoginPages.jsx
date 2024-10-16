@@ -14,8 +14,6 @@ const LoginPage = () => {
   const [showRoleModal, setShowRoleModal] = useState(false);
   const [userData, setUserData] = useState(null);
 
-
-
   const handleLogin = async () => {
     const loginRequest = {
       scopes: ["openid", "profile", "User.Read"]

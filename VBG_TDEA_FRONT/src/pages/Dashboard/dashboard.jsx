@@ -11,7 +11,6 @@ const Dashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
   const axiosInstance = useAxios();
 
-  // Función para obtener las estadísticas del dashboard
   const fetchDashboardData = async (startDate, endDate) => {
     try {
       const response = await axiosInstance.get('http://localhost:3000/api/dashboard/dashboard-stats', {
@@ -24,9 +23,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    // Llama a la función de obtención de datos si el usuario está definido
     if (user) {
-      // Aquí puedes establecer un rango de fechas predeterminado si lo deseas
       const startDate = '2024-01-01';
       const endDate = '2024-12-31';
       fetchDashboardData(startDate, endDate);
@@ -34,8 +31,8 @@ const Dashboard = () => {
   }, [user]);
 
   const handleDateRangeSave = (startDate, endDate) => {
-    fetchDashboardData(startDate, endDate); // Vuelve a obtener datos con el nuevo rango
-    setShowDateRangeModal(false); // Cierra la modal
+    fetchDashboardData(startDate, endDate);
+    setShowDateRangeModal(false);
   };
 
   return (

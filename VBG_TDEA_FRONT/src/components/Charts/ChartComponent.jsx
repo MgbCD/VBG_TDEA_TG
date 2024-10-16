@@ -5,11 +5,11 @@ import { Bar } from 'react-chartjs-2';
 const ChartComponent = ({ data }) => {
   
   if (!data || !Array.isArray(data)) {
-    return <p>No hay datos disponibles para mostrar.</p>; // Mensaje alternativo o componente de carga
+    return <p>No hay datos disponibles para mostrar.</p>;
   }
 
   const chartData = {
-    labels: data.map(stat => stat.status), // Asegúrate de que tu API devuelve los datos en el formato correcto
+    labels: data.map(stat => stat.status),
     datasets: [
       {
         label: 'Tickets',
