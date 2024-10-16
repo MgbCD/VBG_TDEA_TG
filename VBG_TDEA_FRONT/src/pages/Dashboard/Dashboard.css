@@ -1,0 +1,9 @@
+
+
+.dashboard-container {
+    margin-top: 80px; /* Ajusta este valor según la altura de tu navbar */
+    padding: 20px; /* Opcional: añade algo de padding si es necesario */
+    background-color: #f8f9fa; /* Opcional: color de fondo */
+    border-radius: 8px; /* Opcional: bordes redondeados */
+  }
+  

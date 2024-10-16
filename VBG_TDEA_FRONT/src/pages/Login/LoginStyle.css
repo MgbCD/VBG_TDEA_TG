@@ -1,58 +1,54 @@
+.login-background {
+    background-image: url('https://logincdn.msauth.net/shared/5/images/49_7916a894ebde7d29c2cc.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .container {
     display: flex;
     flex-direction: column;
-    margin: auto; /* Centrado horizontal */
-    margin-top: 100px; /* Ajusta la distancia desde arriba si es necesario */
-    width: 400px; /* Ancho mayor para un aspecto más cuadrado */
-    height: 400px; /* Ajusta la altura según tus necesidades */
-    max-height: 600px; 
-    background: white;
-    padding: 30px; /* Asegúrate de que el padding no haga que el contenedor sea demasiado grande */
-    border-radius: 12px;
+    justify-content: center;
+    align-items: center;
+    width: 440px;
+    height: 338px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 5px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
-.header {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 9px;
-    width: 100%;
-    margin-top: 30px;
+.logo {
+    width: 70%;
+    height: auto;
+    margin-top: -60px;
+}
+
+.content-box {
+    margin-top: 70px;
+}
+
+p {
+    font-size: 0.9rem;
+    color: #666;
     margin-bottom: 20px;
 }
 
-.Welcome-message {
-    font-size: 1.5rem; 
-    text-align: center; 
-    margin: 1.5rem 0; 
-    color: #333; 
-}
-
-.modal-body {
-    display: flex;
-    flex-direction: column; 
-    justify-content: center;
-    align-items: center; 
-    width: 100%; 
-    padding: 20px;
-}
-
 .LoginButton {
-    background: #0F6634 !important;
-    color: #fff !important;
-    opacity: 1;
-    transition: all 400ms ease;
-    margin-top: 1.5rem !important;
-    margin-bottom: 1.5rem !important;
+    background-color: #12672F;
+    color: white;
+    padding: 10px 20px;
+    margin-top: 25px;
     border: none;
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    border-radius: 0.25rem;
+    border-radius: 4px;
     cursor: pointer;
-    display: flex;
+    font-size: 0.9rem;
 }
 
 .LoginButton:hover {
-    background: #0d5430 !important;
+    background-color: #12672F;
 }

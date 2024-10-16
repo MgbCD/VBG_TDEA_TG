@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const ticketSchema = new mongoose.Schema({
-    title:{
+    title: {
         type: String,
         required: true,
     },
@@ -11,25 +11,32 @@ const ticketSchema = new mongoose.Schema({
         required: true,
     },
 
-    createdBy:{
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
+
+    statusId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'TicketStatus',
+    },
+
+    createdAt: {
+        type: Date,
+    },
+
+    updatedAt: {
+        type: Date,
+    },
+
+    adminId: {
         type: mongoose.Schema.Types.ObjectId,
     },
-
-    statusId:{
-        type: Object,
-    },
-
-    createdAt:{
-        type: Date,
-    },
-
-    updateAt:{
-        type: Date,
-    },
-
-    adminId:{
-        type: Object,
+    filePath: { 
+        type: String,
+        required: false
     },
 });
 
-module.exports = {ticketSchema};
+module.exports = { ticketSchema };
