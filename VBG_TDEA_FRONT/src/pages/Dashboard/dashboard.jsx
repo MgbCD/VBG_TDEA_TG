@@ -28,7 +28,7 @@ const Dashboard = () => {
     if (user) {
       // Aquí puedes establecer un rango de fechas predeterminado si lo deseas
       const startDate = '2024-01-01';
-      const endDate = '2024-10-14';
+      const endDate = '2024-12-31';
       fetchDashboardData(startDate, endDate);
     }
   }, [user]);

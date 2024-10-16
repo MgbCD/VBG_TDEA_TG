@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { dashboardSchema } = require('../../domain/dashboard.schema');
 
-const dashboardSchema = mongoose.model('Dashboard', dashboardSchema);
+const Dashboard = mongoose.model('Dashboard', dashboardSchema);
 
-module.exports = dashboardSchema;
+module.exports = Dashboard;

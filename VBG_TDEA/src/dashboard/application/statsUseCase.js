@@ -1,5 +1,5 @@
-const ticketModel = require('../../../src/ticket/infrastructure/models/ticket.model');
-const userModel = require('../../../src/user/infrastructure/models/user.model');
+const ticketModel = require('../../ticket/infrastructure/models/ticket.model');
+const { userModel } = require('../../user/infrastructure/models/user.model');
 
 async function getTicketsStats(startDate, endDate) {
     const query = {
@@ -8,20 +8,35 @@ async function getTicketsStats(startDate, endDate) {
 
     const stats = await ticketModel.aggregate([
         { $match: query },
-        { $group: { _id: "$statusId", count: { $sum: 1 } } },
+        {
+            $group: {
+                _id: {
+                    year: { $year: "$createdAt" },
+                    month: { $month: "$createdAt" },
+                    statusId: "$statusId",
+                },
+                count: { $sum: 1 }
+            }
+        },
         {
             $lookup: {
-                from: 'ticketstatuses', 
-                localField: '_id',
+                from: 'ticketstatuses',
+                localField: '_id.statusId',
                 foreignField: '_id',
                 as: 'status'
             }
         },
         { $unwind: '$status' },
-        { $project: { _id: 0, status: '$status.status', count: 1 } }
+        {
+            $project: {
+                _id: 0,
+                year: '$_id.year',
+                month: '$_id.month',
+                status: '$status.status',
+                count: 1
+            }
+        }
     ]);
-
-    return stats;
 }
 
 async function getUserStats(startDate, endDate) {
@@ -30,6 +45,7 @@ async function getUserStats(startDate, endDate) {
     };
 
     const count = await userModel.countDocuments(query);
+    console.log('Usuarios registrados:', count);
     return count;
 }
 

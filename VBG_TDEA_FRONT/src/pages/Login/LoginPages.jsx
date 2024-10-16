@@ -1,19 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LoginStyle.css';
 import logoLogin from '../../assets/img/logoLogin.png';
 import { useMsal } from '@azure/msal-react';
 import axios from 'axios';
 import ProgramSelectionModal from '../../components/Modals/ProgramSelectionModal';
-import RoleSelectionModal from '../../components/Modals/RoleSelectionModal'; // Importa el nuevo modal
+import RoleSelectionModal from '../../components/Modals/RoleSelectionModal';
 
 const LoginPage = () => {
   const { instance } = useMsal();
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showRoleModal, setShowRoleModal] = useState(false);
   const [userData, setUserData] = useState(null);
+
+
 
   const handleLogin = async () => {
     const loginRequest = {
@@ -22,19 +23,50 @@ const LoginPage = () => {
 
     try {
       const response = await instance.loginPopup(loginRequest);
-
       const email = response.account.username;
       const username = response.account.name;
-      const roleId = email.endsWith('@correo.tdea.edu.co') ? 'student' : 'other';
       const identityId = response.account.localAccountId;
 
       const tokenResponse = await instance.acquireTokenSilent({
         scopes: ["openid", "profile"],
         account: response.account
       });
+
       const idToken = tokenResponse.idToken;
       localStorage.removeItem('token');
       localStorage.setItem('token', idToken);
+
+      let roleId;
+      let existingUserResponse;
+
+      try {
+        existingUserResponse = await axios.get(`http://localhost:3000/api/user/getUser?email=${email}`, {
+          headers: {
+            Authorization: `Bearer ${idToken}`
+          }
+        });
+        roleId = existingUserResponse.data.roleId;
+      } catch (error) {
+        if (error.response && error.response.status === 404) {
+          roleId = email.endsWith('@correo.tdea.edu.co') ? 'student' : 'other';
+          const newUserData = {
+            identityId,
+            email,
+            username,
+            roleId,
+            program: roleId === 'student' ? null : undefined,
+          };
+          await axios.post('http://localhost:3000/api/user/saveUser', newUserData, {
+            headers: {
+              Authorization: `Bearer ${idToken}`
+            }
+          });
+          console.log('Usuario creado:', newUserData);
+        } else {
+          console.error("Error al obtener el usuario:", error.response?.data || error.message);
+          return;
+        }
+      }
 
       const userData = {
         email: email,
@@ -48,25 +80,19 @@ const LoginPage = () => {
       console.log('Datos del usuario y token:', userData);
       setUserData(userData);
 
-      await axios.post('http://localhost:3000/api/user/saveUser', userData, {
-        headers: {
-          Authorization: `Bearer ${idToken}`
-        }
-      });
-
       const checkFirstLoginResponse = await axios.get(`http://localhost:3000/api/user/checkFirstLogin?email=${email}`, {
         headers: {
           Authorization: `Bearer ${idToken}`
         }
       });
+
       if (checkFirstLoginResponse.data.firstLogin) {
-        if (roleId === 'student') {
-          setShowModal(true);
-        } else {
+        if (roleId === 'other') {
           setShowRoleModal(true);
+        } else if (roleId === 'student') {
+          setShowModal(true);
         }
       } else {
-        setIsAuthenticated(true);
         navigate('/home');
       }
     } catch (error) {
@@ -85,7 +111,6 @@ const LoginPage = () => {
         email: email,
         program: program,
       });
-      setIsAuthenticated(true);
       setShowModal(false);
       navigate('/home');
     } catch (error) {
@@ -100,7 +125,6 @@ const LoginPage = () => {
     await axios.post('http://localhost:3000/api/user/saveUser', userDataWithRole);
 
     setShowRoleModal(false);
-    setIsAuthenticated(true);
     navigate('/home');
   };
 
