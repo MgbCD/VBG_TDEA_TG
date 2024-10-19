@@ -5,6 +5,7 @@ const historicoRouter = require('./src/historico/routes/historico.routing');
 const userRouter  = require('./src/user/routes/user.routing');
 const ticketActionRouter = require('./src/ticketAction/routes/ticketAction.routing');
 const statsRouter = require('./src/dashboard/routes/stats.routing');
+const emailConfigRouter = require('./src/emailConfig/routes/emailConfig.routing');
 
 
 
@@ -23,6 +24,8 @@ function setRoutes(app) {
     app.use('/api/ticket-action', ticketActionRouter);
 
     app.use('/api/dashboard', statsRouter);
+
+    app.use('/api/email', emailConfigRouter);
 }
 
 module.exports = setRoutes;

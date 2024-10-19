@@ -4,7 +4,7 @@ const { updateTicketUseCase } = require('../application/update-ticket');
 const { updateTicketStatusUseCase } = require('../application/update-ticketStatus');
 const { getTicketsByUserUseCase } = require('../application/get-ticket')
 const { findUserByIdentityId } = require('../../user/infrastructure/repositories/userRepository');
-const upload = require('../../middleware/uploadMiddleware'); 
+const upload = require('../../middleware/uploadMiddleware');
 
 async function saveTicket(req, res) {
     try {
@@ -13,15 +13,26 @@ async function saveTicket(req, res) {
         if (!user) {
             return res.status(404).json({ message: 'Usuario no encontrado.' });
         }
+        
         const ticketRequest = {
             title: req.body.title,
             description: req.body.description,
             createdBy: user._id,
             adminId: null,
-            filePath: req.file ? req.file.path : null 
+            filePath: req.file ? req.file.path : null
         };
         const newTicket = await createTicketUseCase(ticketRequest);
-        await sendMessage(newTicket);
+
+        const message = {
+            _id: newTicket._id,
+            title: newTicket.title,
+            description: newTicket.description,
+            createdBy: { username: user.username, email: user.email },
+            createdAt: newTicket.createdAt,
+            statusId: newTicket.statusId,
+        };
+        await sendMessage(message, 'ticket-created');
+
         return res.status(201).json({ ticket: newTicket });
     } catch (error) {
         return res.status(500).json({ message: error.message || 'Error interno del servidor' });
@@ -56,6 +67,14 @@ async function updateTicketStatus(req, res) {
         }
 
         const updatedTicket = await updateTicketStatusUseCase(ticketId, statusId, user._id);
+
+        const message = {
+            ticketId: updatedTicket._id,
+            newStatus: updatedTicket.statusId.status,
+            adminName: user.username,
+        };
+        await sendMessage(message, 'ticket-status-changed');
+
         return res.status(200).json({ ticket: updatedTicket });
     } catch (error) {
         return res.status(500).json({ message: error.message || 'Error interno del servidor' });

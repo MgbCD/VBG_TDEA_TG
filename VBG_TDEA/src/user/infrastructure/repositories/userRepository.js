@@ -35,4 +35,15 @@ async function findUserByEmailRepository(email) {
   }
 }
 
-module.exports = { createUserRepository, findUserByIdentityId, findUserByEmailRepository };
+async function getAdminsEmailsRepository() {
+  try{
+    const admins = await userModel.find({ roleId: 'admin' }, 'email'); // Solo traemos el campo 'email'
+    const adminEmails = admins.map(admin => admin.email);
+    return adminEmails;
+  } catch (error) {
+    console.error('Error obteniendo los correos de los administradores:', error);
+    throw new Error('No se pudieron obtener los correos de los administradores');
+  }
+} 
+
+module.exports = { createUserRepository, findUserByIdentityId, findUserByEmailRepository, getAdminsEmailsRepository };

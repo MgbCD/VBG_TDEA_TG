@@ -17,12 +17,17 @@ async function createTicketRepository(ticketRequest) {
             createdAt: new Date(),
             updatedAt: new Date(),
             adminId: ticketRequest.adminId,
-            filePath: ticketRequest.filePath || null, 
+            filePath: ticketRequest.filePath || null,
 
         });
 
         const savedTicket = await ticket.save();
-        return savedTicket;
+
+        const populatedTicket = await ticketModel.findById(savedTicket._id)
+            .populate('createdBy', 'username email')
+            .populate('statusId', 'status');
+
+        return populatedTicket;
     } catch (error) {
         throw new Error(`Error al crear el ticket: ${error.message}`);
     }
@@ -56,7 +61,6 @@ async function updateTicketRepository(ticketId, updateData) {
     }
 }
 
-
 async function updateTicketStatusRepository(ticketId, statusId, adminId) {
     try {
         const ticket = await ticketModel.findByIdAndUpdate(ticketId, {
@@ -65,7 +69,11 @@ async function updateTicketStatusRepository(ticketId, statusId, adminId) {
             updatedAt: new Date(),
         }, { new: true });
 
-        return ticket;
+        const populatedTicket = await ticketModel.findById(ticketId)
+            .populate('statusId', 'status');
+
+        return populatedTicket;
+
     } catch (error) {
         throw new Error(`Error al actualizar el ticket: ${error.message}`);
     }
@@ -91,5 +99,21 @@ async function getTicketsByUserRepository(userId) {
     }
 }
 
+async function getTicketByIdRepository(ticketId) {
+    try {
+        const ticket = await ticketModel.findById(ticketId)
+            .populate('createdBy', 'username email')
+            .populate('statusId', 'status');
 
-module.exports = { createTicketRepository, getTicketRepositoryById, updateTicketRepository, updateTicketStatusRepository, getAllTicketsRepository, getTicketsByUserRepository };
+        if (!ticket) {
+            throw new Error('Ticket no encontrado.');
+        }
+
+        return ticket;
+    } catch (error) {
+        throw new Error(`Error al obtener el ticket: ${error.message}`);
+    }
+}
+
+
+module.exports = { createTicketRepository, getTicketRepositoryById, updateTicketRepository, updateTicketStatusRepository, getAllTicketsRepository, getTicketsByUserRepository, getTicketByIdRepository };

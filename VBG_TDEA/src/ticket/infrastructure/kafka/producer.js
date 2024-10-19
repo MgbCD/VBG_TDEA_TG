@@ -8,10 +8,10 @@ const kafka = new Kafka({
 
 const producer = kafka.producer();
 
-const sendMessage = async (ticketData) => {
+const sendMessage = async (ticketData, topic) => {
   await producer.connect();
   await producer.send({
-    topic: 'ticket-created',
+    topic: topic,
     messages: [{ value: JSON.stringify(ticketData) }],
   });
   await producer.disconnect();
