@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { toast } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css'; 
 import './TicketForm.css';
 
 const TicketForm = ({ onClose, onSubmit }) => {
@@ -18,15 +20,48 @@ const TicketForm = ({ onClose, onSubmit }) => {
     if (file) {
       formData.append('file', file);
     }
-    await onSubmit(formData);
-    onClose();
+
+    try {
+      await onSubmit(formData);
+
+      toast.success('¡Ticket creado exitosamente!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+
+      setTitle('');
+      setDescription('');
+      setFile(null);
+
+      setTimeout(() => {
+        onClose();
+      }, 1000);
+
+    } catch (error) {
+      console.error("Error al crear el ticket:", error);
+
+      toast.error('Error al crear el ticket. Inténtalo de nuevo.', {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
+    }
   };
 
   return (
     <div className="ticket-modal">
       <div className="ticket-modal-content">
         <span className="ticket-close" onClick={onClose}>&times;</span>
-        <h2>Formulario de Ticket</h2>
+        <h2>Formulario de ticket</h2>
         <form onSubmit={handleSubmit} encType="multipart/form-data">
           <div>
             <label>Título:</label>

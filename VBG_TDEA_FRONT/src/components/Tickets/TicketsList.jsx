@@ -2,13 +2,17 @@ import React, { useState, useEffect } from 'react';
 import './TicketsList.css';
 import useAxios from '../../services/axiosConfig';
 import TicketForm from './TicketForm';
+import TicketDetails from './TicketDetails';
+import useAuth from '../../hooks/useAuth';
 
 const TicketsList = () => {
+  const { user } = useAuth();
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [filterStatus, setFilterStatus] = useState('Todos');
   const [showModal, setShowModal] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState(null);
   const ticketsPerPage = 10;
   const axiosInstance = useAxios();
 
@@ -28,15 +32,18 @@ const TicketsList = () => {
   }, []);
 
   const handleCreateTicket = async (newTicket) => {
-    console.log('Nuevo ticket:', newTicket); 
     try {
+      // Enviar el ticket al servidor
       const response = await axiosInstance.post('http://localhost:3000/api/ticket/saveTicket', newTicket);
-      setTickets((prevTickets) => [...prevTickets, response.data.ticket]);
+  
+      // Una vez que el ticket se haya creado correctamente, recargar la lista completa de tickets
+      const updatedTicketsResponse = await axiosInstance.get('http://localhost:3000/api/ticket/my-tickets');
+      
+      // Actualizar el estado de los tickets con la nueva lista
+      setTickets(updatedTicketsResponse.data.tickets);
+  
     } catch (error) {
       console.error("Error creating ticket:", error);
-    } finally {
-      setShowModal(false);
-      console.log('Modal cerrado'); 
     }
   };
 
@@ -93,15 +100,18 @@ const TicketsList = () => {
   const startPage = Math.max(1, currentPage - 2);
   const endPage = Math.min(totalPages, currentPage + 2);
 
+  const openDetailsModal = (ticket) => {
+    setSelectedTicket(ticket);
+  };
+
   return (
     <div className="tickets-container">
       <div className="tickets-header">
-        <button className="create-ticket-button" onClick={() => {
-          console.log("Modal se abrirá");
-          setShowModal(true);
-        }}>
-          Crear ticket nuevo <i className="fa-solid fa-plus"></i>
-        </button>
+        {user?.roleId !== 'admin' && (
+          <button className="create-ticket-button" onClick={() => setShowModal(true)}>
+            Crear ticket nuevo <i className="fa-solid fa-plus"></i>
+          </button>
+        )}
         <h2>TICKETS ACTIVOS</h2>
       </div>
 
@@ -135,6 +145,7 @@ const TicketsList = () => {
                 <th>Estado</th>
                 <th>Usuario</th>
                 <th>Días del ticket</th>
+                <th>Ver ticket</th>
               </tr>
             </thead>
             <tbody>
@@ -151,6 +162,11 @@ const TicketsList = () => {
                     {ticket.createdBy ? ticket.createdBy.username : 'Desconocido'}
                   </td>
                   <td>{formatDaysText(ticket)}</td>
+                  <td>
+                    <button onClick={() => openDetailsModal(ticket)} style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}>
+                      <i className="fa-solid fa-eye" style={{ color: 'blue' }}></i>
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -185,10 +201,16 @@ const TicketsList = () => {
       )}
 
       {showModal && (
-        
         <TicketForm
           onClose={() => setShowModal(false)}
           onSubmit={handleCreateTicket}
+        />
+      )}
+
+      {selectedTicket && (
+        <TicketDetails
+          ticket={selectedTicket}
+          onClose={() => setSelectedTicket(null)}
         />
       )}
     </div>

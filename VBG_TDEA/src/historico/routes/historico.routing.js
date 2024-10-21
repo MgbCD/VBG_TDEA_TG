@@ -3,7 +3,6 @@ const { saveHistorico, getHistoricoByTicketId, updateHistoricoEntry, listHistori
 
 const historicoRouter = express.Router();
 
-// Rutas para el historial del ticket
 historicoRouter.post('/saveHistorico', saveHistorico);
 historicoRouter.get('/getHistorico/:ticketId', getHistoricoByTicketId);
 historicoRouter.put('/updateHistoricoEntry', updateHistoricoEntry);
