@@ -125,8 +125,10 @@
         text-align: center;
         font-size: 1.3rem;
         font-weight: bold;
+        border-radius: 3px;
         width: 80%;
         margin: auto;
+        
     }
 
     .fa-bars {

@@ -19,9 +19,8 @@ const RoleSelectionModal = ({ onClose, onSave }) => {
         <h2>Selecciona tu rol</h2>
         <select value={selectedRole} onChange={handleRoleChange}>
           <option value="">Seleccionar rol</option>
-          <option value="admin">Admin</option>
-          <option value="professor">Profesor</option>
-          <option value="staff">Personal</option>
+          <option value="Profesor">Profesor</option>
+          <option value="Personal Administrativo">Personal Administrativo</option>
         </select>
         <button onClick={handleSave} className="btn btn-primary">Guardar</button>
       </div>

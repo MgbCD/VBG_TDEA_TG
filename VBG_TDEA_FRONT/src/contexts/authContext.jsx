@@ -24,7 +24,8 @@ export const AuthProvider = ({ children }) => {
       const userData = {
         email: loginResponse.account.username,
         username: loginResponse.account.name,
-        roleId: loginResponse.account.username.endsWith('@correo.tdea.edu.co') ? 'student' : 'other',
+        roleId:
+         loginResponse.account.username.endsWith('@correo.tdea.edu.co') ? 'student' : 'other',
         program: null,
       };
       localStorage.setItem('user', JSON.stringify(userData));
