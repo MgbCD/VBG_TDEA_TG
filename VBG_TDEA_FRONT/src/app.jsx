@@ -9,7 +9,7 @@ import ProtectedRoute from './components/Security/ProtectedRoute';
 import NavbarWithMsal from './components/Navbar/Navbar';
 import Dashboard from './pages/Dashboard/dashboard';
 import { ToastContainer } from 'react-toastify'; 
-import 'react-toastify/dist/ReactToastify.css'; 
+import 'react-toastify/dist/ReactToastify.css';
 
 const MainApp = () => {
   const location = useLocation();

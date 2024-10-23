@@ -3,8 +3,8 @@ const { updateTicketUseCase } = require('../application/update-ticket');
 const { updateTicketStatusUseCase } = require('../application/update-ticketStatus');
 const { getTicketsByUserUseCase } = require('../application/get-ticket')
 const { findUserByIdentityId } = require('../../user/infrastructure/repositories/userRepository');
+const { deleteTicketUseCase } = require('../application/delete-ticket')
 const upload = require('../../middleware/uploadMiddleware'); 
-
 
 async function saveTicket(req, res) {
     try {
@@ -32,7 +32,9 @@ async function updateTicket(req, res) {
         const user = await findUserByIdentityId(req.user.oid);
         const { ticketId, title, description } = req.body;
 
-        const updateData = { title, description };
+        const attachment = req.file;
+
+        const updateData = { title, description, attachment };
         const updatedTicket = await updateTicketUseCase(ticketId, updateData, user);
 
         return res.status(200).json({ ticket: updatedTicket });
@@ -77,4 +79,20 @@ async function getTicketsByUser(req, res) {
     }
 }
 
-module.exports = { saveTicket, updateTicket, updateTicketStatus, getTicketsByUser };
+async function deleteTicket(req, res) {
+    try {
+        const user = await findUserByIdentityId(req.user.oid);
+        const { ticketId } = req.body;
+
+        if (!ticketId) {
+            return res.status(400).json({ message: 'El ID del ticket es requerido.' });
+        }
+
+        await deleteTicketUseCase(ticketId, user);
+        return res.status(200).json({ message: 'Ticket eliminado exitosamente.' });
+    } catch (error) {
+        return res.status(500).json({ message: error.message || 'Error interno del servidor' });
+    }
+}
+
+module.exports = { saveTicket, updateTicket, updateTicketStatus, getTicketsByUser, deleteTicket };
