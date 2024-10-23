@@ -15,10 +15,10 @@ const LoginPage = () => {
   const [userData, setUserData] = useState(null);
 
   const handleLogin = async () => {
+    
     const loginRequest = {
       scopes: ["openid", "profile", "User.Read"]
     };
-
     try {
       const response = await instance.loginPopup(loginRequest);
       const email = response.account.username;
@@ -35,6 +35,7 @@ const LoginPage = () => {
       localStorage.setItem('token', idToken);
 
       let roleId;
+      let userId;
       let existingUserResponse;
 
       try {
@@ -44,6 +45,7 @@ const LoginPage = () => {
           }
         });
         roleId = existingUserResponse.data.roleId;
+        userId = existingUserResponse.data._id;
       } catch (error) {
         if (error.response && error.response.status === 404) {
           roleId = email.endsWith('@correo.tdea.edu.co') ? 'student' : 'other';
@@ -73,9 +75,11 @@ const LoginPage = () => {
         roleId: roleId,
         program: null,
         identityId: identityId,
+        userId: userId
       };
 
       console.log('Datos del usuario y token:', userData);
+      localStorage.setItem('user', JSON.stringify(userData));
       setUserData(userData);
 
       const checkFirstLoginResponse = await axios.get(`http://localhost:3000/api/user/checkFirstLogin?email=${email}`, {

@@ -6,7 +6,7 @@ import TicketDetails from './TicketDetails';
 import useAuth from '../../hooks/useAuth';
 
 const TicketsList = () => {
-  const { user } = useAuth();
+  const { user, userRole } = useAuth();
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -31,20 +31,30 @@ const TicketsList = () => {
     fetchTickets();
   }, []);
 
+  const refreshTickets = async () => {
+    try {
+        const response = await axiosInstance.get('http://localhost:3000/api/ticket/my-tickets');
+        setTickets(response.data.tickets);
+    } catch (error) {
+        console.error("Error retrieving tickets:", error);
+    }
+};
+
   const handleCreateTicket = async (newTicket) => {
     try {
-      // Enviar el ticket al servidor
       const response = await axiosInstance.post('http://localhost:3000/api/ticket/saveTicket', newTicket);
-  
-      // Una vez que el ticket se haya creado correctamente, recargar la lista completa de tickets
+
       const updatedTicketsResponse = await axiosInstance.get('http://localhost:3000/api/ticket/my-tickets');
-      
-      // Actualizar el estado de los tickets con la nueva lista
+
       setTickets(updatedTicketsResponse.data.tickets);
   
     } catch (error) {
       console.error("Error creating ticket:", error);
     }
+  };
+
+  const handleUpdate = async () => {
+    await refreshTickets();
   };
 
   const calculateDaysCreated = (createdAt) => {
@@ -107,7 +117,7 @@ const TicketsList = () => {
   return (
     <div className="tickets-container">
       <div className="tickets-header">
-        {user?.roleId !== 'admin' && (
+        {userRole !== 'admin' && (
           <button className="create-ticket-button" onClick={() => setShowModal(true)}>
             Crear ticket nuevo <i className="fa-solid fa-plus"></i>
           </button>
@@ -211,6 +221,8 @@ const TicketsList = () => {
         <TicketDetails
           ticket={selectedTicket}
           onClose={() => setSelectedTicket(null)}
+          onRefresh={refreshTickets}
+          onDelete={refreshTickets}
         />
       )}
     </div>
