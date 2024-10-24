@@ -16,7 +16,7 @@ async function createTicketStatusRepository(ticketStatusRequest) {
 
 async function getTicketStatusByIdRepository(statusId) {
     try {
-        
+
         const status = await ticketStatusModel.findById(statusId);
 
         return status;
@@ -34,4 +34,13 @@ async function getTicketStatusByName(statusName) {
     }
 }
 
-module.exports = { createTicketStatusRepository, getTicketStatusByIdRepository, getTicketStatusByName };
+async function getAllTicketStatusesRepository() {
+    try {
+        const statuses = await ticketStatusModel.find();
+        return statuses;
+    } catch (error) {
+        throw new Error(`Error al obtener los estados: ${error.message}`);
+    }
+};
+
+module.exports = { createTicketStatusRepository, getTicketStatusByIdRepository, getTicketStatusByName, getAllTicketStatusesRepository };

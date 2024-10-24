@@ -13,7 +13,6 @@ const Home = () => {
 
   useEffect(() => {
     const checkFirstLogin = async () => {
-      console.log("Usuario actual:", user);
 
       if (user) {
         const email = user.email || user.username;
