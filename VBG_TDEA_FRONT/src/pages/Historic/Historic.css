@@ -1,0 +1,27 @@
+/* src/pages/Historic/Historic.css */
+.historic-container {
+    margin-top: 200px;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .historic-container h1 {
+    font-size: 2rem;
+    color: #333;
+    text-align: center;
+  }
+  
+  .historic-container ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .historic-container li {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+  }
+  
