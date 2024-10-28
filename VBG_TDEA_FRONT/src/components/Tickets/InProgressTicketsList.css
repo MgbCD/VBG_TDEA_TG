@@ -1,0 +1,164 @@
+/* Container for the In Progress Tickets */
+.in-progress-tickets-container {
+    margin-top: 150px; /* Space below navbar */
+    padding: 20px;
+    background-color: #f8f9fa; /* Light background color */
+  }
+  
+  /* Heading styles */
+  .in-progress-tickets-container h2 {
+    font-size: 2rem;
+    color: #333; /* Dark color for the title */
+    text-align: center; /* Center align */
+    margin-bottom: 20px; /* Space below the heading */
+  }
+  
+  /* List of ticket cards */
+  .ticket-card-list {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping */
+    gap: 20px; /* Space between cards */
+    justify-content: center; /* Center the cards */
+  }
+  
+  /* Individual ticket card styles */
+  .ticket-card {
+    width: 300px; /* Fixed width */
+    background-color: #fff; /* White background */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    overflow: hidden; /* Prevent overflow */
+    transition: transform 0.2s; /* Smooth transform effect */
+    z-index: 1; /* Keep it lower than the navbar */
+  }
+  
+  /* Hover effect for ticket card */
+  .ticket-card:hover {
+    transform: translateY(-5px); /* Lift card on hover */
+  }
+  
+  /* Body of the card */
+  .card-body {
+    padding: 20px; /* Inner padding */
+  }
+  
+  /* Card title styles */
+  .card-title {
+    font-size: 1.25rem; /* Title font size */
+    color: #333; /* Dark color */
+    margin-bottom: 10px; /* Space below title */
+  }
+  
+  /* Status of the ticket */
+  .card-status {
+    font-size: 0.9rem; /* Font size for status */
+    margin-bottom: 8px; /* Space below status */
+  }
+  
+  /* User info styles */
+  .card-user {
+    font-size: 0.9rem; /* Font size for user */
+    color: #555; /* Gray color for user */
+    margin-bottom: 8px; /* Space below user info */
+  }
+  
+  /* Days info styles */
+  .card-days {
+    font-size: 0.9rem; /* Font size for days info */
+    color: #777; /* Lighter gray for days info */
+  }
+  
+  /* Status indicator styles */
+  .status-indicator {
+    padding: 5px 10px; /* Padding for indicator */
+    border-radius: 4px; /* Rounded corners */
+    color: white; /* White text */
+    font-weight: bold; /* Bold text */
+  }
+  
+  /* Different status colors */
+  .status-indicator.archived {
+    background-color: #6c757d; /* Gray for archived */
+  }
+  
+  .status-indicator.active {
+    background-color: #28a745; /* Green for active */
+  }
+  
+  .status-indicator.pending {
+    background-color: #ffc107; /* Yellow for pending */
+  }
+  
+  /* View ticket button styles */
+  .view-ticket-button {
+    margin-top: 15px; /* Space above button */
+    background-color: transparent; /* Transparent background */
+    border: none; /* No border */
+    color: #007bff; /* Bootstrap primary color */
+    cursor: pointer; /* Pointer cursor */
+    font-size: 1rem; /* Font size */
+    text-decoration: underline; /* Underlined text */
+    transition: color 0.2s; /* Smooth color transition */
+  }
+  
+  /* Hover effect for view ticket button */
+  .view-ticket-button:hover {
+    color: #0056b3; /* Darker blue on hover */
+  }
+  
+  /* Pagination styles */
+  .pagination {
+    display: flex;
+    justify-content: center; /* Center align pagination */
+    align-items: center; /* Align items */
+    margin-top: 20px; /* Space above pagination */
+  }
+  
+  /* Page button styles */
+  .page-button {
+    margin: 0 5px; /* Space between buttons */
+    padding: 8px 12px; /* Inner padding */
+    background-color: #007bff; /* Blue background */
+    color: white; /* White text */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor */
+    transition: background-color 0.2s; /* Smooth background transition */
+  }
+  
+  /* Hover effect for page button */
+  .page-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+  
+  /* Active page button style */
+  .page-button.active {
+    background-color: #0056b3; /* Darker blue for active */
+    font-weight: bold; /* Bold text for active */
+  }
+  
+  /* Status indicators for specific statuses */
+  .status-indicator.en-proceso {
+    color: #007bff; /* Blue for en proceso */
+  }
+  
+  .status-indicator.archivado {
+    color: #dc3545; /* Red for archived */
+  }
+  
+  .status-indicator.creado {
+    color: #28a745; /* Green for created */
+  }
+  
+  .status-indicator.finalizado {
+    color: #ffc107; /* Yellow for finalized */
+  }
+  
+  /* Status filter dropdown */
+  .status-filter-dropdown {
+    margin: 10px 0; /* Space around dropdown */
+    padding: 5px; /* Inner padding */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 1rem; /* Font size */
+  }
+  

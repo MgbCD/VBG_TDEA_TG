@@ -11,13 +11,14 @@ import Dashboard from './pages/Dashboard/dashboard';
 import { ToastContainer } from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css';
 import useNormalizedPath from './hooks/useNormalizedPath';
-import Historic from './pages/Historic/Historic'; 
+import Historic from './pages/Historic/Historic';
+import InProgressTicketsList from  './components/Tickets/InProgressTicketsList';
 
 
 const MainApp = () => {
   const normalizedPath = useNormalizedPath();
 
-  const validRoutes = ['/home', '/dashboard', '/historic'];
+  const validRoutes = ['/home', '/dashboard', '/historic', '/inprogressticketslist'];
 
   return (
     <>
@@ -28,7 +29,8 @@ const MainApp = () => {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
         <Route path="/historic" element={<ProtectedRoute element={<Historic />} />} /> 
-   
+        <Route path="/inprogressticketslist" element={<ProtectedRoute element={<InProgressTicketsList />} />} /> 
+
       </Routes>
       <ToastContainer /> 
     </>

@@ -15,7 +15,7 @@ export const MenuData = [
     },
     {
         title: "En proceso",
-        url: "#",
+        url: "inprogressticketslist",
         cName: "nav-links",
         icon: "fa-solid fa-pen"
     },

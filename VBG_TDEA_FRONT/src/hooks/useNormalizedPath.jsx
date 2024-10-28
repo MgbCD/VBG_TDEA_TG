@@ -5,7 +5,7 @@ const useNormalizedPath = () => {
   const location = useLocation();
   
 
-  const normalizedPath = location.pathname.toLowerCase();
+  const normalizedPath = location.pathname; 
 
   return normalizedPath;
 };
