@@ -5,7 +5,8 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 const jwtVerifyMiddleware = require('./verifyToken');
 const cors = require('cors');
-const { run } = require('./src/ticket/infrastructure/kafka/consumer')
+const { run } = require('./src/ticket/infrastructure/kafka/consumer');
+const {connectProducer, disconnectProducer} = require('./src/ticket/infrastructure/kafka/producer');
 
 dotenv.config();
 
@@ -24,15 +25,33 @@ app.use(express.urlencoded({ limit: '50mb', extended: false }));
 app.get('/api/userinfo', jwtVerifyMiddleware, (req, res) => {
   res.redirect('/');
 });
-
-
 setRoutes(app);
 
-app.listen(port, async() => {
-  console.log(`app listening on port ${port}`);
-  await run();
-})
+const startServer = async () => {
+  try {
+    // Conectar a la base de datos
+    await connectDB();
 
-connectDB().catch(error => {
-  console.error('Error connecting to database:', error);
+    // Iniciar el producer de Kafka y el consumer
+    await connectProducer();
+    console.log('Productor conectado a Kafka');
+    await run();
+
+    // Iniciar el servidor
+    app.listen(port, () => {
+      console.log(`App listening on port ${port}`);
+    });
+  } catch (error) {
+    console.error('Error al iniciar la aplicación:', error);
+    process.exit(1); // Salir si hay un error crítico
+  }
+};
+
+// Manejar la desconexión de recursos al finalizar
+process.on('SIGINT', async () => {
+  console.log('Cerrando la aplicación...');
+  await disconnectProducer();
+  process.exit(0);
 });
+
+startServer();

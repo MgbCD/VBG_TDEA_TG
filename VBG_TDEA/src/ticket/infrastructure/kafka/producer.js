@@ -8,13 +8,19 @@ const kafka = new Kafka({
 
 const producer = kafka.producer();
 
-const sendMessage = async (ticketData, topic) => {
+const connectProducer = async () => {
   await producer.connect();
+};
+
+const disconnectProducer = async () => {
+  await producer.disconnect();
+};
+
+const sendMessage = async (ticketData, topic) => {
   await producer.send({
     topic: topic,
     messages: [{ value: JSON.stringify(ticketData) }],
   });
-  await producer.disconnect();
 };
 
-module.exports = { sendMessage };
+module.exports = { sendMessage, connectProducer, disconnectProducer };
