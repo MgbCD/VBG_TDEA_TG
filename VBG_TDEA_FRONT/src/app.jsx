@@ -10,20 +10,27 @@ import NavbarWithMsal from './components/Navbar/Navbar';
 import Dashboard from './pages/Dashboard/dashboard';
 import { ToastContainer } from 'react-toastify'; 
 import 'react-toastify/dist/ReactToastify.css';
+import useNormalizedPath from './hooks/useNormalizedPath';
+import Historic from './pages/Historic/Historic';
+import InProgressTicketsList from  './components/Tickets/InProgressTicketsList';
+
 
 const MainApp = () => {
-  const location = useLocation();
+  const normalizedPath = useNormalizedPath();
 
-  const validRoutes = ['/home', '/dashboard'];
+  const validRoutes = ['/home', '/dashboard', '/historic', '/inprogressticketslist'];
 
   return (
     <>
-      {validRoutes.includes(location.pathname) && <NavbarWithMsal />}
+      {validRoutes.includes(normalizedPath) && <NavbarWithMsal />}
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
+        <Route path="/historic" element={<ProtectedRoute element={<Historic />} />} /> 
+        <Route path="/inprogressticketslist" element={<ProtectedRoute element={<InProgressTicketsList />} />} /> 
+
       </Routes>
       <ToastContainer /> 
     </>

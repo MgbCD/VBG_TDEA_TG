@@ -166,30 +166,32 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
         </div>
       )}
 
-      {isRouteModalOpen && (
-        <div className="route-modal">
-          <div className="route-modal-content">
-            <span className="route-close" onClick={() => setIsRouteModalOpen(false)}>&times;</span>
-            <h3>Iniciar Ruta VBG TdeA</h3>
-            <select onChange={handleOptionChange} value={option}>
-              <option value="">Selecciona un estado</option>
-              {ticketStatuses.map((status) => (
-                <option key={status._id} value={status._id}>
-                  {status.status}
-                </option>
-              ))}
-            </select>
-            <textarea
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-              placeholder="Escribe tu nota aquí..."
-            />
-            <button onClick={handleAddPerson}>Agregar Persona Implicada</button>
-            <button onClick={() => setIsRouteModalOpen(false)}>Cerrar</button>
-          </div>
-        </div>
-      )}
-
+{isRouteModalOpen && (
+  <div className="route-modal">
+    <div className="route-modal-content">
+      <span className="route-close" onClick={() => setIsRouteModalOpen(false)}>&times;</span>
+      <h3>Iniciar Ruta VBG TdeA</h3>
+      <select onChange={handleOptionChange} value={option}>
+        <option value="">Selecciona un estado</option>
+        {ticketStatuses
+          .filter((status) => status.status !== 'Creado' && status.status !== 'Archivado')
+          .map((status) => (
+            <option key={status._id} value={status._id}>
+              {status.status}
+            </option>
+          ))}
+      </select>
+      <textarea
+        value={note}
+        onChange={(e) => setNote(e.target.value)}
+        placeholder="Escribe tu nota aquí..."
+      />
+      <button className="route-modal-button" onClick={handleAddPerson}>
+        Agregar Persona Implicada
+      </button>
+    </div>
+  </div>
+)}
       {isAddPersonModalOpen && (
         <AddPersonModal
           onClose={() => setIsAddPersonModalOpen(false)}

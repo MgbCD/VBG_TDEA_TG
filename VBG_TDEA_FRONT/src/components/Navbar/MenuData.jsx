@@ -14,8 +14,14 @@ export const MenuData = [
         icon: "fa-solid fa-chart-simple"
     },
     {
+        title: "En proceso",
+        url: "inprogressticketslist",
+        cName: "nav-links",
+        icon: "fa-solid fa-pen"
+    },
+    {
         title: "Historico",
-        url: "#",
+        url: "historic",
         cName: "nav-links",
         icon: "fa-solid fa-clock-rotate-left"
     },
