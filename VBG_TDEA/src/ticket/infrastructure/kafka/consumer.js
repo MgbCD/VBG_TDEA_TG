@@ -6,7 +6,7 @@ const { getAdminsEmailsRepository } = require('../../../user/infrastructure/repo
 
 const kafka = new Kafka({
   clientId: 'email-service',
-  brokers: ['localhost:9092'],
+  brokers: [process.env.KAFKA_BROKER],
 });
 
 const consumer = kafka.consumer({ groupId: 'ticket-email-group' });
