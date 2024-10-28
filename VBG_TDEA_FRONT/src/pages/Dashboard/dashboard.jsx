@@ -50,6 +50,14 @@ const Dashboard = () => {
     setSelectedMonth(index);
   };
 
+  const nextMonth = () => {
+    setSelectedMonth((prevIndex) => (prevIndex + 1) % months.length);
+  };
+
+  const prevMonth = () => {
+    setSelectedMonth((prevIndex) => (prevIndex - 1 + months.length) % months.length);
+  };
+
   const downloadPDF = () => {
     html2canvas(dashboardRef.current, { 
       backgroundColor: null, // Evitar fondo gris
@@ -75,11 +83,15 @@ const Dashboard = () => {
         />
       )}
       <button className="pdf-button" onClick={downloadPDF}>
-        <i className='fa-solid fa-download' style={{marginRight: '5px'}}></i>
+        <i className='fa-solid fa-download' style={{ marginRight: '5px' }}></i>
         Descargar PDF
       </button>
 
       <div className="month-carousel">
+        <button className="carousel-arrow left" onClick={prevMonth}>
+          <i className="fa-solid fa-chevron-left"></i>
+        </button>
+
         {months.map((month, index) => (
           <div
             key={index}
@@ -89,7 +101,12 @@ const Dashboard = () => {
             {month}
           </div>
         ))}
+
+        <button className="carousel-arrow right" onClick={nextMonth}>
+          <i className="fa-solid fa-chevron-right"></i>
+        </button>
       </div>
+
       {dashboardData && (
         <>
           <ChartComponent data={dashboardData.ticketStats} />
