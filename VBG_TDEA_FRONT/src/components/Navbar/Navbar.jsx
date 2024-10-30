@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react"; 
 import logo from "../../assets/img/logoLogin.png";
 import './Navbar.css';
 import { MenuData } from "./MenuData";
@@ -14,14 +14,30 @@ const Navbar = () => {
         navigate('/login');
     };
 
-    const [clicked, setClicked] = React.useState(false);
+    const [clicked, setClicked] = useState(false);
+    const [isVisible, setIsVisible] = useState(true); 
 
     const handleClick = () => {
         setClicked(!clicked);
     };
 
+   
+    useEffect(() => {
+        let lastScrollY = window.scrollY;
+        const handleScroll = () => {
+            if (window.scrollY > lastScrollY) {
+                setIsVisible(false); 
+            } else {
+                setIsVisible(true); 
+            }
+            lastScrollY = window.scrollY;
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
     return (
-        <nav className="NavbarItems">
+        <nav className={`NavbarItems ${isVisible ? '' : 'hidden'}`}> {/* Add hidden class */}
             <a href="/home">
                 <img src={logo} alt="Logo" style={{ height: '50px' }} />
             </a>

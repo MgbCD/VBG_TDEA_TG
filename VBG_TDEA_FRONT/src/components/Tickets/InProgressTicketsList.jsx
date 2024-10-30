@@ -1,23 +1,25 @@
-
-
 import React, { useEffect, useState } from 'react';
+import Modal from 'react-modal';
 import useAxios from '../../services/axiosConfig';
 import './InProgressTicketsList.css'; 
-import TicketDetails from '../../components/Tickets/TicketDetails';
 import useAuth from '../../hooks/useAuth';
+import { toast } from 'react-toastify';
+import ManageTicketModal from './ManageTicketModal'; // Update the import
+
+Modal.setAppElement('#root');
 
 const InProgressTicketsList = () => {
-  const { userRole } = useAuth();
+  const { userId } = useAuth();
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedTicket, setSelectedTicket] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const axiosInstance = useAxios();
 
   useEffect(() => {
     const fetchTickets = async () => {
       try {
         const response = await axiosInstance.get('http://localhost:3000/api/ticket/my-tickets');
-        // Filter tickets with status "En proceso"
         const inProgressTickets = response.data.tickets.filter(ticket => ticket.statusId?.status === 'En proceso');
         setTickets(inProgressTickets);
       } catch (error) {
@@ -30,8 +32,9 @@ const InProgressTicketsList = () => {
     fetchTickets();
   }, []);
 
-  const openDetailsModal = (ticket) => {
+  const openManageModal = (ticket) => {
     setSelectedTicket(ticket);
+    setIsModalOpen(true);
   };
 
   return (
@@ -57,8 +60,8 @@ const InProgressTicketsList = () => {
                 <p className="card-days">
                   {`${Math.floor((new Date() - new Date(ticket.createdAt)) / (1000 * 3600 * 24))} día(s)` }
                 </p>
-                <button className="view-ticket-button" onClick={() => openDetailsModal(ticket)}>
-                  <i className="fa-solid fa-eye"></i> Ver ticket
+                <button className="view-ticket-button" onClick={() => openManageModal(ticket)}>
+                  <i className="fa-solid fa-pen"></i> Gestionar ticket
                 </button>
               </div>
             </div>
@@ -66,10 +69,12 @@ const InProgressTicketsList = () => {
         </div>
       )}
 
-      {selectedTicket && (
-        <TicketDetails
-          ticket={selectedTicket}
-          onClose={() => setSelectedTicket(null)}
+      {/* Modal para gestionar el ticket */}
+      {isModalOpen && selectedTicket && (
+        <ManageTicketModal
+          onClose={() => setIsModalOpen(false)}
+          ticketId={selectedTicket._id}
+          createdBy={userId}
         />
       )}
     </div>

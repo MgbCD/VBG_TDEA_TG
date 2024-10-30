@@ -1,6 +1,6 @@
 import React from 'react';
 import { MsalProvider } from '@azure/msal-react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import msalInstance from './services/authConfig';
 import { AuthProvider } from './contexts/authContext';
 import Home from './pages/home/Home';
@@ -12,8 +12,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import useNormalizedPath from './hooks/useNormalizedPath';
 import Historic from './pages/Historic/Historic';
-import InProgressTicketsList from  './components/Tickets/InProgressTicketsList';
-
+import InProgressTicketsList from './components/Tickets/InProgressTicketsList';
 
 const MainApp = () => {
   const normalizedPath = useNormalizedPath();
@@ -30,7 +29,6 @@ const MainApp = () => {
         <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
         <Route path="/historic" element={<ProtectedRoute element={<Historic />} />} /> 
         <Route path="/inprogressticketslist" element={<ProtectedRoute element={<InProgressTicketsList />} />} /> 
-
       </Routes>
       <ToastContainer /> 
     </>
