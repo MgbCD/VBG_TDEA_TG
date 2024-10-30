@@ -26,9 +26,9 @@ const MainApp = () => {
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/home" element={<ProtectedRoute element={<Home />} />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} />} />
+        <Route path="/dashboard" element={<ProtectedRoute element={<Dashboard />} requiredRole="admin" />} />
         <Route path="/historic" element={<ProtectedRoute element={<Historic />} />} /> 
-        <Route path="/inprogressticketslist" element={<ProtectedRoute element={<InProgressTicketsList />} />} /> 
+        <Route path="/inprogressticketslist" element={<ProtectedRoute element={<InProgressTicketsList />} requiredRole="admin" />} />
       </Routes>
       <ToastContainer /> 
     </>

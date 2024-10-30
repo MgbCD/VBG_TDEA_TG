@@ -6,7 +6,7 @@ import useAuth from '../../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
-    const { logout } = useAuth();
+    const { logout, userRole } = useAuth();
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -46,6 +46,12 @@ const Navbar = () => {
             </div>
             <ul className={clicked ? "nav-menu active" : "nav-menu"} style={{ listStyleType: 'none', padding: 0 }}>
                 {MenuData.map((item, index) => {
+                    if (item.title === 'En proceso' && userRole !== 'admin') {
+                        return null; // No renderizamos el item si el rol no es admin
+                    }
+                    if (item.title === 'Dashboard' && userRole !== 'admin') {
+                        return null; // No renderizamos el item si el rol no es admin
+                    }
                     if (item.title === 'Cerrar sesión') {
                         return (
                             <li key={index}>
