@@ -1,0 +1,112 @@
+.manage-overlay {
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 1000;
+}
+
+.manage-modal {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    animation: scaleIn 0.3s ease forwards;
+    transform-origin: center;
+    position: relative;
+}
+
+@keyframes scaleIn {
+    0% {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.manage-modal h2 {
+    margin-top: 0;
+    color: #333;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+.manage-modal .manage-form-group {
+    margin-bottom: 1.5rem;
+}
+
+.manage-modal label {
+    display: block;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 0.5rem;
+}
+
+.manage-modal input,
+.manage-modal textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+    resize: vertical;
+}
+
+.manage-modal textarea {
+    min-height: 100px;
+}
+
+.manage-save-button,
+.manage-add-person-button {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    margin-top: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.manage-save-button {
+    background-color: #4caf50;
+    color: #fff;
+    font-weight: bold;
+}
+
+.manage-add-person-button {
+    background-color: #007bff;
+    color: #fff;
+    font-weight: bold;
+}
+
+.manage-save-button:hover,
+.manage-add-person-button:hover {
+    opacity: 0.9;
+    transform: translateY(-2px);
+}
+
+.manage-close {
+    cursor: pointer;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    color: #999;
+    transition: color 0.3s ease;
+}
+
+.manage-close:hover {
+    color: #ff5252; 
+}

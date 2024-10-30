@@ -89,12 +89,18 @@ const TicketsList = () => {
     }
   };
 
-  const filteredTickets = tickets.filter(ticket => {
+  const filteredTickets = tickets
+  .filter(ticket => {
     const ticketStatus = ticket.statusId ? ticket.statusId.status : 'Sin estado';
     return (filterStatus === 'Todos' || ticketStatus === filterStatus) &&
       (ticketStatus === "En proceso" || ticketStatus === "Creado");
+  })
+  .sort((a, b) => {
+    const statusOrder = { "Creado": 1, "En proceso": 2 }; // Definir prioridad
+    const statusA = a.statusId ? a.statusId.status : 'Sin estado';
+    const statusB = b.statusId ? b.statusId.status : 'Sin estado';
+    return (statusOrder[statusA] || 3) - (statusOrder[statusB] || 3); // Asigna prioridad para ordenar
   });
-
   const indexOfLastTicket = currentPage * ticketsPerPage;
   const indexOfFirstTicket = indexOfLastTicket - ticketsPerPage;
   const currentTickets = filteredTickets.slice(indexOfFirstTicket, indexOfLastTicket);
