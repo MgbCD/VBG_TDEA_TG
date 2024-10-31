@@ -33,8 +33,9 @@ const HistoricModal = ({ ticketId, onClose }) => {
                         {historicalData.length > 0 ? (
                             historicalData.map((item) => (
                                 <div key={item._id} className="historic-item">
+                                    <p><strong>Acción:</strong> {item.actionTaken.action}</p>
                                     <p><strong>Nota:</strong> {item.notes}</p>
-                                    <p><strong>Accionado por:</strong> {item.actionBy}</p>
+                                    <p><strong>Accionado por:</strong> {item.actionBy.username}</p>
                                     <p><strong>Fecha de acción:</strong> {new Date(item.actionDate).toLocaleString()}</p>
                                 </div>
                             ))

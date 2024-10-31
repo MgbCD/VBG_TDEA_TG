@@ -24,8 +24,19 @@ async function getHistoricoByTicketIdRepository(ticketId) {
     try {
         const historico = await historicoModel
             .find({ ticketId })
-            .populate('actionTaken', 'action');
-        
+            .populate({
+                path: 'actionTaken',
+                select: 'action',
+            })
+            .populate({
+                path: 'actionBy', // Asegúrate de que este sea el campo correcto
+                select: 'username', // Asegúrate de que este sea el campo que almacena el nombre del usuario
+            })
+            .populate({
+                path: 'updatedBy', // Si quieres también obtener el nombre de quien actualizó
+                select: 'username',
+            });
+
         return historico;
     } catch (error) {
         throw new Error(`Error al obtener el registro histórico: ${error.message}`);

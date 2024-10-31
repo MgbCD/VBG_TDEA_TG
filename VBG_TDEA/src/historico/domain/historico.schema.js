@@ -17,12 +17,12 @@ const historicoSchema = new mongoose.Schema({
     },
     actionBy: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user',
+        ref: 'User',
         required: true
     },
     updatedBy: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'user'
+        ref: 'User'
     },
     actionDate: {
         type: Date,

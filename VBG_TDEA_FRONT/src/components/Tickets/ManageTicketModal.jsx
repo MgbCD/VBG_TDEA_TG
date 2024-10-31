@@ -1,25 +1,72 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ManageTicketModal.css'; 
-import AddPersonModal from './AddPersonModal'; // Ensure you have this component
+import AddPersonModal from './AddPersonModal';
+import useAxios from '../../services/axiosConfig';
 
 const ManageTicketModal = ({ onClose, ticketId, createdBy }) => {
   const [note, setNote] = useState('');
   const [selectedAction, setSelectedAction] = useState('');
   const [isAddPersonModalOpen, setIsAddPersonModalOpen] = useState(false);
+  const [actions, setActions] = useState([]);
+  const [usedActionIds, setUsedActionIds] = useState([]);
+  const axiosInstance = useAxios();
 
-  const actions = ['Acción 1', 'Acción 2', 'Acción 3']; // Replace with real actions
+  useEffect(() => {
+    const fetchActions = async () => {
+      try {
+        const response = await axiosInstance.get('http://localhost:3000/api/ticket-action/getTicketActions');
+        setActions(response.data);
+      } catch (error) {
+        console.error('Error al obtener las acciones:', error);
+      }
+    };
+
+    const fetchUsedActions = async () => {
+      try {
+        const response = await axiosInstance.get(`http://localhost:3000/api/historico/getHistorico/${ticketId}`);
+        const actionIds = response.data.historico.map(historico => historico.actionTaken._id); // Extraer los IDs de las acciones utilizadas
+        setUsedActionIds(actionIds);
+      } catch (error) {
+        console.error('Error al obtener el historial de acciones:', error);
+      }
+    };
+
+    fetchActions();
+    fetchUsedActions();
+  }, [axiosInstance, ticketId]);
 
   const handleSave = async () => {
     console.log('Nota:', note);
     console.log('Acción seleccionada:', selectedAction);
-    
-    // Logic to save the note and action
-    onClose();
+
+    // Verificar si hay una acción seleccionada y nota
+    if (!selectedAction || !note) {
+      alert("Por favor, seleccione una acción y escriba una nota.");
+      return;
+    }
+
+    try {
+      // Lógica para guardar el histórico
+      const historicoData = {
+        ticketId: ticketId,
+        actionTaken: selectedAction, // Asegúrate de que este sea el ID correcto
+        notes: note,
+      };
+
+      const response = await axiosInstance.post('http://localhost:3000/api/historico/saveHistorico', historicoData);
+      console.log('Histórico guardado:', response.data);
+      onClose(); // Cerrar el modal después de guardar
+    } catch (error) {
+      console.error('Error al guardar el histórico:', error);
+      alert("Hubo un error al guardar el histórico. Inténtalo de nuevo.");
+    }
   };
 
   const handleAddPerson = () => {
     setIsAddPersonModalOpen(true);
   };
+
+  const availableActions = actions.filter(action => !usedActionIds.includes(action._id));
 
   return (
     <div className="manage-overlay">
@@ -35,8 +82,8 @@ const ManageTicketModal = ({ onClose, ticketId, createdBy }) => {
             onChange={(e) => setSelectedAction(e.target.value)}
           >
             <option value="">Seleccione una acción</option>
-            {actions.map((action, index) => (
-              <option key={index} value={action}>{action}</option>
+            {availableActions.map((action) => (
+              <option key={action._id} value={action._id}>{action.action}</option>
             ))}
           </select>
         </div>
