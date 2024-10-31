@@ -37,6 +37,8 @@ async function getTicketsStats(startDate, endDate) {
             }
         }
     ]);
+    
+    return stats;
 }
 
 async function getUserStats(startDate, endDate) {

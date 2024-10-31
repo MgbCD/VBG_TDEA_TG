@@ -17,12 +17,24 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
   const [note, setNote] = useState('');
   const [currentTicket, setCurrentTicket] = useState(ticket);
   const [ticketStatuses, setTicketStatuses] = useState([]);
+  const [ticketActions, setTicketActions] = useState([]);
   const [option, setOption] = useState('');
   const axiosInstance = useAxios();
 
   useEffect(() => {
     setCurrentTicket(ticket);
+    fetchTicketStatuses();
+    fetchTicketActions();
   }, [ticket]);
+
+  const fetchTicketActions = async () => {
+    try {
+      const response = await axiosInstance.get('http://localhost:3000/api/ticket-action/getTicketActions');
+      setTicketActions(response.data);
+    } catch (error) {
+      toast.error('Error al cargar las acciones de ticket.');
+    }
+  };
 
   const handleUpdate = async (data) => {
     try {
@@ -84,9 +96,45 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
     }
   };
 
-  const handleNoteSubmit = () => {
-    setIsNoteModalOpen(false);
-    setNote('');
+  const getActionIdByName = (actionName) => {
+    const action = ticketActions.find(action => action.action === actionName);
+    return action ? action._id : null;
+  };
+
+  const getStatusIdByName = (statusName) => {
+    console.log(ticketStatuses);
+    const status = ticketStatuses.find(status => status.status === statusName);
+    return status ? status._id : null;
+  };
+
+  const handleNoteSubmit = async () => {
+    try {
+      const statusName = "Archivado";
+      const archivedStatusId = getStatusIdByName(statusName);
+      await updateTicketStatus(archivedStatusId);
+
+      const actionName = "Archivar";
+      const archivedActionId = getActionIdByName(actionName);
+
+      console.log(archivedActionId);
+
+      if (!archivedActionId) {
+        throw new Error('No se encontró la acción "Archivar". Verifica que el nombre es correcto en la base de datos.');
+      }
+
+      const historicoData = {
+        ticketId: currentTicket._id,
+        actionTaken: archivedActionId,
+        notes: note,
+      };
+      await axiosInstance.post('http://localhost:3000/api/historico/saveHistorico', historicoData);
+      toast.success('¡Nota guardada y ticket archivado exitosamente!');
+
+      setIsNoteModalOpen(false);
+      setNote('');
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Error al archivar el ticket.');
+    }
   };
 
   const handleAddPerson = () => {
@@ -166,32 +214,33 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
         </div>
       )}
 
-{isRouteModalOpen && (
-  <div className="route-modal">
-    <div className="route-modal-content">
-      <span className="route-close" onClick={() => setIsRouteModalOpen(false)}>&times;</span>
-      <h3>Iniciar Ruta VBG TdeA</h3>
-      <select onChange={handleOptionChange} value={option}>
-        <option value="">Selecciona un estado</option>
-        {ticketStatuses
-          .filter((status) => status.status !== 'Creado' && status.status !== 'Archivado')
-          .map((status) => (
-            <option key={status._id} value={status._id}>
-              {status.status}
-            </option>
-          ))}
-      </select>
-      <textarea
-        value={note}
-        onChange={(e) => setNote(e.target.value)}
-        placeholder="Escribe tu nota aquí..."
-      />
-      <button className="route-modal-button" onClick={handleAddPerson}>
-        Agregar Persona Implicada
-      </button>
-    </div>
-  </div>
-)}
+      {isRouteModalOpen && (
+        <div className="route-modal">
+          <div className="route-modal-content">
+            <span className="route-close" onClick={() => setIsRouteModalOpen(false)}>&times;</span>
+            <h3>Iniciar Ruta VBG TdeA</h3>
+            <select onChange={handleOptionChange} value={option}>
+              <option value="">Selecciona un estado</option>
+              {ticketStatuses
+                .filter((status) => status.status !== 'Creado' && status.status !== 'Archivado')
+                .map((status) => (
+                  <option key={status._id} value={status._id}>
+                    {status.status}
+                  </option>
+                ))}
+            </select>
+            <textarea
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              placeholder="Escribe tu nota aquí..."
+            />
+            <button className="route-modal-button" onClick={handleAddPerson}>
+              Agregar Persona Implicada
+            </button>
+          </div>
+        </div>
+      )}
+      
       {isAddPersonModalOpen && (
         <AddPersonModal
           onClose={() => setIsAddPersonModalOpen(false)}
