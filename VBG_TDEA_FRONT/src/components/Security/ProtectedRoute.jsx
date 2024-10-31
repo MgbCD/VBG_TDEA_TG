@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 
 const ProtectedRoute = ({ element, requiredRole }) => {
-  const { user, userRol } = useAuth();
+  const { user, userRole } = useAuth();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const ProtectedRoute = ({ element, requiredRole }) => {
   }
 
   // Si el rol del usuario no coincide con el requerido, redirige a home
-  if (requiredRole && userRol !== requiredRole) {
+  if (requiredRole && userRole !== requiredRole) {
     return <Navigate to="/home" />;
   }
 

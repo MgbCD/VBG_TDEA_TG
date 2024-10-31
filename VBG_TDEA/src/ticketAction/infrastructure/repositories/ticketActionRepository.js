@@ -14,4 +14,13 @@ async function createTicketActionRepository(ticketActionRequest) {
     }
 }
 
-module.exports = { createTicketActionRepository };
+async function getAllTicketActionsRepository() {
+    try {
+        const actions = await ticketActionModel.find();
+        return actions;
+    } catch (error) {
+        throw new Error(`Error al obtener las acciones: ${error.message}`);
+    }
+};
+
+module.exports = { createTicketActionRepository, getAllTicketActionsRepository };
