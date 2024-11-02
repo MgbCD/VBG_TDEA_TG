@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from 'react';
 import { useMsal } from '@azure/msal-react';
-import axios from 'axios';
+import useAxios from '../services/axiosConfig';
 
 const AuthContext = createContext();
 
@@ -9,6 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [userRole, setUserRole] = useState(null);
   const [userId, setUserId] = useState(null);
+  const axiosInstance = useAxios();
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem('user'));
@@ -31,8 +32,8 @@ export const AuthProvider = ({ children }) => {
       return;
     }
 
-    const response = await axios.get(`http://localhost:3000/api/user/getRole?email=${loginResponse.account.username}`);
-    const userResponse = await axios.get(`http://localhost:3000/api/user/getUser?email=${loginResponse.account.username}`);
+    const response = await axiosInstance.get(`/api/user/getRole?email=${loginResponse.account.username}`);
+    const userResponse = await axiosInstance.get(`/api/user/getUser?email=${loginResponse.account.username}`);
     const role = response.data.roleId;
     const user = userResponse.data._id;
 
@@ -59,12 +60,19 @@ export const AuthProvider = ({ children }) => {
   }
 };
 
-  const logout = async () => {
-    await instance.logout();
+const logout = async () => {
+  try {
+    await instance.logoutPopup();
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
     setUser(null);
     setUserRole(null);
     setUserId(null);
-  };
+    console.log("Deslogueado correctamente y localStorage limpio.");
+  } catch (error) {
+    console.error('Error durante el logout:', error);
+  }
+};
 
   useEffect(() => {
     const account = instance.getAllAccounts();

@@ -5,7 +5,11 @@ import { useNavigate } from 'react-router-dom';
 const useAxios = () => {
   const { instance, accounts } = useMsal();
   const navigate = useNavigate();
-  const axiosInstance = axios.create();
+
+  const baseURL = process.env.REACT_APP_API_BASE_URL;
+  const axiosInstance = axios.create({
+    baseURL: baseURL,
+  });
 
   axiosInstance.interceptors.request.use(async (config) => {
     if (accounts.length > 0) {

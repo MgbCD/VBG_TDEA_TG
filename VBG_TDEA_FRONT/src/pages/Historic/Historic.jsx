@@ -21,7 +21,7 @@ const HistoricTicketsList = () => {
     useEffect(() => {
         const fetchTickets = async () => {
             try {
-                const response = await axiosInstance.get("http://localhost:3000/api/ticket/my-tickets");
+                const response = await axiosInstance.get("/api/ticket/my-tickets");
                 setTickets(response.data.tickets);
             } catch (error) {
                 console.error("Error retrieving tickets:", error);
