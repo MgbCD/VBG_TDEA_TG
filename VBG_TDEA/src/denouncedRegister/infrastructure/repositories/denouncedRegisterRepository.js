@@ -42,17 +42,6 @@ async function updateDenouncedRegisterRepository(ticketId, updateRequest) {
     }
 }
 
-async function listDenouncedRegistersRepository(filter, pagination) {
-    try {
-        const registers = await denouncedRegisterModel.find(filter)
-            .skip(pagination.skip)
-            .limit(pagination.limit);
-        return registers;
-    } catch (error) {
-        throw new Error(`Error al listar los registros de denuncia: ${error.message}`);
-    }
-}
-
 async function deleteDenouncedRegisterRepository(ticketId) {
     try {
         await denouncedRegisterModel.findOneAndDelete({ ticketId });
@@ -62,4 +51,4 @@ async function deleteDenouncedRegisterRepository(ticketId) {
     }
 }
 
-module.exports = { createDenouncedRegisterRepository, getDenouncedRegisterByTicketIdRepository, updateDenouncedRegisterRepository, listDenouncedRegistersRepository, deleteDenouncedRegisterRepository };
+module.exports = { createDenouncedRegisterRepository, getDenouncedRegisterByTicketIdRepository, updateDenouncedRegisterRepository, deleteDenouncedRegisterRepository };

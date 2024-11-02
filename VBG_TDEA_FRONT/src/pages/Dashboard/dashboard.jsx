@@ -26,7 +26,7 @@ const Dashboard = () => {
     const endDate = new Date(year, month + 1, 0).toISOString();
 
     try {
-      const response = await axiosInstance.get('http://localhost:3000/api/dashboard/dashboard-stats', {
+      const response = await axiosInstance.get('/api/dashboard/dashboard-stats', {
         params: { startDate, endDate },
       });
       setDashboardData(response.data);

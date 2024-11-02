@@ -14,7 +14,7 @@ const ManageTicketModal = ({ onClose, ticketId, createdBy }) => {
   useEffect(() => {
     const fetchActions = async () => {
       try {
-        const response = await axiosInstance.get('http://localhost:3000/api/ticket-action/getTicketActions');
+        const response = await axiosInstance.get('/api/ticket-action/getTicketActions');
         setActions(response.data);
       } catch (error) {
         console.error('Error al obtener las acciones:', error);
@@ -23,8 +23,8 @@ const ManageTicketModal = ({ onClose, ticketId, createdBy }) => {
 
     const fetchUsedActions = async () => {
       try {
-        const response = await axiosInstance.get(`http://localhost:3000/api/historico/getHistorico/${ticketId}`);
-        const actionIds = response.data.historico.map(historico => historico.actionTaken._id); // Extraer los IDs de las acciones utilizadas
+        const response = await axiosInstance.get(`/api/historico/getHistorico/${ticketId}`);
+        const actionIds = response.data.historico.map(historico => historico.actionTaken._id);
         setUsedActionIds(actionIds);
       } catch (error) {
         console.error('Error al obtener el historial de acciones:', error);
@@ -39,23 +39,21 @@ const ManageTicketModal = ({ onClose, ticketId, createdBy }) => {
     console.log('Nota:', note);
     console.log('Acción seleccionada:', selectedAction);
 
-    // Verificar si hay una acción seleccionada y nota
     if (!selectedAction || !note) {
       alert("Por favor, seleccione una acción y escriba una nota.");
       return;
     }
 
     try {
-      // Lógica para guardar el histórico
       const historicoData = {
         ticketId: ticketId,
-        actionTaken: selectedAction, // Asegúrate de que este sea el ID correcto
+        actionTaken: selectedAction,
         notes: note,
       };
 
-      const response = await axiosInstance.post('http://localhost:3000/api/historico/saveHistorico', historicoData);
+      const response = await axiosInstance.post('/api/historico/saveHistorico', historicoData);
       console.log('Histórico guardado:', response.data);
-      onClose(); // Cerrar el modal después de guardar
+      onClose();
     } catch (error) {
       console.error('Error al guardar el histórico:', error);
       alert("Hubo un error al guardar el histórico. Inténtalo de nuevo.");

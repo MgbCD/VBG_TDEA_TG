@@ -29,7 +29,7 @@ const Home = () => {
 
   const handleProgramSave = async (program) => {
     try {
-      await axiosInstance.post('http://localhost:3000/api/user/updateProgram', {
+      await axiosInstance.post('/api/user/updateProgram', {
         email: user.email || user.username,
         program
       });
@@ -41,7 +41,7 @@ const Home = () => {
 
   const handleRoleSave = async (role) => {
     try {
-      await axiosInstance.post('http://localhost:3000/api/user/saveUser', {
+      await axiosInstance.post('/api/user/saveUser', {
         email: user.email || user.username,
         roleId: role
       });

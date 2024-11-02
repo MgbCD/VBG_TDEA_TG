@@ -29,7 +29,7 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
 
   const fetchTicketActions = async () => {
     try {
-      const response = await axiosInstance.get('http://localhost:3000/api/ticket-action/getTicketActions');
+      const response = await axiosInstance.get('/api/ticket-action/getTicketActions');
       setTicketActions(response.data);
     } catch (error) {
       toast.error('Error al cargar las acciones de ticket.');
@@ -38,7 +38,7 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
 
   const handleUpdate = async (data) => {
     try {
-      await axiosInstance.put('http://localhost:3000/api/ticket/updateTicket', data);
+      await axiosInstance.put('/api/ticket/updateTicket', data);
       toast.success('¡Ticket actualizado exitosamente!');
       setCurrentTicket(prev => ({ ...prev, ...data }));
       setIsEditing(false);
@@ -49,7 +49,7 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
 
   const fetchTicketStatuses = async () => {
     try {
-      const response = await axiosInstance.get('http://localhost:3000/api/ticket-status/getTicketStatus');
+      const response = await axiosInstance.get('/api/ticket-status/getTicketStatus');
       setTicketStatuses(response.data);
     } catch (error) {
       toast.error('Error al cargar los estados de ticket.');
@@ -58,7 +58,7 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
 
   const updateTicketStatus = async (statusId) => {
     try {
-      const response = await axiosInstance.put('http://localhost:3000/api/ticket/updateTicketStatus', {
+      const response = await axiosInstance.put('/api/ticket/updateTicketStatus', {
         ticketId: currentTicket._id,
         statusId,
       });
@@ -85,7 +85,7 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
 
   const handleDelete = async () => {
     try {
-      await axiosInstance.delete('http://localhost:3000/api/ticket/deleteTicket', {
+      await axiosInstance.delete('/api/ticket/deleteTicket', {
         data: { ticketId: ticket._id }
       });
       toast.success('¡Ticket eliminado exitosamente!');
@@ -127,7 +127,7 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
         actionTaken: archivedActionId,
         notes: note,
       };
-      await axiosInstance.post('http://localhost:3000/api/historico/saveHistorico', historicoData);
+      await axiosInstance.post('/api/historico/saveHistorico', historicoData);
       toast.success('¡Nota guardada y ticket archivado exitosamente!');
 
       setIsNoteModalOpen(false);
