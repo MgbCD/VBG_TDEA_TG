@@ -7,10 +7,17 @@ const { getAdminsEmailsRepository } = require('../../../user/infrastructure/repo
 const kafka = new Kafka({
   clientId: 'email-service',
   brokers: [process.env.KAFKA_BROKER],
+  ssl: true,
+  sasl: {
+    mechanism: 'plain',
+    username: process.env.KAFKA_USERNAME,
+    password: process.env.KAFKA_PASSWORD,
+  },
   sessionTimeout: 30000,
   heartbeatInterval: 3000,
   maxPollInterval: 600000,
 });
+
 
 const consumer = kafka.consumer({ groupId: 'ticket-email-group' });
 let transporter;
@@ -179,14 +186,10 @@ const sendHistoricoEmail = async (ticket, actionTake, description, adminName, us
 let isRunning = false;
 
 const run = async () => {
-  if (isRunning) return; // Evitar que se ejecute más de una vez
+  if (isRunning) return;
   isRunning = true;
-  
-  console.log("Ejecutando la función run...");
   await createTransporter();
   await consumer.connect();
-  console.log('Consumidor conectado a Kafka');
-
   await consumer.subscribe({ topic: 'ticket-created', fromBeginning: true });
   await consumer.subscribe({ topic: 'ticket-status-changed', fromBeginning: true });
   await consumer.subscribe({ topic: 'ticket-historico-changed', fromBeginning: true });

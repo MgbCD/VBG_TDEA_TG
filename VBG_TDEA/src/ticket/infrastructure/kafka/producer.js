@@ -4,6 +4,12 @@ require('dotenv').config();
 const kafka = new Kafka({
   clientId: 'ticket-service',
   brokers: [process.env.KAFKA_BROKER],
+  ssl: true,
+  sasl: {
+    mechanism: 'plain',
+    username: process.env.KAFKA_USERNAME,
+    password: process.env.KAFKA_PASSWORD,
+  },
 });
 
 const producer = kafka.producer();

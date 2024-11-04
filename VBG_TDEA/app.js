@@ -32,27 +32,19 @@ setRoutes(app);
 
 const startServer = async () => {
   try {
-    // Conectar a la base de datos
     await connectDB();
-
-    // Iniciar el producer de Kafka y el consumer
     await connectProducer();
-    console.log('Productor conectado a Kafka');
     await run();
-
-    // Iniciar el servidor
     app.listen(port, () => {
       console.log(`App listening on port ${port}`);
     });
   } catch (error) {
     console.error('Error al iniciar la aplicación:', error);
-    process.exit(1); // Salir si hay un error crítico
+    process.exit(1);
   }
 };
 
-// Manejar la desconexión de recursos al finalizar
 process.on('SIGINT', async () => {
-  console.log('Cerrando la aplicación...');
   await disconnectProducer();
   process.exit(0);
 });
