@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './LoginStyle.css';
 import logoLogin from '../../assets/img/logoLogin.png';
 import { useMsal } from '@azure/msal-react';
-import axios from 'axios';
+import useAxios from '../../services/axiosConfig';
 import ProgramSelectionModal from '../../components/Modals/ProgramSelectionModal';
 import RoleSelectionModal from '../../components/Modals/RoleSelectionModal';
 
@@ -13,6 +13,7 @@ const LoginPage = () => {
   const [showModal, setShowModal] = useState(false);
   const [showRoleModal, setShowRoleModal] = useState(false);
   const [userData, setUserData] = useState(null);
+  const axiosInstance = useAxios();
 
   const handleLogin = async () => {
     
@@ -39,13 +40,14 @@ const LoginPage = () => {
       let existingUserResponse;
 
       try {
-        existingUserResponse = await axios.get(`http://localhost:3000/api/user/getUser?email=${email}`, {
+        existingUserResponse = await axiosInstance.get(`/api/user/getUser?email=${email}`, {
           headers: {
             Authorization: `Bearer ${idToken}`
           }
         });
         roleId = existingUserResponse.data.roleId;
         userId = existingUserResponse.data._id;
+        console.log("Usuario encontrado:", existingUserResponse.data);
       } catch (error) {
         if (error.response && error.response.status === 404) {
           roleId = email.endsWith('@correo.tdea.edu.co') ? 'student' : 'other';
@@ -56,7 +58,7 @@ const LoginPage = () => {
             roleId,
             program: roleId === 'student' ? null : undefined,
           };
-          await axios.post('http://localhost:3000/api/user/saveUser', newUserData, {
+          await axiosInstance.post('/api/user/saveUser', newUserData, {
             headers: {
               Authorization: `Bearer ${idToken}`
             }
@@ -82,11 +84,13 @@ const LoginPage = () => {
       localStorage.setItem('user', JSON.stringify(userData));
       setUserData(userData);
 
-      const checkFirstLoginResponse = await axios.get(`http://localhost:3000/api/user/checkFirstLogin?email=${email}`, {
+      const checkFirstLoginResponse = await axiosInstance.get(`/api/user/checkFirstLogin?email=${email}`, {
         headers: {
           Authorization: `Bearer ${idToken}`
         }
       });
+
+      console.log("Primer ingreso:", checkFirstLoginResponse.data.firstLogin);
 
       if (checkFirstLoginResponse.data.firstLogin) {
         if (roleId === 'other') {
@@ -109,7 +113,7 @@ const LoginPage = () => {
         console.error("Email no encontrado en userData.");
         return;
       }
-      await axios.post('http://localhost:3000/api/user/updateProgram', {
+      await axiosInstance.post('/api/user/updateProgram', {
         email: email,
         program: program,
       });
@@ -120,11 +124,10 @@ const LoginPage = () => {
     }
   };
 
-
   const handleRoleSave = async (role) => {
     if (!userData) return;
     const userDataWithRole = { ...userData, roleId: role };
-    await axios.post('http://localhost:3000/api/user/saveUser', userDataWithRole);
+    await axiosInstance.post('/api/user/saveUser', userDataWithRole);
 
     setShowRoleModal(false);
     navigate('/home');

@@ -10,7 +10,7 @@ const HistoricModal = ({ ticketId, onClose }) => {
     useEffect(() => {
         const fetchHistoricData = async () => {
             try {
-                const response = await axiosInstance.get(`http://localhost:3000/api/historico/getHistorico/${ticketId}`);
+                const response = await axiosInstance.get(`/api/historico/getHistorico/${ticketId}`);
                 setHistoricalData(response.data.historico);
             } catch (error) {
                 console.error("Error retrieving historical data:", error);

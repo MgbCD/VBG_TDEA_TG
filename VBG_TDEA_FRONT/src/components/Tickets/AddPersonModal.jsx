@@ -23,7 +23,7 @@ const AddPersonModal = ({ onClose, ticketId, createdBy }) => {
     };
 
     try {
-      await axiosInstance.post('http://localhost:3000/api/denounced-register/saveDenouncedRegister', data);
+      await axiosInstance.post('/api/denounced-register/saveDenouncedRegister', data);
       toast.success('¡Persona implicada agregada exitosamente!');
       onClose();
     } catch (error) {

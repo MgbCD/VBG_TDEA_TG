@@ -16,7 +16,6 @@ import InProgressTicketsList from './components/Tickets/InProgressTicketsList';
 
 const MainApp = () => {
   const normalizedPath = useNormalizedPath();
-
   const validRoutes = ['/home', '/dashboard', '/historic', '/inprogressticketslist'];
 
   return (
@@ -38,11 +37,11 @@ const MainApp = () => {
 const App = () => {
   return (
     <MsalProvider instance={msalInstance}>
-      <AuthProvider>
-        <Router>
+      <Router>
+        <AuthProvider>
           <MainApp />
-        </Router>
-      </AuthProvider>
+        </AuthProvider>
+      </Router>
     </MsalProvider>
   );
 };

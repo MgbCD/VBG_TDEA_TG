@@ -29,11 +29,11 @@ async function getHistoricoByTicketIdRepository(ticketId) {
                 select: 'action',
             })
             .populate({
-                path: 'actionBy', // Asegúrate de que este sea el campo correcto
-                select: 'username', // Asegúrate de que este sea el campo que almacena el nombre del usuario
+                path: 'actionBy',
+                select: 'username',
             })
             .populate({
-                path: 'updatedBy', // Si quieres también obtener el nombre de quien actualizó
+                path: 'updatedBy',
                 select: 'username',
             });
 
@@ -42,35 +42,6 @@ async function getHistoricoByTicketIdRepository(ticketId) {
         throw new Error(`Error al obtener el registro histórico: ${error.message}`);
     }
 }
-
-
-async function updateHistoricoEntryRepository(historicoId, updateRequest) {
-    try {
-        const updatedEntry = await historicoModel.findByIdAndUpdate(
-            historicoId,
-            updateRequest,
-            { new: true }
-        ).populate('actionTaken', 'action');
-        
-        return updatedEntry;
-    } catch (error) {
-        throw new Error(`Error al actualizar el registro histórico: ${error.message}`);
-    }
-}
-
-
-async function listHistoricoEntriesRepository(filter, pagination) {
-    try {
-        const entries = await historicoModel.find(filter)
-            .skip(pagination.skip)
-            .limit(pagination.limit)
-            .populate('actionTaken', 'action');
-        return entries;
-    } catch (error) {
-        throw new Error(`Error al listar los registros históricos: ${error.message}`);
-    }
-}
-
 
 async function deleteHistoricoEntryRepository(historicoId) {
     try {
@@ -81,4 +52,4 @@ async function deleteHistoricoEntryRepository(historicoId) {
     }
 }
 
-module.exports = { createHistoricoRepository, getHistoricoByTicketIdRepository, updateHistoricoEntryRepository, listHistoricoEntriesRepository, deleteHistoricoEntryRepository };
+module.exports = { createHistoricoRepository, getHistoricoByTicketIdRepository, deleteHistoricoEntryRepository };

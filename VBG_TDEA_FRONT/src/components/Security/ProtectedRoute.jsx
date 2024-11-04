@@ -8,20 +8,18 @@ const ProtectedRoute = ({ element, requiredRole }) => {
 
   useEffect(() => {
     if (user !== undefined) {
-      setLoading(false); // Detenemos el estado de carga una vez que sabemos si el usuario está o no autenticado
+      setLoading(false);
     }
   }, [user]);
 
   if (loading) {
-    return <div>Loading...</div>; // Mostrar algo mientras el estado de autenticación se resuelve
+    return <div>Loading...</div>;
   }
 
-  // Si el usuario no está autenticado, redirige a login
   if (!user) {
     return <Navigate to="/login" />;
   }
 
-  // Si el rol del usuario no coincide con el requerido, redirige a home
   if (requiredRole && userRole !== requiredRole) {
     return <Navigate to="/home" />;
   }
