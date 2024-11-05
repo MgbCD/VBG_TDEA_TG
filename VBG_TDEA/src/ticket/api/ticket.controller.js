@@ -5,6 +5,8 @@ const { getTicketsByUserUseCase } = require('../application/get-ticket')
 const { findUserByIdentityId } = require('../../user/infrastructure/repositories/userRepository');
 const { deleteTicketUseCase } = require('../application/delete-ticket')
 const upload = require('../../middleware/uploadMiddleware'); 
+const path = require('path');
+const fs = require('fs');
 
 async function saveTicket(req, res) {
     try {
@@ -95,4 +97,57 @@ async function deleteTicket(req, res) {
     }
 }
 
-module.exports = { saveTicket, updateTicket, updateTicketStatus, getTicketsByUser, deleteTicket };
+async function uploadFile(req, res) {
+    try {
+        console.log(req.file); 
+        if (!req.file) {
+            return res.status(400).json({ message: 'No se proporcionó ningún archivo.' });
+        }
+        
+        return res.status(200).json({ filePath: req.file.path });
+    } catch (error) {
+        return res.status(500).json({ message: error.message || 'Error interno del servidor' });
+    }
+}
+
+async function downloadFile(req, res) {
+    try {
+        const { filename } = req.params; 
+        const filePath = path.join(__dirname, '../../uploads', filename); 
+
+        if (!fs.existsSync(filePath)) {
+            return res.status(404).json({ message: 'Archivo no encontrado.' });
+        }
+
+        // Determina el tipo de archivo y ajusta el Content-Type si es necesario
+        const extname = path.extname(filename).toLowerCase();
+        let contentType = 'application/octet-stream'; // Tipo genérico por defecto
+
+        switch (extname) {
+            case '.pdf':
+                contentType = 'application/pdf';
+                break;
+            case '.jpeg':
+            case '.jpg':
+                contentType = 'image/jpeg';
+                break;
+            case '.png':
+                contentType = 'image/png';
+                break;
+            // Agrega más tipos de archivos si es necesario
+        }
+
+        res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+        res.setHeader('Content-Type', contentType); // Tipo de contenido adecuado
+        
+        res.sendFile(filePath, (err) => {
+            if (err) {
+                return res.status(500).json({ message: 'Error al enviar el archivo.' });
+            }
+        });
+    } catch (error) {
+        return res.status(500).json({ message: error.message || 'Error interno del servidor' });
+    }
+}
+
+module.exports = { saveTicket, updateTicket, updateTicketStatus, getTicketsByUser, deleteTicket, uploadFile, downloadFile };

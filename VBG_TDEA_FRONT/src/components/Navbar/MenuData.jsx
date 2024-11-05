@@ -30,5 +30,5 @@ export const MenuData = [
         title: "Cerrar sesión",
         url: "#",
         cName: "nav-links-mobile",
-    }
+    } 
 ] 

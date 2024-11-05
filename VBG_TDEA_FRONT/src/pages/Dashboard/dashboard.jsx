@@ -60,12 +60,12 @@ const Dashboard = () => {
 
   const downloadPDF = () => {
     html2canvas(dashboardRef.current, { 
-      backgroundColor: null, // Evitar fondo gris
-      scale: 2 // Mayor escala para mejor calidad
+      backgroundColor: null,
+      scale: 2 
     }).then((canvas) => {
       const pdf = new jsPDF();
       const imgData = canvas.toDataURL('image/png');
-      const imgWidth = 190; // Ajustar según tus necesidades
+      const imgWidth = 190; 
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
 
       pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
