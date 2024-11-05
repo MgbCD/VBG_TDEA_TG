@@ -97,6 +97,19 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
     }
   };
 
+  const handleDelete = async () => {
+    try {
+      await axiosInstance.delete('/api/ticket/deleteTicket', {
+        data: { ticketId: ticket._id }
+      });
+      toast.success('¡Ticket eliminado exitosamente!');
+      onDelete();
+      onClose();
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Error al eliminar el ticket.');
+    }
+  };
+
   const handleAddPerson = () => {
     setIsAddPersonModalOpen(true);
   };
