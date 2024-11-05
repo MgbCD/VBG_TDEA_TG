@@ -1,5 +1,5 @@
 const express = require('express');
-const { saveTicket, updateTicket, updateTicketStatus, getTicketsByUser, deleteTicket } = require('../api/ticket.controller');
+const { saveTicket, updateTicket, updateTicketStatus, getTicketsByUser, deleteTicket, uploadFile, downloadFile } = require('../api/ticket.controller');
 const authenticateToken = require('../../middleware/authMiddleware');
 const upload = require('../../middleware/uploadMiddleware'); 
 const taskRouter = express.Router();
@@ -284,4 +284,6 @@ taskRouter.get('/my-tickets', authenticateToken, getTicketsByUser);
  */
 taskRouter.delete('/deleteTicket', authenticateToken, deleteTicket);
 
+taskRouter.post('/upload', upload.single('file'), uploadFile);
+taskRouter.get('/download/:filename', downloadFile);
 module.exports = taskRouter;

@@ -17,7 +17,7 @@ const ManageTicketModal = ({ onClose, ticketId, createdBy }) => {
         const response = await axiosInstance.get('/api/ticket-action/getTicketActions');
         setActions(response.data);
       } catch (error) {
-        console.error('Error al obtener las acciones:', error);
+        console.error('Error al obtener las acciones:', error.message);
       }
     };
 
@@ -27,18 +27,17 @@ const ManageTicketModal = ({ onClose, ticketId, createdBy }) => {
         const actionIds = response.data.historico.map(historico => historico.actionTaken._id);
         setUsedActionIds(actionIds);
       } catch (error) {
-        console.error('Error al obtener el historial de acciones:', error);
+        console.error('Error al obtener el historial de acciones:', error.message);
       }
     };
 
-    fetchActions();
-    fetchUsedActions();
+    if (ticketId) {
+      fetchActions();
+      fetchUsedActions();
+    }
   }, [axiosInstance, ticketId]);
 
   const handleSave = async () => {
-    console.log('Nota:', note);
-    console.log('Acción seleccionada:', selectedAction);
-
     if (!selectedAction || !note) {
       alert("Por favor, seleccione una acción y escriba una nota.");
       return;
@@ -46,7 +45,7 @@ const ManageTicketModal = ({ onClose, ticketId, createdBy }) => {
 
     try {
       const historicoData = {
-        ticketId: ticketId,
+        ticketId,
         actionTaken: selectedAction,
         notes: note,
       };
@@ -55,7 +54,7 @@ const ManageTicketModal = ({ onClose, ticketId, createdBy }) => {
       console.log('Histórico guardado:', response.data);
       onClose();
     } catch (error) {
-      console.error('Error al guardar el histórico:', error);
+      console.error('Error al guardar el histórico:', error.message);
       alert("Hubo un error al guardar el histórico. Inténtalo de nuevo.");
     }
   };
@@ -64,7 +63,10 @@ const ManageTicketModal = ({ onClose, ticketId, createdBy }) => {
     setIsAddPersonModalOpen(true);
   };
 
-  const availableActions = actions.filter(action => !usedActionIds.includes(action._id));
+  const availableActions = actions.filter(action => 
+    !usedActionIds.includes(action._id) &&
+    !["activar ruta", "archivar"].includes(action.action.toLowerCase())
+  );
 
   return (
     <div className="manage-overlay">
@@ -99,7 +101,6 @@ const ManageTicketModal = ({ onClose, ticketId, createdBy }) => {
         <button className="manage-save-button" onClick={handleSave}>Guardar</button>
         <button className="manage-add-person-button" onClick={handleAddPerson}>Agregar Persona Implicada</button>
 
-        {/* Add the add person modal here */}
         {isAddPersonModalOpen && (
           <AddPersonModal
             onClose={() => setIsAddPersonModalOpen(false)}

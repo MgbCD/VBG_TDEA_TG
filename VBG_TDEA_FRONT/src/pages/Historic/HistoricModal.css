@@ -1,4 +1,3 @@
-/* src/components/HistoricModal.css */
 .historic-modal-overlay {
     position: fixed;
     top: 0;
@@ -16,8 +15,10 @@
     background: white;
     padding: 20px;
     border-radius: 8px;
-    width: 80%;
+    width: 90%; 
     max-width: 600px;
+    max-height: 80%; 
+    overflow-y: auto; 
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
@@ -27,18 +28,36 @@
 
 .historic-item {
     margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.historic-item h3 {
+    color: #333;
+    margin-bottom: 10px;
 }
 
 .close-button {
-    background-color: #007bff;
+    background-color: #ff1100;
     color: white;
     border: none;
     border-radius: 5px;
     padding: 10px 15px;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    margin-top: 20px;
 }
 
 .close-button:hover {
-    background-color: #0056b3;
+    background-color: #8f0d03;
+}
+
+@media (max-width: 600px) {
+    .historic-modal-content {
+        width: 95%; 
+    }
+
+    .close-button {
+        width: 100%; 
+    }
 }

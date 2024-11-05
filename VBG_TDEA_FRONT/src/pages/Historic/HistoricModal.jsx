@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useAxios from '../../services/axiosConfig';
-import './HistoricModal.css'; 
+import './HistoricModal.css';
 
 const HistoricModal = ({ ticketId, onClose }) => {
     const [historicalData, setHistoricalData] = useState([]);
@@ -31,8 +31,9 @@ const HistoricModal = ({ ticketId, onClose }) => {
                 ) : (
                     <div className="historic-list">
                         {historicalData.length > 0 ? (
-                            historicalData.map((item) => (
+                            historicalData.map((item, index) => (
                                 <div key={item._id} className="historic-item">
+                                    <h3>Acción {index + 1}</h3>
                                     <p><strong>Acción:</strong> {item.actionTaken.action}</p>
                                     <p><strong>Nota:</strong> {item.notes}</p>
                                     <p><strong>Accionado por:</strong> {item.actionBy.username}</p>

@@ -8,7 +8,7 @@
   width: 100vw;
   height: 100vh;
   background-color: rgba(0, 0, 0, 0.5); 
-  z-index: 1002;
+  z-index: 1000;
   backdrop-filter: blur(6px); 
   animation: fadeInBackground 0.4s ease-in-out;
 }
@@ -19,9 +19,10 @@
   border-radius: 20px;
   max-width: 500px;
   width: 100%;
-  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15); 
+  box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
   animation: fadeIn 0.5s ease-in-out;
-  position: relative; 
+  position: relative; /* This is fine */
+  margin: auto; /* Add this if not already there */
 }
 
 .add-person-close {

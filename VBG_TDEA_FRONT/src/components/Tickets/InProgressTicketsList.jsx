@@ -69,7 +69,6 @@ const InProgressTicketsList = () => {
         </div>
       )}
 
-      {/* Modal para gestionar el ticket */}
       {isModalOpen && selectedTicket && (
         <ManageTicketModal
           onClose={() => setIsModalOpen(false)}

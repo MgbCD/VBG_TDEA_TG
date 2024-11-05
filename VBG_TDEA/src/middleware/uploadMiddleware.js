@@ -1,7 +1,6 @@
 const multer = require('multer');
 const path = require('path');
 
-
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/'); 
@@ -11,8 +10,8 @@ const storage = multer.diskStorage({
   }
 });
 
-
 const fileFilter = (req, file, cb) => {
+  console.log('Tipo MIME:', file.mimetype); 
   const fileTypes = /jpeg|jpg|png|gif|pdf/;
   const mimeType = fileTypes.test(file.mimetype);
   const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
@@ -22,8 +21,6 @@ const fileFilter = (req, file, cb) => {
   }
   cb(new Error('Solo se permiten archivos de imagen y PDF'));
 };
-
-
 const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
