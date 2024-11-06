@@ -131,7 +131,7 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
       };
       await axiosInstance.post('/api/historico/saveHistorico', historicoData);
       toast.success('¡Nota guardada y ticket archivado exitosamente!');
-
+      window.location.reload();
       setIsNoteModalOpen(false);
       setNote('');
     } catch (error) {
