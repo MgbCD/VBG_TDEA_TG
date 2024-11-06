@@ -8,7 +8,8 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 1000;
+    animation: fadeInBackground 0.4s ease-in-out; 
+    z-index: 900;
 }
 
 .manage-modal {
@@ -21,6 +22,7 @@
     animation: scaleIn 0.3s ease forwards;
     transform-origin: center;
     position: relative;
+    z-index: 950;
 }
 
 @keyframes scaleIn {

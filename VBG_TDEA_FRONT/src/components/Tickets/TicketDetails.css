@@ -1,3 +1,4 @@
+/* TicketDetails.css */
 .details-modal {
   position: fixed;
   top: 0;
@@ -13,12 +14,12 @@
 
 .details-modal-content {
   background-color: white;
-  padding: 30px; 
-  border-radius: 12px; 
+  padding: 30px;
+  border-radius: 12px;
   width: 90%;
   max-width: 600px;
   position: relative;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); 
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
 .details-close {
@@ -36,39 +37,35 @@
 
 .detail-action {
   position: absolute;
-  top: 10px; 
-  left: 15px; 
+  top: 10px;
+  left: 15px;
   display: flex;
-  gap: 15px; 
+  gap: 15px;
 }
 
 .icon-button {
-  background: none; 
-  border: none; 
-  cursor: pointer; 
-  font-size: 20px; 
-  transition: transform 0.2s ease; 
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  transition: transform 0.2s ease;
 }
 
 .icon-button:hover {
-  transform: scale(1.1); 
+  transform: scale(1.1);
 }
 
 .icon-button i {
-  font-size: 1.5rem; 
-  transition: transform 0.3s ease; 
-}
-
-.icon-button:hover i {
-  transform: scale(1.2); 
+  font-size: 1.5rem;
+  transition: transform 0.3s ease;
 }
 
 .icon-button.edit {
-  color: #007bff; 
+  color: #007bff;
 }
 
 .icon-button.delete {
-  color: #dc3545; 
+  color: #dc3545;
 }
 
 .details-download {
@@ -95,38 +92,31 @@
   background-color: #0056b3;
 }
 
-
 .details-ticket-buttons {
   display: flex;
   justify-content: center;
-  margin-top: 20px; 
-  gap: 15px; 
+  margin-top: 20px;
+  gap: 15px;
 }
 
-.start-route-button {
-  background-color: #28a745; 
+.start-route-button,
+.archive-ticket-button {
+  background-color: #28a745;
   color: white;
   border: none;
   border-radius: 5px;
   padding: 10px 15px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  display: flex; 
-  align-items: center; 
-  gap: 8px; 
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  justify-content: center;
 }
 
 .archive-ticket-button {
-  background-color: #dc3545; 
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 10px 15px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  display: flex; 
-  align-items: center; 
-  gap: 8px; 
+  background-color: #dc3545;
 }
 
 .start-route-button:hover {
@@ -134,7 +124,7 @@
 }
 
 .archive-ticket-button:hover {
-  background-color: #c82333; 
+  background-color: #c82333;
 }
 
 .note-modal {
@@ -204,12 +194,12 @@ textarea {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5); 
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; 
-  backdrop-filter: blur(6px); 
+  z-index: 1000;
+  backdrop-filter: blur(6px);
 }
 
 .route-modal-content {
@@ -228,12 +218,12 @@ textarea {
   position: absolute;
   right: 20px;
   top: 20px;
-  color: #888; 
+  color: #888;
   transition: color 0.3s ease;
 }
 
 .route-close:hover {
-  color: #ff5252; 
+  color: #ff5252;
 }
 
 .route-modal-content h3 {
@@ -241,22 +231,6 @@ textarea {
   color: #333;
   margin-bottom: 20px;
   font-weight: bold;
-}
-
-.route-modal-content select {
-  width: 100%;
-  padding: 12px;
-  border: 2px solid #ddd;
-  border-radius: 10px;
-  font-size: 1rem;
-  margin-bottom: 20px;
-  transition: border-color 0.3s ease;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-}
-
-.route-modal-content select:focus {
-  border-color: #3D9FFF;
-  box-shadow: 0 4px 12px rgba(61, 159, 255, 0.3); 
 }
 
 .route-modal-content textarea {
@@ -268,19 +242,12 @@ textarea {
   font-size: 1rem;
   margin-bottom: 20px;
   resize: none;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  transition: border-color 0.3s ease;
 }
 
-.route-modal-content textarea:focus {
-  border-color: #3D9FFF;
-  box-shadow: 0 4px 12px rgba(61, 159, 255, 0.3); 
-}
-
-.route-modal-button {
+.route-modal-button,
+.route-modal-start {
   width: 100%;
   padding: 14px;
-  background-color: #3128a7; 
   color: white;
   font-size: 1.2rem;
   font-weight: bold;
@@ -288,12 +255,21 @@ textarea {
   border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 10px;
 }
 
-.route-modal-button:hover {
-  background-color: #221a9b;
-  transform: translateY(-3px); 
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); 
+.route-modal-button {
+  background-color: #3128a7;
+}
+
+.route-modal-start {
+  background-color: #4CAF50;
+}
+
+.route-modal-button:hover,
+.route-modal-start:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 @keyframes fadeInModal {

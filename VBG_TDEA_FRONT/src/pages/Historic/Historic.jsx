@@ -1,10 +1,10 @@
-// src/components/HistoricTicketsList.jsx
 import React, { useEffect, useState } from "react";
 import useAxios from "../../services/axiosConfig";
 import "./Historic.css";
 import TicketDetails from "../../components/Tickets/TicketDetails";
-import HistoricModal from "../Historic/HistoricModal"; 
+import HistoricModal from "../Historic/HistoricModal";
 import useAuth from "../../hooks/useAuth";
+import ShowPersonaModal from "../../components/Modals/ShowPersonaModal";
 
 const HistoricTicketsList = () => {
     const { userRole } = useAuth();
@@ -15,6 +15,7 @@ const HistoricTicketsList = () => {
     const [filterStatus, setFilterStatus] = useState("");
     const [modalVisible, setModalVisible] = useState(false);
     const [ticketIdForModal, setTicketIdForModal] = useState(null);
+    const [showPersonaModal, setShowPersonaModal] = useState(false);
     const ticketsPerPage = 10;
     const axiosInstance = useAxios();
 
@@ -33,13 +34,14 @@ const HistoricTicketsList = () => {
         fetchTickets();
     }, []);
 
-    const openDetailsModal = (ticket) => {
-        setSelectedTicket(ticket);
-    };
-
     const openHistoricModal = (ticketId) => {
         setTicketIdForModal(ticketId);
         setModalVisible(true);
+    };
+
+    const openPersonaModal = (ticketId) => {
+        setTicketIdForModal(ticketId);
+        setShowPersonaModal(true); // Abre el modal para ver la persona implicada
     };
 
     const filteredTickets = filterStatus
@@ -94,6 +96,15 @@ const HistoricTicketsList = () => {
                                     <button className="view-ticket-button" onClick={() => openHistoricModal(ticket._id)}>
                                         <i className="fa-solid fa-eye"></i> Ver historico ticket
                                     </button>
+
+                                    {userRole === "admin" && (
+                                        <button
+                                            className="view-people-involved"
+                                            onClick={() => openPersonaModal(ticket._id)}
+                                        >
+                                            <i className="fa-solid fa-person"></i> Ver persona implicada
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         ))}
@@ -124,6 +135,16 @@ const HistoricTicketsList = () => {
                 <HistoricModal
                     ticketId={ticketIdForModal}
                     onClose={() => setModalVisible(false)}
+                />
+            )}
+
+            {/* Show Persona Modal */}
+            {showPersonaModal && ticketIdForModal && (
+                <ShowPersonaModal
+                    ticketId={ticketIdForModal}
+                    onClose={() => {
+                        setShowPersonaModal(false);
+                    }}
                 />
             )}
         </div>
