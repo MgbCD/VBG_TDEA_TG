@@ -5,22 +5,27 @@ import './HistoricModal.css';
 const HistoricModal = ({ ticketId, onClose }) => {
     const [historicalData, setHistoricalData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [hasDataLoaded, setHasDataLoaded] = useState(false);
     const axiosInstance = useAxios();
 
     useEffect(() => {
         const fetchHistoricData = async () => {
-            try {
-                const response = await axiosInstance.get(`/api/historico/getHistorico/${ticketId}`);
-                setHistoricalData(response.data.historico);
-            } catch (error) {
-                console.error("Error retrieving historical data:", error);
-            } finally {
-                setLoading(false);
+            if (!hasDataLoaded) { // Solo hace la solicitud si los datos no se han cargado
+                try {
+                    setLoading(true);
+                    const response = await axiosInstance.get(`/api/historico/getHistorico/${ticketId}`);
+                    setHistoricalData(response.data.historico);
+                    setHasDataLoaded(true);
+                } catch (error) {
+                    console.error("Error retrieving historical data:", error);
+                } finally {
+                    setLoading(false);
+                }
             }
         };
 
         fetchHistoricData();
-    }, [ticketId, axiosInstance]);
+    }, [ticketId, axiosInstance, hasDataLoaded]);
 
     return (
         <div className="historic-modal-overlay">

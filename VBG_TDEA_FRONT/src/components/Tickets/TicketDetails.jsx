@@ -35,6 +35,18 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
     }
   };
 
+  const handleUpdate = async (data) => {
+    try {
+      await axiosInstance.put('/api/ticket/updateTicket', data);
+      toast.success('¡Ticket actualizado exitosamente!');
+      setCurrentTicket(prev => ({ ...prev, ...data }));
+      setIsEditing(false);
+      window.location.reload();
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Error al actualizar el ticket.');
+    }
+  };
+
   const fetchTicketStatuses = async () => {
     try {
       const response = await axiosInstance.get('/api/ticket-status/getTicketStatus');
@@ -89,7 +101,7 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
       };
       await axiosInstance.post('/api/historico/saveHistorico', historicoData);
       toast.success('¡Ruta activada y ticket actualizado a "En proceso" exitosamente!');
-
+      window.location.reload();
       setIsRouteModalOpen(false);
       setNote('');
     } catch (error) {
@@ -114,6 +126,33 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
     setIsAddPersonModalOpen(true);
   };
 
+  const handleDownload = async (filePath) => {
+    const fileName = filePath.split('/').pop();
+    const fullPath = `${process.env.REACT_APP_API_BASE_URL}/api/ticket/download/${fileName.replace(/\\/g, '/')}`;  // Asegúrate de reemplazar las barras invertidas
+
+    console.log('URL de descarga:', fullPath);
+
+    try {
+        const response = await fetch(fullPath);
+        if (response.ok) {
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        } else {
+            throw new Error('Archivo no disponible');
+        }
+    } catch (error) {
+        console.error('Error al descargar:', error);
+        toast.error('El archivo no se encuentra disponible.');
+    }
+};
+
   return (
     <div className="details-modal">
       <div className="details-modal-content">
@@ -130,6 +169,11 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
             </>
           )}
         </div>
+        {currentTicket.filePath && (
+          <button className="details-download" onClick={() => handleDownload(currentTicket.filePath)}>
+            <i className="fas fa-download"></i> Descargar imagen/archivo adjunto
+          </button>
+        )}
         {/* Conditionally render content */}
         {isEditing ? (
           <EditTicketForm
