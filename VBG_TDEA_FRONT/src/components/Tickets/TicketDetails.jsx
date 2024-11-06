@@ -35,6 +35,18 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
     }
   };
 
+  const handleUpdate = async (data) => {
+    try {
+      await axiosInstance.put('/api/ticket/updateTicket', data);
+      toast.success('¡Ticket actualizado exitosamente!');
+      setCurrentTicket(prev => ({ ...prev, ...data }));
+      setIsEditing(false);
+      window.location.reload();
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Error al actualizar el ticket.');
+    }
+  };
+
   const fetchTicketStatuses = async () => {
     try {
       const response = await axiosInstance.get('/api/ticket-status/getTicketStatus');
@@ -89,7 +101,7 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
       };
       await axiosInstance.post('/api/historico/saveHistorico', historicoData);
       toast.success('¡Ruta activada y ticket actualizado a "En proceso" exitosamente!');
-
+      window.location.reload();
       setIsRouteModalOpen(false);
       setNote('');
     } catch (error) {
@@ -97,8 +109,76 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
     }
   };
 
+  const handleNoteSubmit = async () => {
+    try {
+      const statusName = "Archivado";
+      const archivedStatusId = getStatusIdByName(statusName);
+      await updateTicketStatus(archivedStatusId);
+
+      const actionName = "Archivar";
+      const archivedActionId = getActionIdByName(actionName);
+
+      console.log(archivedActionId);
+
+      if (!archivedActionId) {
+        throw new Error('No se encontró la acción "Archivar". Verifica que el nombre es correcto en la base de datos.');
+      }
+
+      const historicoData = {
+        ticketId: currentTicket._id,
+        actionTaken: archivedActionId,
+        notes: note,
+      };
+      await axiosInstance.post('/api/historico/saveHistorico', historicoData);
+      toast.success('¡Nota guardada y ticket archivado exitosamente!');
+      window.location.reload();
+      setIsNoteModalOpen(false);
+      setNote('');
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Error al archivar el ticket.');
+    }
+  };
+
+  const handleDelete = async () => {
+    try {
+      await axiosInstance.delete('/api/ticket/deleteTicket', {
+        data: { ticketId: ticket._id }
+      });
+      toast.success('¡Ticket eliminado exitosamente!');
+      onDelete();
+      onClose();
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Error al eliminar el ticket.');
+    }
+  };
+
   const handleAddPerson = () => {
     setIsAddPersonModalOpen(true);
+  };
+
+  const handleDownload = async (filePath) => {
+    const fileName = filePath.split('/').pop();
+    const fullPath = `${process.env.REACT_APP_API_BASE_URL}/api/ticket/download/${fileName.replace(/\\/g, '/')}`;
+
+    try {
+      const response = await fetch(fullPath);
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+      } else {
+        throw new Error('Archivo no disponible');
+      }
+    } catch (error) {
+      console.error('Error al descargar:', error);
+      toast.error('El archivo no se encuentra disponible.');
+    }
   };
 
   return (
@@ -117,7 +197,7 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
             </>
           )}
         </div>
-        {/* Conditionally render content */}
+
         {isEditing ? (
           <EditTicketForm
             ticket={currentTicket}
@@ -131,6 +211,11 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
             <p><strong>Creado por:</strong> {currentTicket.createdBy?.username || 'Desconocido'}</p>
             <p><strong>Fecha de creación:</strong> {new Date(currentTicket.createdAt).toLocaleDateString()}</p>
           </>
+        )}
+        {currentTicket.filePath && (
+          <button className="details-download" onClick={() => handleDownload(currentTicket.filePath)}>
+            <i className="fas fa-download"></i> Descargar imagen/archivo adjunto
+          </button>
         )}
         <div className="details-ticket-buttons">
           {userRole === 'admin' && currentTicket.statusId?.status === 'Creado' && (
@@ -146,7 +231,23 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
         </div>
       </div>
 
-      {/* Route Modal */}
+      {isNoteModalOpen && (
+        <div className="note-modal">
+          <div className="note-modal-content">
+            <span className="note-close" onClick={() => setIsNoteModalOpen(false)}>&times;</span>
+            <h3>Agregar nota para archivar ticket</h3>
+            <textarea
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              placeholder="Escribe tu nota aquí..."
+            />
+            <button className="submit-note-button" onClick={handleNoteSubmit}>
+              Guardar Nota
+            </button>
+          </div>
+        </div>
+      )}
+
       {isRouteModalOpen && (
         <div className="route-modal">
           <div className="route-modal-content">
@@ -167,11 +268,11 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
         </div>
       )}
 
-      {/* Add Person Modal */}
       {isAddPersonModalOpen && (
         <AddPersonModal
           onClose={() => setIsAddPersonModalOpen(false)}
           ticketId={ticket._id}
+          createdBy={userId}
         />
       )}
     </div>

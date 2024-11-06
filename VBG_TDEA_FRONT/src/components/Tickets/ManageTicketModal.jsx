@@ -9,6 +9,8 @@ const ManageTicketModal = ({ onClose, ticketId, createdBy }) => {
   const [isAddPersonModalOpen, setIsAddPersonModalOpen] = useState(false);
   const [actions, setActions] = useState([]);
   const [usedActionIds, setUsedActionIds] = useState([]);
+  const [ticketStatuses, setTicketStatuses] = useState([]);
+  const [dataLoaded, setDataLoaded] = useState(false);
   const axiosInstance = useAxios();
 
   useEffect(() => {
@@ -31,11 +33,55 @@ const ManageTicketModal = ({ onClose, ticketId, createdBy }) => {
       }
     };
 
-    if (ticketId) {
+    const fetchTicketStatuses = async () => {
+      try {
+        const response = await axiosInstance.get('/api/ticket-status/getTicketStatus');
+        setTicketStatuses(response.data);
+      } catch (error) {
+        console.error('Error al cargar los estados de ticket:', error.message);
+      }
+    };
+
+    if (ticketId && !dataLoaded) {
       fetchActions();
       fetchUsedActions();
+      fetchTicketStatuses();
+      setDataLoaded(true);
     }
-  }, [axiosInstance, ticketId]);
+  }, [axiosInstance, ticketId, dataLoaded]);
+
+  const getStatusIdByName = (statusName) => {
+    const status = ticketStatuses.find(status => status.status === statusName);
+    return status ? status._id : null;
+  };
+
+  const updateTicketStatus = async (statusId) => {
+    try {
+      const response = await axiosInstance.put('/api/ticket/updateTicketStatus', {
+        ticketId,
+        statusId,
+      });
+      console.log('¡Estado del ticket actualizado exitosamente!');
+    } catch (error) {
+      console.error('Error al actualizar el estado del ticket:', error.message);
+    }
+  };
+
+  const handleActionChange = async (e) => {
+    const selectedActionId = e.target.value;
+    setSelectedAction(selectedActionId);
+
+    const actionName = actions.find(action => action._id === selectedActionId)?.action;
+
+    if (actionName === 'Sanciones') {
+      const finalizadoStatusId = getStatusIdByName('Finalizado');
+      if (finalizadoStatusId) {
+        await updateTicketStatus(finalizadoStatusId);
+      } else {
+        console.error('No se encontró el estado "Finalizado".');
+      }
+    }
+  };
 
   const handleSave = async () => {
     if (!selectedAction || !note) {
@@ -52,6 +98,7 @@ const ManageTicketModal = ({ onClose, ticketId, createdBy }) => {
 
       const response = await axiosInstance.post('/api/historico/saveHistorico', historicoData);
       console.log('Histórico guardado:', response.data);
+      window.location.reload();
       onClose();
     } catch (error) {
       console.error('Error al guardar el histórico:', error.message);
@@ -79,7 +126,7 @@ const ManageTicketModal = ({ onClose, ticketId, createdBy }) => {
           <select
             id="actionSelect"
             value={selectedAction}
-            onChange={(e) => setSelectedAction(e.target.value)}
+            onChange={handleActionChange}  // Aquí invocas la función correctamente
           >
             <option value="">Seleccione una acción</option>
             {availableActions.map((action) => (

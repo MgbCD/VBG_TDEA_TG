@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import useAxios from "../../services/axiosConfig";
 import "./Historic.css";
 import TicketDetails from "../../components/Tickets/TicketDetails";
-import HistoricModal from "../Historic/HistoricModal"; 
+import HistoricModal from "../Historic/HistoricModal";
 import useAuth from "../../hooks/useAuth";
-import ShowPersonaModal from "../../components/Modals/ShowPersonaModal"; 
+import ShowPersonaModal from "../../components/Modals/ShowPersonaModal";
 
 const HistoricTicketsList = () => {
     const { userRole } = useAuth();
@@ -15,8 +15,7 @@ const HistoricTicketsList = () => {
     const [filterStatus, setFilterStatus] = useState("");
     const [modalVisible, setModalVisible] = useState(false);
     const [ticketIdForModal, setTicketIdForModal] = useState(null);
-    const [implicatedPerson, setImplicatedPerson] = useState(null); 
-    const [showPersonaModal, setShowPersonaModal] = useState(false); 
+    const [showPersonaModal, setShowPersonaModal] = useState(false);
     const ticketsPerPage = 10;
     const axiosInstance = useAxios();
 
@@ -35,23 +34,14 @@ const HistoricTicketsList = () => {
         fetchTickets();
     }, []);
 
-    const openDetailsModal = (ticket) => {
-        setSelectedTicket(ticket);
-    };
-
     const openHistoricModal = (ticketId) => {
         setTicketIdForModal(ticketId);
         setModalVisible(true);
     };
 
-    const viewImplicatedPerson = (ticket) => {
-        if (ticket.implicatedPerson) {
-            setImplicatedPerson(ticket.implicatedPerson); 
-            setShowPersonaModal(true); 
-        } else {
-            setImplicatedPerson(null); 
-            setShowPersonaModal(true); 
-        }
+    const openPersonaModal = (ticketId) => {
+        setTicketIdForModal(ticketId);
+        setShowPersonaModal(true); // Abre el modal para ver la persona implicada
     };
 
     const filteredTickets = filterStatus
@@ -101,18 +91,20 @@ const HistoricTicketsList = () => {
                                         <i className="fa-solid fa-circle-user"></i> {ticket.createdBy?.username || "Desconocido"}
                                     </p>
                                     <p className="card-days">
-                                        {`${Math.floor((new Date() - new Date(ticket.createdAt)) / (1000 * 3600 * 24))} día(s)`} 
+                                        {`${Math.floor((new Date() - new Date(ticket.createdAt)) / (1000 * 3600 * 24))} día(s)`}
                                     </p>
                                     <button className="view-ticket-button" onClick={() => openHistoricModal(ticket._id)}>
                                         <i className="fa-solid fa-eye"></i> Ver historico ticket
                                     </button>
 
-                                    <button
-                                        className="view-people-involved"
-                                        onClick={() => viewImplicatedPerson(ticket)}
-                                    >
-                                        <i className="fa-solid fa-person"></i> Ver persona implicada
-                                    </button>
+                                    {userRole === "admin" && (
+                                        <button
+                                            className="view-people-involved"
+                                            onClick={() => openPersonaModal(ticket._id)}
+                                        >
+                                            <i className="fa-solid fa-person"></i> Ver persona implicada
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         ))}
@@ -147,12 +139,11 @@ const HistoricTicketsList = () => {
             )}
 
             {/* Show Persona Modal */}
-            {showPersonaModal && (
+            {showPersonaModal && ticketIdForModal && (
                 <ShowPersonaModal
-                    implicatedPerson={implicatedPerson}
+                    ticketId={ticketIdForModal}
                     onClose={() => {
                         setShowPersonaModal(false);
-                        setImplicatedPerson(null); 
                     }}
                 />
             )}
