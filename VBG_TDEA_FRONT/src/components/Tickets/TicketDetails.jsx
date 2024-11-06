@@ -158,9 +158,7 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
 
   const handleDownload = async (filePath) => {
     const fileName = filePath.split('/').pop();
-    const fullPath = `${process.env.REACT_APP_API_BASE_URL}/api/ticket/download/${fileName.replace(/\\/g, '/')}`;  // Asegúrate de reemplazar las barras invertidas
-
-    console.log('URL de descarga:', fullPath);
+    const fullPath = `${process.env.REACT_APP_API_BASE_URL}/api/ticket/download/${fileName.replace(/\\/g, '/')}`;
 
     try {
       const response = await fetch(fullPath);
