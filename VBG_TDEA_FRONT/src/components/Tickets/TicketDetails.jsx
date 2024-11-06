@@ -272,6 +272,7 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
         <AddPersonModal
           onClose={() => setIsAddPersonModalOpen(false)}
           ticketId={ticket._id}
+          createdBy={userId}
         />
       )}
     </div>
