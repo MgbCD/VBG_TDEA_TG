@@ -48,9 +48,8 @@ async function updateTicketRepository(ticketId, updateData) {
         ticket.title = updateData.title || ticket.title;
         ticket.description = updateData.description || ticket.description;
 
-        // Aquí manejamos el archivo
-        if (updateData.attachment) { // Asegúrate de que esto refleje la clave correcta
-            ticket.filePath = updateData.attachment.path; // Usa la propiedad correcta del archivo
+        if (updateData.attachment) { 
+            ticket.filePath = updateData.attachment.path; 
         }
 
         ticket.updatedAt = new Date();

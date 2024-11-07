@@ -2,7 +2,6 @@ const { createHistoricoUseCase } = require('../application/create-historico');
 const { getHistoricoByTicketIdUseCase } = require('../application/get-historicoByTicketId');
 const { deleteHistoricoEntryUseCase } = require('../application/delete-historico');
 const { findUserByIdentityId } = require('../../user/infrastructure/repositories/userRepository');
-//const { sendMessage } = require('../../ticket/infrastructure/kafka/producer');
 
 async function saveHistorico(req, res) {
     try {
@@ -22,14 +21,7 @@ async function saveHistorico(req, res) {
 
         const newHistorico = await createHistoricoUseCase(historicoRequest);
 
-        /*const message = {
-            ticketId: newHistorico.ticketId,
-            actionTake: newHistorico.actionTaken.action,
-            description: newHistorico.notes,
-            adminName: user.username,
-        };
-        console.log(message);
-        await sendMessage(message, 'ticket-historico-changed');*/
+   
 
         return res.status(201).json({ historico: newHistorico });
     } catch (error) {

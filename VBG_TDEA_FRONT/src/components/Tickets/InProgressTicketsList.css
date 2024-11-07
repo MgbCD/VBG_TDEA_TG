@@ -45,89 +45,84 @@
     margin-bottom: 10px;
   }
   
-  /* Status of the ticket */
+  
   .card-status {
-    font-size: 0.9rem; /* Font size for status */
-    margin-bottom: 8px; /* Space below status */
+    font-size: 0.9rem; 
+    margin-bottom: 8px; 
   }
   
-  /* User info styles */
+  
   .card-user {
-    font-size: 0.9rem; /* Font size for user */
-    color: #555; /* Gray color for user */
-    margin-bottom: 8px; /* Space below user info */
+    font-size: 0.9rem; 
+    color: #555; 
+    margin-bottom: 8px; 
   }
   
-  /* Days info styles */
+ 
   .card-days {
-    font-size: 0.9rem; /* Font size for days info */
-    color: #777; /* Lighter gray for days info */
+    font-size: 0.9rem; 
+    color: #777; 
   }
   
-  /* Status indicator styles */
+
   .status-indicator {
-    padding: 5px 10px; /* Padding for indicator */
-    border-radius: 4px; /* Rounded corners */
-    color: white; /* White text */
-    font-weight: bold; /* Bold text */
+    padding: 5px 10px; 
+    border-radius: 4px; 
+    color: white; 
+    font-weight: bold; 
   }
   
-  /* Different status colors */
   .status-indicator.archived {
-    background-color: #6c757d; /* Gray for archived */
+    background-color: #6c757d;
   }
   
   .status-indicator.active {
-    background-color: #28a745; /* Green for active */
+    background-color: #28a745; 
   }
   
   .status-indicator.pending {
-    background-color: #ffc107; /* Yellow for pending */
+    background-color: #ffc107;
   }
   
-  /* View ticket button styles */
+
   .view-ticket-button {
-    margin-top: 15px; /* Space above button */
-    background-color: transparent; /* Transparent background */
-    border: none; /* No border */
-    color: #007bff; /* Bootstrap primary color */
-    cursor: pointer; /* Pointer cursor */
-    font-size: 1rem; /* Font size */
-    text-decoration: underline; /* Underlined text */
-    transition: color 0.2s; /* Smooth color transition */
+    margin-top: 15px; 
+    background-color: transparent; 
+    border: none; 
+    color: #007bff; 
+    cursor: pointer; 
+    font-size: 1rem; 
+    text-decoration: underline; 
+    transition: color 0.2s; 
   }
   
-  /* Hover effect for view ticket button */
   .view-ticket-button:hover {
-    color: #0056b3; /* Darker blue on hover */
+    color: #0056b3; 
   }
   
-  /* Pagination styles */
+  
   .pagination {
     display: flex;
-    justify-content: center; /* Center align pagination */
-    align-items: center; /* Align items */
-    margin-top: 20px; /* Space above pagination */
+    justify-content: center; 
+    align-items: center; 
+    margin-top: 20px; 
   }
   
-  /* Page button styles */
   .page-button {
-    margin: 0 5px; /* Space between buttons */
-    padding: 8px 12px; /* Inner padding */
-    background-color: #007bff; /* Blue background */
-    color: white; /* White text */
-    border: none; /* No border */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor */
-    transition: background-color 0.2s; /* Smooth background transition */
+    margin: 0 5px; 
+    padding: 8px 12px; 
+    background-color: #007bff; 
+    color: white; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    transition: background-color 0.2s; 
   }
   
-  /* Hover effect for page button */
   .page-button:hover {
-    background-color: #0056b3; /* Darker blue on hover */
+    background-color: #0056b3; 
   }
   
-  /* Active page button style */
   .page-button.active {
     background-color: #0056b3; 
     font-weight: bold;

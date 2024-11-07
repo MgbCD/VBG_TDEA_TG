@@ -54,7 +54,6 @@ async function checkFirstLogin(req, res) {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
 
-        // Si el usuario no tiene un programa, es su primer inicio
         const firstLogin = (!user.program && user.roleId === 'student') || user.roleId === 'other';
         return res.json({ firstLogin });
     } catch (error) {
@@ -67,19 +66,16 @@ async function updateProgram(req, res) {
     try {
         const { email, program } = req.body;
 
-        // Verificar que se haya proporcionado el email y el programa
         if (!email || !program) {
             return res.status(400).json({ message: 'Faltan campos requeridos: email y program.' });
         }
 
-        // Buscar al usuario por su email
         const user = await userModel.findOne({ email });
 
         if (!user) {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
 
-        // Actualizar el programa del usuario
         user.program = program;
         await user.save();
 
