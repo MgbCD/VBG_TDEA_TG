@@ -2,8 +2,8 @@
 This repository contains the code for a comprehensive case management system designed to track and manage cases related to gender-based violence at Tecnológico de Antioquia. The system facilitates the reporting, tracking, and resolution of VBG cases, ensuring a structured and secure process for both administrators and users.
 
 # **Authors**
-Karen Holguín Jaramillo
-Mayerli Giraldo Bermudez
+- Karen Holguín Jaramillo
+- Mayerli Giraldo Bermudez
 
 
 # **Installation Manual for VBG Project**
@@ -66,8 +66,9 @@ Mayerli Giraldo Bermudez
 
 4. **Install VSCode** (recommended): Download and install [VSCode](https://code.visualstudio.com/).
 5. **Install Recommended VSCode Plugins**:
-   - **ESLint**: For linting and code quality. ![alt text](image.png)
-   - **MongoDB for VSCode**: For MongoDB integration. ![alt text](image-1.png)
+   - **ESLint**: For linting and code quality.
+   - **MongoDB for VSCode**: For MongoDB integration. 
+   ![alt text](image.png) ![alt text](image-1.png)
 
 ---
 
