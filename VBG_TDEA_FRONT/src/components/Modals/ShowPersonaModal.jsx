@@ -30,11 +30,12 @@ const ShowPersonaModal = ({ ticketId, onClose }) => {
     return (
         <div className="show-persona-modal">
             <div className="show-persona-modal-content">
-                <span className="close-button" onClick={onClose}>
+                <span className="close-button-person" onClick={onClose}>
                     &times;
                 </span>
-                {loading && <p>Cargando información...</p>}
-                {implicatedPerson ? (
+                {loading ? (
+                    <p>Cargando información...</p>
+                ) : implicatedPerson ? (
                     <>
                         <h2>Información de la Persona Implicada</h2>
                         <p><strong>Nombre:</strong> {implicatedPerson.denouncedName}</p>
@@ -44,7 +45,7 @@ const ShowPersonaModal = ({ ticketId, onClose }) => {
                         <p><strong>Información Adicional:</strong> {implicatedPerson.additionalInfo}</p>
                     </>
                 ) : (
-                    !loading && <p>No hay personas implicadas en este ticket.</p>
+                    <p>No hay personas implicadas en este ticket.</p>
                 )}
             </div>
         </div>

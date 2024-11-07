@@ -16,7 +16,9 @@ const HistoricTicketsList = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [ticketIdForModal, setTicketIdForModal] = useState(null);
     const [showPersonaModal, setShowPersonaModal] = useState(false);
-    const ticketsPerPage = 10;
+    const [startPage, setStartPage] = useState(1);
+    const ticketsPerPage = 8;
+    const pagesToShow = 3;
     const axiosInstance = useAxios();
 
     useEffect(() => {
@@ -41,7 +43,7 @@ const HistoricTicketsList = () => {
 
     const openPersonaModal = (ticketId) => {
         setTicketIdForModal(ticketId);
-        setShowPersonaModal(true); // Abre el modal para ver la persona implicada
+        setShowPersonaModal(true);
     };
 
     const filteredTickets = filterStatus
@@ -55,6 +57,23 @@ const HistoricTicketsList = () => {
 
     const handlePageChange = (page) => {
         setCurrentPage(page);
+        if (page > startPage + pagesToShow - 1) {
+            setStartPage(page - pagesToShow + 1);
+        } else if (page < startPage) {
+            setStartPage(page);
+        }
+    };
+
+    const handleNext = () => {
+        if (currentPage < totalPages) {
+            handlePageChange(currentPage + 1);
+        }
+    };
+
+    const handlePrevious = () => {
+        if (currentPage > 1) {
+            handlePageChange(currentPage - 1);
+        }
     };
 
     return (
@@ -111,15 +130,24 @@ const HistoricTicketsList = () => {
                     </div>
 
                     <div className="pagination">
-                        {Array.from({ length: totalPages }, (_, i) => (
-                            <button
-                                key={i + 1}
-                                onClick={() => handlePageChange(i + 1)}
-                                className={`page-button ${currentPage === i + 1 ? "active" : ""}`}
-                            >
-                                {i + 1}
-                            </button>
-                        ))}
+                        <button onClick={handlePrevious} disabled={currentPage === 1} className="page-button">
+                            Anterior
+                        </button>
+                        {Array.from({ length: Math.min(pagesToShow, totalPages - startPage + 1) }, (_, i) => {
+                            const page = startPage + i;
+                            return (
+                                <button
+                                    key={page}
+                                    onClick={() => handlePageChange(page)}
+                                    className={`page-button ${currentPage === page ? "active" : ""}`}
+                                >
+                                    {page}
+                                </button>
+                            );
+                        })}
+                        <button onClick={handleNext} disabled={currentPage === totalPages} className="page-button">
+                            Siguiente
+                        </button>
                     </div>
                 </>
             )}
@@ -138,13 +166,10 @@ const HistoricTicketsList = () => {
                 />
             )}
 
-            {/* Show Persona Modal */}
             {showPersonaModal && ticketIdForModal && (
                 <ShowPersonaModal
                     ticketId={ticketIdForModal}
-                    onClose={() => {
-                        setShowPersonaModal(false);
-                    }}
+                    onClose={() => setShowPersonaModal(false)}
                 />
             )}
         </div>

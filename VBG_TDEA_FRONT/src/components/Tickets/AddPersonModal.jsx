@@ -12,6 +12,11 @@ const AddPersonModal = ({ onClose, ticketId, createdBy }) => {
   const axiosInstance = useAxios();
 
   const handleSubmit = async () => {
+    if (!denouncedName || !denouncedId) {
+      toast.error('Nombre y Cédula son campos obligatorios.');
+      return;
+    }
+
     const data = {
       ticketId,
       denouncedName,

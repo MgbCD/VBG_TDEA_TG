@@ -214,7 +214,7 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
         )}
         {currentTicket.filePath && (
           <button className="details-download" onClick={() => handleDownload(currentTicket.filePath)}>
-            <i className="fas fa-download"></i> Descargar imagen/archivo adjunto
+            <i className="fas fa-download"></i> Descargar imagen adjunta
           </button>
         )}
         <div className="details-ticket-buttons">

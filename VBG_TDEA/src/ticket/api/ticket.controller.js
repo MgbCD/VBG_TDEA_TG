@@ -134,7 +134,6 @@ async function downloadFile(req, res) {
     try {
         const { filename } = req.params;
 
-        // Aquí se construye la ruta completa correctamente
         const filePath = path.join(__dirname, '../../../uploads', filename);
 
         if (!fs.existsSync(filePath)) {
