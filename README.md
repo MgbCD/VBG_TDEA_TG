@@ -68,7 +68,9 @@ This repository contains the code for a comprehensive case management system des
 5. **Install Recommended VSCode Plugins**:
    - **ESLint**: For linting and code quality.
    - **MongoDB for VSCode**: For MongoDB integration. 
-   ![alt text](image.png) ![alt text](image-1.png)
+
+    ![alt text](image.png)
+    ![alt text](image-1.png)
 
 ---
 
