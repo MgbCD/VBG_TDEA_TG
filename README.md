@@ -70,7 +70,7 @@ This repository contains the code for a comprehensive case management system des
    - **MongoDB for VSCode**: For MongoDB integration. 
 
     ![alt text](image.png)
-    ![alt text](image-1.png)
+    ![alt text](image-2.png)
 
 ---
 
