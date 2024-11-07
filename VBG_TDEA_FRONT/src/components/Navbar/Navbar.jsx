@@ -37,7 +37,7 @@ const Navbar = () => {
     }, []);
 
     return (
-        <nav className={`NavbarItems ${isVisible ? '' : 'hidden'}`}> {/* Add hidden class */}
+        <nav className={`NavbarItems ${isVisible ? '' : 'hidden'}`}> 
             <a href="/home">
                 <img src={logo} alt="Logo" style={{ height: '50px' }} />
             </a>

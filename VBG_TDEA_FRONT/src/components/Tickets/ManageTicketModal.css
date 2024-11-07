@@ -1,36 +1,42 @@
 .manage-overlay {
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    animation: fadeInBackground 0.4s ease-in-out; 
-    z-index: 900;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 }
 
 .manage-modal {
-    background: #fff;
-    padding: 2rem;
-    border-radius: 10px;
-    max-width: 500px;
-    width: 100%;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    animation: scaleIn 0.3s ease forwards;
-    transform-origin: center;
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
     position: relative;
-    z-index: 950;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    animation: fadeInModal 0.3s ease-in-out;
 }
 
-@keyframes scaleIn {
-    0% {
-        transform: scale(0.95);
+@keyframes fadeInBackground {
+    from {
+        background-color: rgba(0, 0, 0, 0);
+    }
+    to {
+        background-color: rgba(0, 0, 0, 0.6);
+    }
+}
+
+@keyframes fadeInModal {
+    from {
+        transform: scale(0.9);
         opacity: 0;
     }
-    100% {
+    to {
         transform: scale(1);
         opacity: 1;
     }
@@ -44,7 +50,7 @@
     text-align: center;
 }
 
-.manage-modal .manage-form-group {
+.manage-form-group {
     margin-bottom: 1.5rem;
 }
 
@@ -56,17 +62,35 @@
 }
 
 .manage-modal input,
-.manage-modal textarea {
+.manage-modal textarea,
+.manage-modal select {
     width: 100%;
     padding: 0.8rem;
     border: 1px solid #ddd;
     border-radius: 8px;
     font-size: 1rem;
     resize: vertical;
+    transition: border-color 0.3s ease;
 }
 
 .manage-modal textarea {
     min-height: 100px;
+}
+
+.manage-modal select {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 0.8rem;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.manage-modal input:focus,
+.manage-modal textarea:focus,
+.manage-modal select:focus {
+    border-color: #007bff;
+    outline: none;
 }
 
 .manage-save-button,
@@ -88,7 +112,7 @@
 }
 
 .manage-add-person-button {
-    background-color: #007bff;
+    background-color: #3128a7;
     color: #fff;
     font-weight: bold;
 }
@@ -110,5 +134,5 @@
 }
 
 .manage-close:hover {
-    color: #ff5252; 
+    color: #ff5252;
 }
