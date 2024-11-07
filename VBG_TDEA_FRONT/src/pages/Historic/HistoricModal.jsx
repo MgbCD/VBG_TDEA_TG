@@ -10,7 +10,7 @@ const HistoricModal = ({ ticketId, onClose }) => {
 
     useEffect(() => {
         const fetchHistoricData = async () => {
-            if (!hasDataLoaded) { // Solo hace la solicitud si los datos no se han cargado
+            if (!hasDataLoaded) { 
                 try {
                     setLoading(true);
                     const response = await axiosInstance.get(`/api/historico/getHistorico/${ticketId}`);

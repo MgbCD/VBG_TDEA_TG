@@ -81,7 +81,7 @@ const TicketForm = ({ onClose, onSubmit }) => {
             />
           </div>
           <div>
-            <label>Adjuntar archivo (PDF o imagen):</label>
+            <label>Adjuntar archivo (imagen):</label>
             <input
               type="file"
               accept=".pdf, image/*"

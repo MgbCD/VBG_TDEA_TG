@@ -1,52 +1,48 @@
-/* Container for the In Progress Tickets */
+
 .in-progress-tickets-container {
-    margin-top: 150px; /* Space below navbar */
+    margin-top: 150px; 
     padding: 20px;
-    background-color: #f8f9fa; /* Light background color */
+    background-color: #f8f9fa; 
   }
   
-  /* Heading styles */
   .in-progress-tickets-container h2 {
     font-size: 2rem;
-    color: #333; /* Dark color for the title */
-    text-align: center; /* Center align */
-    margin-bottom: 20px; /* Space below the heading */
+    color: #333; 
+    text-align: center; 
+    margin-bottom: 20px; 
   }
   
-  /* List of ticket cards */
+ 
   .ticket-card-list {
     display: flex;
-    flex-wrap: wrap; /* Allow wrapping */
-    gap: 20px; /* Space between cards */
-    justify-content: center; /* Center the cards */
+    flex-wrap: wrap; 
+    gap: 20px; 
+    justify-content: center;
   }
   
-  /* Individual ticket card styles */
+
   .ticket-card {
-    width: 300px; /* Fixed width */
-    background-color: #fff; /* White background */
-    border-radius: 8px; /* Rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    overflow: hidden; /* Prevent overflow */
-    transition: transform 0.2s; /* Smooth transform effect */
-    z-index: 1; /* Keep it lower than the navbar */
+    width: 300px; 
+    background-color: #fff; 
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    overflow: hidden; 
+    transition: transform 0.2s; 
+    z-index: 1; 
   }
   
-  /* Hover effect for ticket card */
   .ticket-card:hover {
-    transform: translateY(-5px); /* Lift card on hover */
+    transform: translateY(-5px); 
   }
   
-  /* Body of the card */
   .card-body {
-    padding: 20px; /* Inner padding */
+    padding: 20px;
   }
   
-  /* Card title styles */
   .card-title {
-    font-size: 1.25rem; /* Title font size */
-    color: #333; /* Dark color */
-    margin-bottom: 10px; /* Space below title */
+    font-size: 1.25rem; 
+    color: #333; 
+    margin-bottom: 10px;
   }
   
   /* Status of the ticket */
@@ -133,32 +129,32 @@
   
   /* Active page button style */
   .page-button.active {
-    background-color: #0056b3; /* Darker blue for active */
-    font-weight: bold; /* Bold text for active */
+    background-color: #0056b3; 
+    font-weight: bold;
   }
   
-  /* Status indicators for specific statuses */
+ 
   .status-indicator.en-proceso {
-    color: #007bff; /* Blue for en proceso */
+    color: #007bff; 
   }
   
   .status-indicator.archivado {
-    color: #dc3545; /* Red for archived */
+    color: #dc3545; 
   }
   
   .status-indicator.creado {
-    color: #28a745; /* Green for created */
+    color: #28a745; 
   }
   
   .status-indicator.finalizado {
-    color: #ffc107; /* Yellow for finalized */
+    color: #ffc107; 
   }
   
-  /* Status filter dropdown */
+
   .status-filter-dropdown {
-    margin: 10px 0; /* Space around dropdown */
-    padding: 5px; /* Inner padding */
-    border-radius: 4px; /* Rounded corners */
-    font-size: 1rem; /* Font size */
+    margin: 10px 0; 
+    padding: 5px; 
+    border-radius: 4px; 
+    font-size: 1rem; 
   }
   

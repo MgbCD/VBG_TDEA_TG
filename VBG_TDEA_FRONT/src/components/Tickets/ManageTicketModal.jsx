@@ -126,7 +126,7 @@ const ManageTicketModal = ({ onClose, ticketId, createdBy }) => {
           <select
             id="actionSelect"
             value={selectedAction}
-            onChange={handleActionChange}  // Aquí invocas la función correctamente
+            onChange={handleActionChange}  
           >
             <option value="">Seleccione una acción</option>
             {availableActions.map((action) => (
@@ -160,4 +160,4 @@ const ManageTicketModal = ({ onClose, ticketId, createdBy }) => {
   );
 };
 
-export default ManageTicketModal;
+export default ManageTicketModal; 
