@@ -47,10 +47,10 @@ const Navbar = () => {
             <ul className={clicked ? "nav-menu active" : "nav-menu"} style={{ listStyleType: 'none', padding: 0 }}>
                 {MenuData.map((item, index) => {
                     if (item.title === 'En proceso' && userRole !== 'admin') {
-                        return null; // No renderizamos el item si el rol no es admin
+                        return null;
                     }
                     if (item.title === 'Dashboard' && userRole !== 'admin') {
-                        return null; // No renderizamos el item si el rol no es admin
+                        return null;
                     }
                     if (item.title === 'Cerrar sesión') {
                         return (
