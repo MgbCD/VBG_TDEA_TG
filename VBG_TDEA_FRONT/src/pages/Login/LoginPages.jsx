@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LoginStyle.css';
 import logoLogin from '../../assets/img/logoLogin.png';
@@ -6,6 +6,7 @@ import { useMsal } from '@azure/msal-react';
 import useAxios from '../../services/axiosConfig';
 import ProgramSelectionModal from '../../components/Modals/ProgramSelectionModal';
 import RoleSelectionModal from '../../components/Modals/RoleSelectionModal';
+import AuthContext from '../../contexts/authContext';
 
 const LoginPage = () => {
   const { instance } = useMsal();
@@ -14,12 +15,13 @@ const LoginPage = () => {
   const [showRoleModal, setShowRoleModal] = useState(false);
   const [userData, setUserData] = useState(null);
   const axiosInstance = useAxios();
+  const { setUser, setUserRole, setUserId } = useContext(AuthContext);
 
   const handleLogin = async () => {
-    
     const loginRequest = {
       scopes: ["openid", "profile", "User.Read"]
     };
+    let program = null;
     try {
       const response = await instance.loginPopup(loginRequest);
       const email = response.account.username;
@@ -47,7 +49,9 @@ const LoginPage = () => {
         });
         roleId = existingUserResponse.data.roleId;
         userId = existingUserResponse.data._id;
+        program = existingUserResponse.data.program;
         console.log("Usuario encontrado:", existingUserResponse.data);
+        const userData = existingUserResponse.data;
       } catch (error) {
         if (error.response && error.response.status === 404) {
           roleId = email.endsWith('@correo.tdea.edu.co') ? 'student' : 'other';
@@ -56,7 +60,7 @@ const LoginPage = () => {
             email,
             username,
             roleId,
-            program: roleId === 'student' ? null : undefined,
+            program: roleId === 'student' ? "" : undefined,
           };
           await axiosInstance.post('/api/user/saveUser', newUserData, {
             headers: {
@@ -75,7 +79,7 @@ const LoginPage = () => {
         username: username,
         token: idToken,
         roleId: roleId,
-        program: null,
+        program: program || null,
         identityId: identityId,
         userId: userId
       };
@@ -83,6 +87,9 @@ const LoginPage = () => {
       console.log('Datos del usuario y token:', userData);
       localStorage.setItem('user', JSON.stringify(userData));
       setUserData(userData);
+      setUser(userData);
+      setUserRole(userData.roleId);
+      setUserId(userData.userId);
 
       const checkFirstLoginResponse = await axiosInstance.get(`/api/user/checkFirstLogin?email=${email}`, {
         headers: {
@@ -113,11 +120,23 @@ const LoginPage = () => {
         console.error("Email no encontrado en userData.");
         return;
       }
+
       await axiosInstance.post('/api/user/updateProgram', {
         email: email,
         program: program,
       });
+
+      const updatedUserData = { ...userData, program: program };
+
+      localStorage.setItem('user', JSON.stringify(updatedUserData));
+
+      setUserData(updatedUserData);
+      setUser(updatedUserData);
+      setUserRole(updatedUserData.roleId);
+      setUserId(updatedUserData.userId);
+
       setShowModal(false);
+
       navigate('/home');
     } catch (error) {
       console.error("Error al guardar el programa:", error);
@@ -126,11 +145,24 @@ const LoginPage = () => {
 
   const handleRoleSave = async (role) => {
     if (!userData) return;
-    const userDataWithRole = { ...userData, roleId: role };
-    await axiosInstance.post('/api/user/saveUser', userDataWithRole);
+    try {
+      const updatedUserData = { ...userData, roleId: role };
 
-    setShowRoleModal(false);
-    navigate('/home');
+      await axiosInstance.post('/api/user/saveUser', updatedUserData);
+
+      localStorage.setItem('user', JSON.stringify(updatedUserData));
+
+      setUserData(updatedUserData);
+      setUser(updatedUserData);
+      setUserRole(updatedUserData.roleId);
+      setUserId(updatedUserData.userId);
+
+      setShowRoleModal(false);
+
+      navigate('/home');
+    } catch (error) {
+      console.error("Error al guardar el rol:", error);
+    }
   };
 
   return (
