@@ -57,7 +57,7 @@ async function checkFirstLogin(req, res) {
         const firstLogin = (!user.program && user.roleId === 'student') || user.roleId === 'other';
         return res.json({ firstLogin });
     } catch (error) {
-        console.error("Error al verificar el primer inicio de sesión:", error); // Log para error
+        console.error("Error al verificar el primer inicio de sesión:", error);
         return res.status(500).json({ message: 'Error en el servidor' });
     }
 }

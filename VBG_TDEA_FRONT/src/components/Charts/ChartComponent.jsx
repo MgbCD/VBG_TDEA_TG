@@ -24,7 +24,7 @@ const ChartComponent = ({ data }) => {
       {
         label: 'Tickets',
         data: data.map(stat => stat.count),
-        backgroundColor: data.map((stat, index) => colors[index % colors.length]), // Asigna colores de manera cíclica
+        backgroundColor: data.map((stat, index) => colors[index % colors.length]),
       },
     ],
   };
