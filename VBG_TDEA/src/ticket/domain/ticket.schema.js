@@ -33,6 +33,10 @@ const ticketSchema = new mongoose.Schema({
     adminId: {
         type: mongoose.Schema.Types.ObjectId,
     },
+    filePath: { 
+        type: String,
+        required: false
+    },
 });
 
 module.exports = { ticketSchema };

@@ -10,7 +10,11 @@ async function createHistoricoRepository(historicoRequest) {
         });
 
         const savedHistorico = await historico.save();
-        return savedHistorico;
+
+        const populatedHistorico = await historicoModel.findById(savedHistorico._id)
+            .populate('actionTaken', 'action')
+
+        return populatedHistorico;
     } catch (error) {
         throw new Error(`Error al crear el registro histórico: ${error.message}`);
     }
@@ -18,34 +22,24 @@ async function createHistoricoRepository(historicoRequest) {
 
 async function getHistoricoByTicketIdRepository(ticketId) {
     try {
-        const historico = await historicoModel.find({ ticketId });
+        const historico = await historicoModel
+            .find({ ticketId })
+            .populate({
+                path: 'actionTaken',
+                select: 'action',
+            })
+            .populate({
+                path: 'actionBy',
+                select: 'username',
+            })
+            .populate({
+                path: 'updatedBy',
+                select: 'username',
+            });
+
         return historico;
     } catch (error) {
         throw new Error(`Error al obtener el registro histórico: ${error.message}`);
-    }
-}
-
-async function updateHistoricoEntryRepository(historicoId, updateRequest) {
-    try {
-        const updatedEntry = await historicoModel.findByIdAndUpdate(
-            historicoId,
-            updateRequest,
-            { new: true }
-        );
-        return updatedEntry;
-    } catch (error) {
-        throw new Error(`Error al actualizar el registro histórico: ${error.message}`);
-    }
-}
-
-async function listHistoricoEntriesRepository(filter, pagination) {
-    try {
-        const entries = await historicoModel.find(filter)
-            .skip(pagination.skip)
-            .limit(pagination.limit);
-        return entries;
-    } catch (error) {
-        throw new Error(`Error al listar los registros históricos: ${error.message}`);
     }
 }
 
@@ -58,4 +52,4 @@ async function deleteHistoricoEntryRepository(historicoId) {
     }
 }
 
-module.exports = { createHistoricoRepository, getHistoricoByTicketIdRepository, updateHistoricoEntryRepository, listHistoricoEntriesRepository, deleteHistoricoEntryRepository };
+module.exports = { createHistoricoRepository, getHistoricoByTicketIdRepository, deleteHistoricoEntryRepository };

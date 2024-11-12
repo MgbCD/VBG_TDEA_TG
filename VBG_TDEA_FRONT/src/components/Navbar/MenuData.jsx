@@ -1,32 +1,34 @@
-export const MenuData =[
+export const MenuData = [
     {
         title: "Home",
         url: "home",
         cName: "nav-links",
-        icon:"fa-solid fa-house-user"
+        icon: "fa-solid fa-house-user"
     },
-   
+
 
     {
         title: "Dashboard",
-        url: "#",
+        url: "dashboard",
         cName: "nav-links",
-        icon:"fa-solid fa-chart-simple"
+        icon: "fa-solid fa-chart-simple"
+    },
+    {
+        title: "En proceso",
+        url: "inprogressticketslist",
+        cName: "nav-links",
+        icon: "fa-solid fa-pen"
     },
     {
         title: "Historico",
-        url: "#",
+        url: "historic",
         cName: "nav-links",
-        icon: "fa-solid fa-clock-rotate-left" 
+        icon: "fa-solid fa-clock-rotate-left"
     },
-    
+
     {
         title: "Cerrar sesión",
         url: "#",
         cName: "nav-links-mobile",
-    }
-   
-
-
-    
+    } 
 ] 
