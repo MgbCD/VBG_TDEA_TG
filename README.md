@@ -36,67 +36,68 @@ This repository contains the code for a comprehensive case management system des
 
 ### Backend (`vbg_project` Directory)
 
+```
 VBG_TDEA
 │
 ├── config/                      # Configuration files (e.g., database)
-│   └── database.js              # Database connection config
+│   └── database.js              # Database connection configuration
 │
 ├── src/
 │   ├── dashboard/               # Dashboard module
-│   │   ├── api/
-│   │   ├── application/
-│   │   ├── domain/
-│   │   ├── infrastructure/
-│   │   └── routes/
+│   │   ├── api/                 # Dashboard API
+│   │   ├── application/         # Application logic
+│   │   ├── domain/              # Dashboard domain
+│   │   ├── infrastructure/      # Infrastructure
+│   │   └── routes/              # Dashboard routes
 │   │
 │   ├── denouncedRegister/       # Denounced Register module
-│   │   ├── api/
-│   │   ├── application/
-│   │   ├── domain/
-│   │   ├── infrastructure/
-│   │   └── routes/
+│   │   ├── api/                 # Denounced Register API
+│   │   ├── application/         # Application logic
+│   │   ├── domain/              # Denounced Register domain
+│   │   ├── infrastructure/      # Infrastructure
+│   │   └── routes/              # Denounced Register routes
 │   │
-│   ├── historico/               # Historico module
-│   │   ├── api/
-│   │   ├── application/
-│   │   ├── domain/
-│   │   ├── infrastructure/
-│   │   └── routes/
+│   ├── historico/               # Historical module
+│   │   ├── api/                 # Historical API
+│   │   ├── application/         # Application logic
+│   │   ├── domain/              # Historical domain
+│   │   ├── infrastructure/      # Infrastructure
+│   │   └── routes/              # Historical routes
 │   │
 │   ├── middleware/              # Middleware for the entire application
-│   │   ├── authMiddleware.js
-│   │   └── uploadMiddleware.js
+│   │   ├── authMiddleware.js    # Authentication middleware
+│   │   └── uploadMiddleware.js  # File upload middleware
 │   │
 │   ├── ticket/                  # Ticket module
-│   │   ├── api/
-│   │   ├── application/
-│   │   ├── domain/
-│   │   ├── infrastructure/
-│   │   │   ├── kafka/
-│   │   │       ├── TicketConsumer.js
-│   │   │       └── TicketProducer.js
-│   │   └── routes/
+│   │   ├── api/                 # Ticket API
+│   │   ├── application/         # Application logic
+│   │   ├── domain/              # Ticket domain
+│   │   ├── infrastructure/      # Infrastructure
+│   │   │   ├── kafka/           # Kafka configuration
+│   │   │   │   ├── TicketConsumer.js  # Ticket consumer
+│   │   │   │   └── TicketProducer.js  # Ticket producer
+│   │   └── routes/              # Ticket routes
 │   │
 │   ├── ticketAction/            # Ticket Action module
-│   │   ├── api/
-│   │   ├── application/
-│   │   ├── domain/
-│   │   ├── infrastructure/
-│   │   └── routes/
+│   │   ├── api/                 # Ticket Action API
+│   │   ├── application/         # Application logic
+│   │   ├── domain/              # Ticket Action domain
+│   │   ├── infrastructure/      # Infrastructure
+│   │   └── routes/              # Ticket Action routes
 │   │
 │   ├── ticketStatus/            # Ticket Status module
-│   │   ├── api/
-│   │   ├── application/
-│   │   ├── domain/
-│   │   ├── infrastructure/
-│   │   └── routes/
+│   │   ├── api/                 # Ticket Status API
+│   │   ├── application/         # Application logic
+│   │   ├── domain/              # Ticket Status domain
+│   │   ├── infrastructure/      # Infrastructure
+│   │   └── routes/              # Ticket Status routes
 │   │
 │   └── user/                    # User module
-│       ├── api/
-│       ├── application/
-│       ├── domain/
-│       ├── infrastructure/
-│       └── routes/
+│       ├── api/                 # User API
+│       ├── application/         # Application logic
+│       ├── domain/              # User domain
+│       ├── infrastructure/      # Infrastructure
+│       └── routes/              # User routes
 │
 ├── uploads/                     # Directory for file uploads
 │
@@ -108,10 +109,11 @@ VBG_TDEA
 ├── routes.js                    # Main routing configuration
 ├── swagger.js                   # Swagger configuration for API documentation
 └── verifyToken.js               # JWT token verification helper
-
+```
 
 ### Frontend (`vbg_tdea_front` Directory)
 
+```
 VBG_TDEA_FRONT
 │
 ├── public/                       # Public assets that are served directly
@@ -128,24 +130,23 @@ VBG_TDEA_FRONT
 │   ├── hooks/                    # Custom React hooks
 │   │   └── useAuth.js            # Custom hook for authentication
 │   │
-│   │
 │   ├── pages/                    # Application pages
-│   │   ├── Dashboard/            
+│   │   ├── Dashboard/            # Dashboard page
 │   │   │   └── Dashboard.js
 │   │   │   └── Dashboard.css
-│   │   ├── Login/                
+│   │   ├── Login/                # Login page
 │   │   │   └── Login.js
 │   │   │   └── Login.css
-│   │   ├── Historic/             
+│   │   ├── Historic/             # Historic page
 │   │   │   └── Historic.js
 │   │   │   └── Historic.css
-│   │   └── Home/                 
+│   │   └── Home/                 # Home page
 │   │       └── Home.js
 │   │       └── Home.css
 │   │
 │   ├── services/                 # Services for handling business logic
-│   │   └── authConfig.jsx        
-│   │   └── AxiosConfig.js        
+│   │   └── authConfig.jsx        # Auth configuration service
+│   │   └── AxiosConfig.js        # Axios configuration for HTTP requests
 │   │
 │   ├── App.js                    # Main React component
 │   ├── index.js                  # Application entry point
@@ -155,6 +156,7 @@ VBG_TDEA_FRONT
 ├── package.json                  # NPM dependencies and scripts
 ├── package-lock.json             # NPM lockfile
 └── README.md                     # Documentation for the frontend project
+```
 
 ---
 
