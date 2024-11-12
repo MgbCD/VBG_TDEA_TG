@@ -97,8 +97,6 @@ const LoginPage = () => {
         }
       });
 
-      console.log("Primer ingreso:", checkFirstLoginResponse.data.firstLogin);
-
       if (checkFirstLoginResponse.data.firstLogin) {
         if (roleId === 'other') {
           setShowRoleModal(true);

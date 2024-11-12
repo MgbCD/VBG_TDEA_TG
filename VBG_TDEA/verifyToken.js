@@ -1,10 +1,11 @@
 const jwt = require('jsonwebtoken');
 const jwksRsa = require('jwks-rsa');
+require('dotenv').config();
 
 const jwtVerifyMiddleware = (req, res, next) => {
     const token = req.headers.authorization.split(' ')[1];
     const client = jwksRsa({
-        jwksUri: 'https://login.microsoftonline.com/2618ef2a-7956-4b9a-b5c7-95fe306a3e7b/discovery/v2.0/keys'
+        jwksUri: process.env.JWKS_URI
     });
 
     const getKey = (header, callback) => {

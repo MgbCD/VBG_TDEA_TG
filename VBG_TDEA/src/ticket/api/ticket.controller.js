@@ -15,13 +15,13 @@ async function saveTicket(req, res) {
         if (!user) {
             return res.status(404).json({ message: 'Usuario no encontrado.' });
         }
-        const filePath = req.file ? path.basename(req.file.path) : null; // Usar solo el nombre del archivo
+        const filePath = req.file ? path.basename(req.file.path) : null;
         const ticketRequest = {
             title: req.body.title,
             description: req.body.description,
             createdBy: user._id,
             adminId: null,
-            filePath: filePath  // Aquí solo guardamos el nombre del archivo
+            filePath: filePath
         };
         const newTicket = await createTicketUseCase(ticketRequest);
 
