@@ -165,21 +165,6 @@ VBG_TDEA_FRONT
 - **Node.js**: 18.x or higher
 - **MongoDB**: 5.x or higher
 - **Kafka**: Confluent Cloud recommended or local Kafka setup
-- **Docker** (optional): You can install [Docker](https://www.docker.com/) to run MongoDB and Kafka in containers if preferred over local installations.
-
----
-
-## **Optional Docker Setup**
-
-To streamline MongoDB and Kafka setup, you can use Docker. This avoids potential local installation conflicts and simplifies configuration.
-
-```bash
-# MongoDB
-docker run -d --name mongodb -p 27017:27017 mongo
-
-# Kafka (requires ZooKeeper)
-docker-compose up -d # Ensure you have a docker-compose.yml file configured for Kafka and ZooKeeper
-```
 
 ---
 
@@ -188,8 +173,7 @@ docker-compose up -d # Ensure you have a docker-compose.yml file configured for 
 ### 1. **Clone the Repository**
 
    ```bash
-   git clone <your-repo-url>
-   cd <your-repo-directory>
+   git clone https://github.com/MgbCD/VBG_TDEA_TG
    ```
 
 ### 2. **Set Up the Backend**
