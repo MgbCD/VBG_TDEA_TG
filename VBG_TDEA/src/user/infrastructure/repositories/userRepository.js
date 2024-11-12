@@ -14,7 +14,7 @@ async function createUserRepository(userRequest) {
     const savedUser = await user.save();
     return savedUser;
   } catch (error) {
-    console.log('Error al guardar el usuario:', error); // Para revisar en el servidor
+    console.log('Error al guardar el usuario:', error);
     throw new Error('Error saving user: ' + error.message);
   }
 }
