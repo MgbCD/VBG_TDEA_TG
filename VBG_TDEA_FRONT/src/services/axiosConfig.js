@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useMsal } from '@azure/msal-react';
 import { useNavigate } from 'react-router-dom';
-import Config from '../utils/config';
+import Config from '../utils/Config';
 
 const useAxios = () => {
   const { instance, accounts } = useMsal();

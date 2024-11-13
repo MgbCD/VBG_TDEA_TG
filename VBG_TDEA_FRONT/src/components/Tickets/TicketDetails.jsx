@@ -7,7 +7,7 @@ import { faPlay, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 import useAuth from '../../hooks/useAuth';
 import useAxios from '../../services/axiosConfig';
 import { toast } from 'react-toastify';
-import Config from '../../utils/config';
+import Config from '../../utils/Config';
 
 const TicketDetails = ({ ticket, onClose, onDelete }) => {
   const { userRole, userId } = useAuth();
