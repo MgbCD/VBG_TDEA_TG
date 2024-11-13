@@ -1,12 +1,13 @@
 import axios from 'axios';
 import { useMsal } from '@azure/msal-react';
 import { useNavigate } from 'react-router-dom';
+import Config from '../utils/config';
 
 const useAxios = () => {
   const { instance, accounts } = useMsal();
   const navigate = useNavigate();
 
-  const baseURL = process.env.REACT_APP_API_BASE_URL;
+  const baseURL = Config.REACT_APP_API_BASE_URL;
   const axiosInstance = axios.create({
     baseURL: baseURL,
   });
