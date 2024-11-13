@@ -148,6 +148,9 @@ VBG_TDEA_FRONT
 │   │   └── authConfig.jsx        # Auth configuration service
 │   │   └── AxiosConfig.js        # Axios configuration for HTTP requests
 │   │
+|   ├── utils/ 
+|   |   └── Config.js
+|   |
 │   ├── App.js                    # Main React component
 │   ├── index.js                  # Application entry point
 │
@@ -263,17 +266,18 @@ VBG_TDEA_FRONT
    ```
 
 3. **Set Up Environment Variables**:
-   - Create a `.env` file in the `vbg_tdea_front` directory.
-   - Add the following environment variables:
+   - The frontend configuration variables are not stored in a traditional `.env` file. Instead, they are defined as constants in the `Config.js` file, located in the `utils/Config` folder.
+   - In this file, define the following values:
 
-     ```plaintext
-     PORT=3001 # Local development port for frontend; adjust if running on a different port
-     REACT_APP_AZURE_CLIENT_ID=<Your Azure Client ID>
-     REACT_APP_AZURE_AUTHORITY=https://login.microsoftonline.com/<YourTenantID>
-     REACT_APP_API_BASE_URL=http://localhost:3000 # Backend API URL. For production, replace localhost with the backend server's domain, e.g., https://backenddomain.com
-     REACT_APP_REDIRECT_URI=http://localhost:3001 # Redirect URI post-authentication; for production, replace localhost with the frontend domain, e.g., https://frontenddomain.com
+     ```javascript
+     export const PORT = 3001; // Development port for the frontend
+     export const REACT_APP_AZURE_CLIENT_ID = "<Your Azure Client ID>";
+     export const REACT_APP_AZURE_AUTHORITY = "https://login.microsoftonline.com/<YourTenantID>";
+     export const REACT_APP_API_BASE_URL = "http://localhost:3000"; // Backend URL in development
+     export const REACT_APP_REDIRECT_URI = "http://localhost:3001"; // Redirect URI
      ```
-     > **Note**: Replace `YourAzureClientID` and `YourTenantID` with your Azure AD details.
+
+   > **Note**: Make sure to replace `<Your Azure Client ID>` and `<YourTenantID>` with the values corresponding to your Azure configuration. For production deployment, change `localhost` to the appropriate server domain.
 
 4. **Start the Frontend Server**:
 
@@ -287,6 +291,16 @@ VBG_TDEA_FRONT
 
 1. **Create Topics**: Make sure the topics `ticket-created`, `ticket-status-changed`, and `ticket-historico-changed` are created in your Kafka cluster.
 2. **Consumer and Producer**: The backend `vbg_project` has a Kafka producer and consumer configured to listen to these topics and handle email notifications.
+
+### **Branch Information for Kafka Configuration**
+
+- **Main & Develop branches**: These branches contain the project without Kafka configuration. You can run the project without a Kafka setup. The system will function normally, but Kafka-related features (like event streaming) will not be active. These branches are ideal if you don't need Kafka integration for testing or development purposes.
+
+- **`feature/kafka-configuration` branch**: This branch includes the full Kafka configuration. If you need Kafka for event streaming, you can switch to this branch. This setup includes Kafka consumer and producer logic, and it requires a running Kafka broker to function properly. If you want to enable Kafka-based functionality, such as ticket-related events, you should use this branch.
+
+> **Note**: You can work with or without Kafka by switching between these branches. If you don’t need Kafka, the **Main** or **Develop** branches will be sufficient for your needs.
+
+---
 
 ### 5. **Testing the Application**
 
@@ -312,4 +326,4 @@ Ensure sensitive variables such as `ENCRYPTION_KEY` and Kafka credentials are st
 
 - **MongoDB Connection Issues**: Verify your MongoDB URI and ensure MongoDB is running.
 - **Kafka Errors**: If you encounter partition or topic errors, confirm the topics are created and properly configured in Confluent Cloud.
-- **Environment Variable Issues**: Double-check all `.env` variables in both the frontend and backend directories.
+- **Environment Variable Issues**: Double-check all `.env` variables in both the backend directories.
