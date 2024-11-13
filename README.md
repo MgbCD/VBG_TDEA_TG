@@ -184,7 +184,7 @@ VBG_TDEA_FRONT
 1. **Navigate to the Backend Directory**:
 
    ```bash
-   cd vbg_project
+   cd ../VBG_TDEA
    ```
 
 2. **Install Dependencies**:
@@ -256,7 +256,7 @@ VBG_TDEA_FRONT
 1. **Navigate to the Frontend Directory**:
 
    ```bash
-   cd ../vbg_tdea_front
+   cd ../VBG_TDEA_FRONT
    ```
 
 2. **Install Dependencies**:
