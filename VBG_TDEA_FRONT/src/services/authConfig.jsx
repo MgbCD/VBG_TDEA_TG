@@ -1,10 +1,11 @@
 import { PublicClientApplication } from "@azure/msal-browser";
+import Config from "../utils/Config";
 
 const msalConfig = {
     auth: {
-        clientId: process.env.REACT_APP_AZURE_CLIENT_ID,
-        authority: process.env.REACT_APP_AZURE_AUTHORITY,
-        redirectUri: process.env.REACT_APP_REDIRECT_URI,
+        clientId: Config.REACT_APP_AZURE_CLIENT_ID,
+        authority: Config.REACT_APP_AZURE_AUTHORITY,
+        redirectUri: Config.REACT_APP_REDIRECT_URI,
         navigateToLoginRequestUrl: false,
     },
     cache: {

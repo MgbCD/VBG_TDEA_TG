@@ -7,6 +7,7 @@ import { faPlay, faFolderOpen } from '@fortawesome/free-solid-svg-icons';
 import useAuth from '../../hooks/useAuth';
 import useAxios from '../../services/axiosConfig';
 import { toast } from 'react-toastify';
+import Config from '../../utils/Config';
 
 const TicketDetails = ({ ticket, onClose, onDelete }) => {
   const { userRole, userId } = useAuth();
@@ -158,7 +159,7 @@ const TicketDetails = ({ ticket, onClose, onDelete }) => {
 
   const handleDownload = async (filePath) => {
     const fileName = filePath.split('/').pop();
-    const fullPath = `${process.env.REACT_APP_API_BASE_URL}/api/ticket/download/${fileName.replace(/\\/g, '/')}`;
+    const fullPath = `${Config.REACT_APP_API_BASE_URL}/api/ticket/download/${fileName.replace(/\\/g, '/')}`;
 
     try {
       const response = await fetch(fullPath);
